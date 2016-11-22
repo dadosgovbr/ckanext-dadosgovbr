@@ -1,0 +1,206 @@
+// main: extra.scss
+@media (max-width: 767px) {
+  body {
+      padding-left: 0;
+      padding-right: 0;
+      background: none;
+  }
+
+  // Blocos genéricos de conteúdo do CKAN
+  // Exemplo: os blocos da homepage
+  .box {
+    margin: 10px;
+  }
+
+  // Modulos genéricos do CKAN
+  // Exemplo: os blocos da visualização de um dataset
+  .primary, .secondary {
+    .module {
+      margin: 10px;
+    }
+
+    // Títulos de um módulo
+    .module-narrow .module-heading, .module-narrow .module-content, .module-narrow .module-footer {
+      padding-left: 30px;
+    }
+
+    // Listas
+    .nav-simple > li, .nav-aside > li {
+      padding-left: 40px;
+    }
+  }
+
+  // Esconde as tags
+  #top_tags {
+    display: none;
+  }
+
+  // Bloco de busca da homepage
+  // (escondido da home)
+  body div[role='main'] form#search {
+    display: none;
+  }
+
+
+  // Breadcrumb
+  .toolbar .breadcrumb {
+    padding: 0 16px;
+
+    li, li.home {
+      display: inline-block;
+      color: #999;
+      float: none;
+      margin: 14px 0 0;
+      font-size: 0.6em;
+    }
+    a {
+      color: #444;
+      padding: 0;
+      &.active {
+        font-size: 1.3em;
+      }
+    }
+  }
+
+
+
+  // Cabeçalho
+  body > header.masthead {
+    margin-bottom: 7px;
+
+    // Links de acessibilidade no topo
+    #accessibility {
+      display: none !important;
+    }
+
+    // Logo-imagem dos Dados Abertos
+    #site_logo {
+      float: none;
+      width: 100%;
+
+      .logo-img {
+        text-align: center;
+        img {
+          margin: 0 auto;
+          height: 100px;
+        }
+      }
+    }
+
+    // Links para o Github, RSS e Twitter
+    #news {
+      float: none;
+      margin: 10px auto;
+    }
+
+
+    // Barra de busca
+    .search-form {
+      float: none;
+      margin: 20px 0 20px;
+      padding: 0;
+      display: block;
+      width: 100%;
+      text-align: center;
+
+      .search-input {
+        margin: 0 auto;
+      }
+    }
+
+    // Links navegação
+    #barra-menu, #menu-horizontal {
+      height: 34px;
+    }
+    #menu-horizontal {
+      height: 34px;
+
+      .barra-apoio {
+        float: none;
+        text-align: center;
+        margin: 7px 1% 0;
+        padding-bottom: 11px;
+
+        margin: 0 1%;
+        width: 97%;
+      	white-space: nowrap;
+      	overflow-y: hidden;
+      	overflow-x: scroll;
+      	-webkit-overflow-scrolling: touch;
+      }
+
+      // Obrigatorios
+      .link-dados, .link-aplicativos {
+        display: inline;
+      }
+
+      // Que podem ser escondidos
+      .link-perguntas-frequentes, .link-contato, .link-sobre {
+        display: inline;
+      }
+    }
+
+  } // END cabeçalho
+
+
+  // Rodapé
+  // ==========================================================================
+  .footer.outer footer {
+    padding: 15px 30px 25px;
+    width: 100%;
+
+    h3 {
+      margin-bottom: 4px;
+      margin-top: 24px;
+    }
+
+    .attribution {
+        display: none;
+    }
+  } // END rodapé
+
+
+
+
+  // Pagina "Noticias" do Wordpress
+  // ==========================================================================
+  #noticia-sidebar {
+    .module-content {
+        margin: 0 10px !important;
+        padding: 40px;
+    }
+  }
+
+
+
+  // Pagina "Página única" do Wordpress
+  // ==========================================================================
+  #pagina {
+    .toolbar {
+      height: 1px;
+    }
+    #content {
+      font-size: 1.1em;
+      border: 0;
+      background: none;
+      margin: 0;
+      box-shadow: none;
+    }
+  }
+
+
+  // Debug area
+  // ==========================================================================
+  #debug-toggle {
+    margin: 20px 20px 20px;
+  }
+
+
+  // FIX scroll x
+  // ==========================================================================
+  [role=main] {
+      overflow-x: hidden;
+  }
+
+
+}

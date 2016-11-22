@@ -1,0 +1,43 @@
+{% extends "page.html" %}
+
+{% block title %}{{h.dadosabertos_wordpress_pages().title.rendered}} - {{ super() }}{% endblock %}
+
+{% block breadcrumb_content %}
+{% endblock %}
+
+{% block maintag %}<div role="main" id="pagina">{% endblock %}
+
+{% block primary %}
+  <div class="secondary">
+    {#
+    The primary_content block can be used to add content to the page.
+    This is the main block that is likely to be used within a template.
+
+    Example:
+
+      {% block primary_content %}
+        <h1>My page content</h1>
+        <p>Some content for the page</p>
+      {% endblock %}
+    #}
+    {% block primary_content %}
+      <article class="module">
+        {% block page_header %}
+          <header class="module-content page-header">
+            <h1>{{h.dadosabertos_wordpress_pages().title.rendered|safe}}</h1>
+          </header>
+        {% endblock %}
+        <div class="module-content">
+          <p>{{h.dadosabertos_wordpress_pages().content.rendered|safe}}</p>
+        </div>
+      </article>
+    {% endblock %}
+  </div>
+{% endblock %}
+
+
+{% block secondary %}
+{% endblock %}
+
+
+{% block sidebar %}{% endblock %}

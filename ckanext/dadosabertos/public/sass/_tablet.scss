@@ -1,0 +1,42 @@
+// main: extra.scss
+
+@media (max-width: 980px) {
+  // Bloco de busca da homepage
+  // ==========================================================================
+  body div[role='main'] form#search {
+    margin: -3px -2px 16px;
+    width: initial;
+
+    #busca {
+      width: 74%;
+    }
+    p {
+      padding: 10px 5px 0;
+    }
+  }
+
+  #accessibility {
+    width: 380px;
+  }
+
+
+  // Rodapé
+  // ==========================================================================
+  .footer.outer footer {
+    padding: 15px 30px 25px;
+    width: 100%;
+
+    a {
+      font-size: 12px;
+    }
+
+    h3 {
+      margin-bottom: 4px;
+      margin-top: 24px;
+    }
+
+    .attribution {
+        display: none;
+    }
+  } // END rodapé
+}

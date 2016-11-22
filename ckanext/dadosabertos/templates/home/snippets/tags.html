@@ -1,0 +1,17 @@
+{% set tags = h.get_facet_items_dict('tags', limit=20) %}
+
+<div class="box">
+	<section id="top_tags" class="group-list module module-narrow module-shadow">
+	  <header class="module-heading">
+	    <h3> <span>Dados por etiqueta</span></h3>
+	  </header>
+	  <div>
+	  	<ul class="tags clearfix">
+		   {% for tag in tags %}
+
+		    <li><a href="{% url_for controller='package', action='search', tags=tag.name %}">{{ h.truncate(tag.display_name, 22) }} ({{tag.count}})</a></li>
+		   {% endfor %}
+		  </ul>
+	  </div>
+	</section>
+</div>

@@ -1,0 +1,36 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Login') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ h.nav_link(_('Login'), controller='user', action='login') }}</li>
+{% endblock %}
+
+{% block primary_content %}
+  <section class="module">
+    <div class="module-content">
+      <h1 class="page-heading">{% block page_heading %}{{ _('Login') }}{% endblock %}</h1>
+      {% block form %}
+        {% snippet "user/snippets/login_form.html", action=c.login_handler, error_summary=error_summary %}
+      {% endblock %}
+    </div>
+  </section>
+{% endblock %}
+
+{% block secondary_content %}
+  {% if h.check_access('user_create') %}
+  {% block help_register %}
+  <section class="module module-narrow module-shallow">
+    {% block help_register_inner %}
+      <h2 class="module-heading">Área restrita.</h2>
+      <div class="module-content">
+        <p>Acesso permito apenas a usuários do dados.gov.br.</p>
+      </div>
+    {% endblock %}
+  </section>
+  {% endblock %}
+  {% endif %}
+
+  {% block help_forgotten %}
+  {% endblock %}
+{% endblock %}

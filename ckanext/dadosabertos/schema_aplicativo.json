@@ -1,0 +1,226 @@
+{
+  "scheming_version": 1,
+  "dataset_type": "aplicativo",
+  "about_url": "http://catalogo.governoeletronico.gov.br/manual_catalogo",
+  "dataset_fields": [
+    {
+      "field_name": "title",
+      "label": "Nome",
+      "preset": "title",
+      "form_placeholder": "ex.: um título descritivo"
+    },
+    {
+      "field_name": "name",
+      "label": "URL",
+      "preset": "dataset_slug",
+      "form_placeholder": "ex. sistema-de-obitos"
+    },
+    {
+      "field_name": "description",
+      "label": "Descrição",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "ex.: descrição sucinta sobre a solução",
+      "required": "true"
+    },
+    {
+      "field_name": "owner_org",
+      "label": "Órgão superior",
+      "preset": "dataset_organization"
+    },
+    {
+      "field_name": "url",
+      "label": "URL do app",
+      "display_snippet": "text.html",
+      "form_placeholder": "http://www.exemplo.com",
+      "help_text": "Endereço do aplicativo ou visualização que deve estar em funcionamento."
+    },
+    {
+      "field_name": "image",
+      "label": "Imagem do app (546px largura)",
+      "preset": "resource_url_upload",
+      "form_placeholder": "http://exemplo.com.br/imagem-do-app.jpg",
+      "upload_label": "Imagem do app (546px largura)"
+    },
+    {
+      "field_name": "category",
+      "label": "Categoria",
+      "preset": "tag_string_autocomplete"
+    },
+    {
+      "field_name": "tags",
+      "label": "Etiquetas",
+      "preset": "tag_string_autocomplete",
+      "help_text": "Ex.: medicamento, equipamento, ambulancia"
+    },
+    {
+      "field_name": "datasets_used",
+      "label": "Dados utilizados",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "Links dos datasets utilizados.\nhttp://dados.gov.br/conjunto-de-dados\nhttp://dados.gov.br/conjunto-de-dados\nhttp://dados.gov.br/conjunto-de-dados"
+    },
+    {
+      "field_name": "sent_by_name",
+      "label": "Nome de quem enviou",
+      "form_placeholder": "João da Silva"
+    },
+    {
+      "field_name": "sent_by_email",
+      "label": "Email de quem enviou",
+      "form_placeholder": "ze@mail.com",
+      "display_snippet": "email.html",
+      "help_text": "Nome do(s) autor(es), podendo ser nome da pessoa, empresa, grupo de pesquisa, etc."
+    },
+    {
+      "field_name": "date_release",
+      "label": "Data de lançamento",
+      "preset": "date"
+    },
+    {
+      "field_name": "source_code_url",
+      "label": "Código-fonte",
+      "display_snippet": "text.html",
+      "form_placeholder": "http://www.exemplo.com",
+      "help_text": "Caso esteja disponível o código-fonte, a URL onde ele pode ser encontrado."
+    },
+    {
+      "field_name": "fim_comercial",
+      "label": "Usado para fins comerciais",
+      "preset": "select",
+      "choices": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ],
+      "default": "nao",
+      "help_text": "Informar se a solução visa obtenção de recursos financeiros."
+    },
+    {
+      "field_name": "author_name",
+      "label": "Nome do Autor",
+      "form_placeholder": "João da Silva"
+    },
+    {
+      "field_name": "author_email",
+      "label": "Email do Autor",
+      "form_placeholder": "ze@mail.com",
+      "display_snippet": "email.html",
+      "help_text": "Nome do(s) autor(es), podendo ser nome da pessoa, empresa, grupo de pesquisa, etc."
+    },
+    {
+      "field_name": "maintainer_name",
+      "label": "Nome do mantenedor",
+      "form_placeholder": "João da Silva"
+    },
+    {
+      "field_name": "maintainer_email",
+      "label": "Email do mantenedor",
+      "form_placeholder": "ze@mail.com",
+      "display_snippet": "email.html",
+      "help_text": "Órgão ou pessoa responsável por manter a solução em funcionamento."
+    },
+    {
+      "field_name": "contest_url",
+      "label": "URL de Concurso/Hackaton",
+      "display_snippet": "text.html",
+      "form_placeholder": "http://www.exemplo.com",
+      "help_text": "Caso o aplicativo tenha sido desenvolvido em hackathon ou participado de concurso de aplicativos, a URL de acesso a informações sobre o evento."
+    },
+
+    {
+      "field_name": "requires registration",
+      "label": "Necessário cadastro prévio",
+      "preset": "select",
+      "choices": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ],
+      "help_text": "Informar se o usuário tem que fazer cadastro para uso da solução."
+    },
+    {
+      "field_name": "is_free",
+      "label": "Gratuito",
+      "preset": "select",
+      "choices": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ],
+      "help_text": "É necessário o pagamento para uso da solução."
+    },
+    {
+      "field_name": "is_opensource",
+      "label": "Solução Livre",
+      "preset": "select",
+      "choices": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ]
+    }
+
+
+
+
+
+
+
+  ],
+  "resource_fields": [
+    {
+      "field_name": "url",
+      "label": "URL da loja ou app",
+      "display_snippet": "text.html",
+      "form_placeholder": "https://play.google.com/store/apps/..."
+    },
+    {
+      "field_name": "platform",
+      "label": "Plataforma",
+      "preset": "select",
+      "choices": [
+        {
+          "value": "android",
+          "label": "Android / Google Play"
+        },
+        {
+          "value": "ios",
+          "label": "iOS / Apple Store"
+        },
+        {
+          "value": "firefox",
+          "label": "Firefox Marketplace"
+        },
+        {
+          "value": "web",
+          "label": "Web App"
+        }
+      ]
+    },
+    {
+      "field_name": "description",
+      "label": "Descrição",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "Uma descrição adicional"
+    }
+  ]
+}

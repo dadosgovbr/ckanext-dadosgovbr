@@ -1,0 +1,290 @@
+// Global
+// ==========================================================================
+
+@import "_bugfix.scss";
+
+// Remove default CKAN background
+body {
+  background: #034811;
+}
+
+// Sidebar
+body div[role='main'] section{
+  h2 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// Links
+a {
+  color: #222;
+}
+
+
+
+// Bloco de busca da homepage
+body div[role='main'] form#search {
+  #busca {
+    width: 76%;
+    border: 1px solid rgba(0, 0, 0, 0.28);
+    margin: 0;
+  }
+  #btnbusca {
+    width: 19%;
+  }
+  p {
+    padding: 15px 5px 0;
+  }
+}
+
+// Tags da homepage
+body div[role='main'] #top_tags {
+  .tags  {
+    margin: 9px;
+  }
+}
+
+
+
+// Cabeçalho
+// ==========================================================================
+header.masthead {
+  font-size: 0.9em; // FIX font-size
+
+  .debug {
+    background: rgba(0, 0, 0, 0.22);
+    z-index: 999;
+    padding: 6px 17px;
+    color: #aaa;
+    margin-top: 50px;
+    max-width: 94%;
+    transition: 0.5s;
+
+    &:hover, &:focus, &:active {
+      background: rgba(0, 0, 0, 1);
+      transition: 0.2s;
+    }
+  }
+
+  // Corrige tamanho e espaçamento do menu do header
+  #barra-menu {
+  	height: 34px;
+  }
+  #menu-horizontal .barra-apoio {
+  	margin: 0px;
+  }
+
+  // Logo-imagem dos Dados Abertos
+  .logo-img {
+    a {
+      height: 110px !important;
+    }
+    img {
+      margin: 10px 0px;
+      height: 80px;
+    }
+  }
+
+  // Barra de busca
+  .search-form {
+    float: right;
+    border: none;
+
+    .search-input {
+      width: 270px;
+    }
+  }
+
+} // END cabeçalho
+
+
+
+// Rodapé
+// ==========================================================================
+.footer {
+  overflow: hidden;
+
+  &.outer {
+    position: relative; // FIX DEBUG area
+    border: none;
+    background: none;
+
+    .divisor {
+      width: 90%;
+      display: inline-block;
+      margin: 36px auto 0;
+      border-top: 1px solid #75bb83;
+      padding: 0 72px;
+    }
+  }
+
+  footer {
+    font-size: 0.9em; // FIX font-size
+
+    li {
+    	font-size: 13px;
+    }
+
+    #colophon {
+      margin: 26px 0 0;
+      a {
+        text-decoration: underline;
+        &:hover { color: white; cursor: pointer;}
+      }
+    }
+
+    #footer-logos {
+      margin-top: 30px;
+
+      .acesso-brasil-rodape {
+        float: left;
+      }
+      .attribution {
+          margin-left: 130px;
+      }
+
+      #logo-brasil img {
+        @media (min-width: 980px) {
+          padding-right: 22px;
+        }
+      }
+    }
+  }
+}
+
+
+// END rodapé
+
+
+
+// Notícias (Wordpress API)
+// ==========================================================================
+.noticia {
+  //&#noticia-content {}
+
+  &#noticia-sidebar {
+    // Remove "Continuar lendo..." do Wordpress
+    .module-content a { display: none; }
+  }
+}
+
+
+// Páginas (Wordpress API)
+// ==========================================================================
+#pagina {
+    #content {
+      border: 1px solid #7d99aa;
+      -moz-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+      margin-top: 20px;
+      margin-bottom: 30px;
+      font-size: 16px;
+      line-height: 1.5em;
+      // -------
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      margin-bottom: 30px;
+      background: #ececec url('../img/bg/bg_boxes.png') 0 0 repeat;
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+      .wrapper {
+        background: none;
+        border: none;
+        box-shadow: none;
+      }
+      .page-header {
+          background: none;
+          padding-top: 0;
+      }
+    }
+
+}
+
+
+// Novos datasets (forms)
+// ==========================================================================
+@media (min-width: 980px) {
+  .form-horizontal .control-label {
+    width: 170px;
+  }
+  .form-horizontal .controls {
+      margin-left: 180px;
+  }
+  .info-block [class^="icon-"] {
+    display: none;
+  }
+}
+
+
+
+// Package (página única dos datasets)
+// ==========================================================================
+.feedback-ouvidoria {
+    margin: 35px 0;
+    background-color: #ffffff;
+    border: 1px solid #d5d5d5;
+    border-top: 1px solid #d5d5d5;
+    font-size: 16px;
+    padding: 15px 20px;
+    text-align: center;
+
+    a {
+        padding: 15px 10px;
+        display: inline-block;
+    }
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #2c66ce;
+    }
+    span {
+        color: #606060;
+        line-height: 1.4em;
+        font-size: 0.9375em;
+    }
+}
+
+
+
+
+
+
+// Debug area
+// ==========================================================================
+#debug {
+    white-space: pre-line !important;
+    word-wrap: break-word !important;
+}
+#debug-toggle { // Button
+  opacity: 1 !important;
+  background: #81bb0f;
+  padding: 0 9px;
+  line-height: 38px;
+  border-radius: 4px;
+  border: 1px solid white;
+  margin: 0 20px 28px;
+  display: block;
+  width: 100px;
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0 -7px 39px rgba(23, 117, 0, 0.42) inset;
+}
+
+
+
+// ==========================================================================
+// Responsive versions
+// ==========================================================================
+@import "_mobile.scss";
+@import "_tablet.scss";
+
+// END file

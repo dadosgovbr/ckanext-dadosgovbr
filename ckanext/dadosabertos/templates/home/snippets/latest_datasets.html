@@ -1,0 +1,26 @@
+<div class="box">
+  <section>
+    <header class="module-heading">
+      <h3>Publicações mais recentes</h3>
+    </header>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Conjunto de dados</th>
+          <!-- <th>Organização</th> -->
+          <th style="width: 80px;">Quando</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dadaset in h.dadosabertos_most_recent_datasets() %}
+          <tr>
+            <td><a href="{{dadaset.link}}" title="{{dadaset.title}}">{{dadaset.title}}</a></td>
+            <!-- <td title="{{dadaset.author}}">{{dadaset.author}}</td> -->
+            <td title="{{dadaset.timestamp}}">{{dadaset.time}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>

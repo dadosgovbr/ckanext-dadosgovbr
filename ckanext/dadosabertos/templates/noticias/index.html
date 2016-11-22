@@ -1,0 +1,44 @@
+{% extends "page.html" %}
+
+{% block title %}{{h.dadosabertos_wordpress_posts().title.rendered}} - {{ _('Notícias') }} - {{ super() }}{% endblock %}
+
+{% block breadcrumb_content %}
+{% endblock %}
+
+
+{% block primary %}
+  <div id="noticia-content" class="noticia primary span9">
+    {% block primary_content %}
+      <article class="module">
+        {% block page_header %}
+          <header class="module-content page-header">
+            <h1>{{h.dadosabertos_wordpress_posts().title.rendered|safe}}</h1>
+          </header>
+        {% endblock %}
+        <div class="module-content">
+          <p>{{h.dadosabertos_wordpress_posts().content.rendered|safe}}</p>
+        </div>
+      </article>
+    {% endblock %}
+  </div>
+{% endblock %}
+
+
+{% block secondary %}
+  <aside id="noticia-sidebar" class="noticia secondary span3">
+    <div class="module-content">
+      {% block secondary_content %}
+        <h2>Resumo</h2>
+        <p>{{h.dadosabertos_wordpress_posts().excerpt.rendered|safe}}</p>
+
+        <hr>
+
+        <h2>Data</h2>
+        <p>{{h.dadosabertos_wordpress_posts().modified}}</p>
+      {% endblock %}
+    </div>
+  </aside>
+{% endblock %}
+
+
+{% block sidebar %}{% endblock %}

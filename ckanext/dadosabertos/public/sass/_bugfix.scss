@@ -1,0 +1,10 @@
+// main: extra.scss
+
+// Correção de bugs de design da versão antiga dos Dados Abertos.
+
+// Correção de espaçamentos globais. Provavelmente vindo da importação
+// do módulos do Bootstrap 2.x
+body div[role='main'] section h1, body div[role='main'] section p, body div[role='main'] section h2, body div[role='main'] section span {
+    margin-left: initial;
+    margin-right: initial;
+}

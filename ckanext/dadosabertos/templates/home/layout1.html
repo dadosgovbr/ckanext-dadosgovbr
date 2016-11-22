@@ -1,0 +1,34 @@
+<div role="main">
+  <div class="container">
+    <div class="row row1">
+      <div class="span7 col1">
+        {% snippet 'snippets/search_field.html' %}
+
+        {% snippet 'home/snippets/featured_organization.html' %}
+      </div>
+      <div class="span5">
+        {% snippet 'home/snippets/latest_datasets.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div role="main">
+
+  <div class="container">
+    <div class="row row2">
+      <div class="span7 col1">
+        {# Get "Noticias" from Wordpress #}
+        {% block featured_group %}
+          {% snippet 'snippets/wordpress_posts.html' %}
+        {% endblock %}
+        {# End template block example. #}
+      </div>
+      <div class="span5">
+        {% block featured_organization %}
+          {% snippet 'home/snippets/tags.html' %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>

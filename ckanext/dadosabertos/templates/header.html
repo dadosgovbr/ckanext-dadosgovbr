@@ -1,0 +1,168 @@
+{% block header_wrapper %}
+<div id="barra-brasil">
+    <a href="http://brasil.gov.br" style="background:#7F7F7F; height: 20px; padding:4px 0 4px 10px; display: block; font-family:sans,sans-serif; text-decoration:none; color:white; ">Portal do Governo Brasileiro</a>
+</div>
+{% block header_account %}
+  {% if c.userobj %}{# if para desabilitar a barra de login #}
+  <header class="account-masthead">
+    <div class="container">
+      {% block header_account_container_content %}
+        {% if c.userobj %}
+          <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+            <ul class="unstyled">
+              {% block header_account_logged %}
+              {% if c.userobj.sysadmin %}
+                <li>
+                  <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
+                    <i class="icon-legal"></i>
+                  </a>
+                </li>
+              {% endif %}
+              <li>
+                <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}" class="image" title="{{ _('View profile') }}">
+                  {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
+                  <span class="username">{{ c.userobj.display_name }}</span>
+                </a>
+              </li>
+              {% set new_activities = h.new_activities() %}
+              <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+                {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
+                <a href="{{ h.url_for(controller='user', action='dashboard') }}" title="{{ notifications_tooltip }}">
+                  <i class="icon-dashboard"></i>
+                  <span>{{ new_activities }}</span>
+                </a>
+              </li>
+              {% block header_account_settings_link %}
+                <li>
+                  <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
+                    <i class="icon-cog"></i>
+                  </a>
+                </li>
+              {% endblock %}
+              {% block header_account_log_out_link %}
+                <li>
+                  <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
+                    <i class="icon-signout"></i>
+                  </a>
+                </li>
+              {% endblock %}
+              {% endblock %}
+            </ul>
+          </div>
+        {% else %}
+          <nav class="account not-authed">
+            <ul class="unstyled">
+              {% block header_account_notlogged %}
+              <li>{% link_for _('Log in'), controller='user', action='login' %}</li>
+              {% if h.check_access('user_create') %}
+                <li>{% link_for _('Register'), controller='user', action='register', class_='sub' %}</li>
+              {% endif %}
+              {% endblock %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% endblock %}
+    </div>
+  </header>
+  {% endif %}
+{% endblock %}
+<header class="masthead">
+  {% block header_debug %}
+    {% if g.debug and not g.debug_supress_header %}
+      <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
+    {% endif %}
+  {% endblock %}
+  <div class="container">
+    {% block accessibility_navigation %}
+    <ul id="accessibility">
+      <li>
+        <a id="link-conteudo" href="#content" accesskey="1">
+          Ir para o conteúdo
+          <span>1</span>
+        </a>
+      </li>
+      <li>
+        <a id="link-navegacao" href="#menu-horizontal" accesskey="2">
+          Ir para o menu
+          <span>2</span>
+        </a>
+      </li>
+      <li>
+        <a id="link-buscar" href="#search" accesskey="3">
+          Ir para a busca
+          <span>3</span>
+        </a>
+      </li>
+      <li>
+        <a id="link-rodape" href="#footer" accesskey="4">
+          Ir para o rodapé
+          <span>4</span>
+        </a>
+      </li>
+    </ul>
+    {% endblock %}
+    {# The .header-image class hides the main text and uses image replacement for the title #}
+    <hgroup id="site_logo" class="{{ g.header_class }}">
+
+      {% block header_logo %}
+          <h1 class="hidden">
+            <a href="{{ h.url('home') }}"><span id="portal-title">dados.gov.br</span></a>
+          </h1>
+          <span class="logo-img">
+            <a href="{{ h.url('home') }}"><img src="/img/logo-mono.png" alt="Portal Brasileiro de Dados Abertos"></a>
+          </span>
+          <h2><span id="portal-description">Portal Brasileiro de Dados Abertos</span></h2>
+      {% endblock %}
+
+    </hgroup>
+
+
+      {% snippet 'snippets/search_field_header.html' %}
+
+    {% block social_links %}
+    <ul id="news">
+      <li id="feed"><a rel="feed" href="/feed/" title="Inscrever-se no feed de notícias">feed</a></li>
+      <li id="twitter"><a href="http://twitter.com/dadosgovbr" title="Microblog no Twitter">twitter</a></li>
+      <li id="github"><a href="https://github.com/dadosgovbr" title="Códigos fonte de projetos do dados.gov.br no Github">Códigos fonte de projetos do dados.gov.br no Github</a></li>
+     </ul>
+    {% endblock %}
+
+    <div class="content hidden">
+
+      {% block header_site_search %}
+        <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
+          <div class="field">
+            <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
+            <input id="field-sitewide-search" type="text" name="q" placeholder="{{ _('Search datasets...') }}" />
+            <button class="btn-search" type="submit"><i class="icon-search"></i></button>
+          </div>
+        </form>
+      {% endblock %}
+
+    </div>
+  </div>
+    <div id="barra-menu">
+    </div>
+      {% block header_site_navigation %}
+        <nav id="menu-horizontal" class="section navigation">
+          <ul class="barra-apoio">
+           {# {% block header_site_navigation_tabs %}
+              {{ h.build_nav_main(
+                ('search', _('Datasets')),
+                ('organizations_index', _('Organizations')),
+                ('group_index', _('Groups')),
+                ('about', _('About'))
+              ) }}
+            {% endblock %} #}
+            		<li class="first link-dados"><a href="/dataset/">Dados</a></li>
+            		<!-- <li class="link-aplicativos"><a href="/aplicativo/">Aplicativos</a></li>
+            		<li class="link-inventarios"><a href="/inventario/">Inventários</a></li>
+            		<li class="link-concursos"><a href="/concurso/">Concursos</a></li> -->
+                <li class="link-perguntas-frequentes"><a href="/paginas/faq/">Perguntas frequentes</a></li>
+                <li class="link-contato"><a href="/paginas/contato/">Contato</a></li>
+                <li class="link-sobre"><a href="/paginas/sobre/">Sobre o portal</a></li>
+          </ul>
+        </nav>
+      {% endblock %}
+</header>
+{% endblock %}

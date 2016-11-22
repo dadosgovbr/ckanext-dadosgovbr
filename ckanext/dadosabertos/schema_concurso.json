@@ -1,0 +1,78 @@
+{
+  "scheming_version": 1,
+  "dataset_type": "concurso",
+  "about_url": "http://catalogo.governoeletronico.gov.br/manual_catalogo",
+  "dataset_fields": [
+    {
+      "field_name": "title",
+      "label": "Nome",
+      "preset": "title",
+      "form_placeholder": "ex.: um título descritivo"
+    },
+    {
+      "field_name": "name",
+      "label": "URL",
+      "preset": "dataset_slug",
+      "form_placeholder": "ex. sistema-de-obitos"
+    },
+    {
+      "field_name": "description",
+      "label": "Descrição",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "ex.: descrição sucinta sobre a solução",
+      "required": "true"
+    },
+    {
+      "field_name": "owner_org",
+      "label": "Órgão superior",
+      "preset": "dataset_organization"
+    },
+    {
+      "field_name": "url",
+      "label": "URL do página",
+      "display_snippet": "text.html",
+      "form_placeholder": "ex.: http://www.exemplo.com/pagina-concurso",
+      "help_text": "Endereço da página com informações do concurso."
+    },
+    {
+      "field_name": "datasets_used",
+      "label": "Dados utilizados",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "Links dos datasets utilizados.\nhttp://dados.gov.br/conjunto-de-dados\nhttp://dados.gov.br/conjunto-de-dados\nhttp://dados.gov.br/conjunto-de-dados"
+    },
+    {
+      "field_name": "awards",
+      "label": "Premiação",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "Descriminar os valores ou produtos que serão entregues."
+    },
+    {
+      "field_name": "milestones",
+      "label": "Entregar esperadas",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "Descriminar as entregas realizadas ao final do concurso."
+    },
+    {
+      "field_name": "realization_date",
+      "label": "Período de realização",
+      "form_snippet": "text.html",
+      "form_placeholder": "ex.: Do dia 10 ao 15 de outubro de 2016.",
+      "help_text": "Informar qual instituição realizou o concurso."
+    }
+
+  ],
+  "resource_fields": [
+    {
+      "field_name": "url",
+      "label": "URL",
+      "display_snippet": "text.html",
+      "form_placeholder": "https://exemplo.com.br"
+    },
+    {
+      "field_name": "description",
+      "label": "Descrição",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "Uma descrição adicional"
+    }
+  ]
+}

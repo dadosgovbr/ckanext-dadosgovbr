@@ -1,0 +1,155 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:i18n="http://genshi.edgewall.org/i18n"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  py:strip="">
+  
+  <py:def function="page_title">Welcome</py:def>
+  <div py:match="//div[@id='content']" class="front-page homepage" id="content">
+
+    <div class="container" role="main">
+      <div class="row row1">
+
+        <div class="span7 col1">
+          <form action="/dataset" id="search" method="GET">
+            <input class="search-field" name="q" type="text" placeholder="Pesquisa ..." id="busca" />
+            <input type="submit" alt="buscar" value="Pesquisar" id="btnbusca" />
+            <p>em ${c.package_count} conjuntos de dados com ${c.resource_count} recursos <span class="faq-link"><a href="/faq/#q10">(o que é isto?)</a></span></p>
+          </form>
+          <div class="box">
+            <section id="featureddata" class="group-list module module-narrow module-shadow">
+              <header class="module-heading">
+                <h3> <span>${h.link_to(u"Dados em destaque", h.url_for(controller='group', action='read', id='dados-em-destaque'), class_="mais")}</span> </h3>
+              </header>
+              <ul class="dataset-list unstyled">
+              <py:for each="link, title, notes in c.featured_datasets">
+                <li class="dataset-item module-content">
+                  <div class="dataset-content">
+                    <h3 class="dataset-heading"><a href="${link}">${title}</a></h3>
+                    <p>${notes}</p>
+                  </div>
+                </li>
+              </py:for>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div class="span5 col2">
+          <div class="box">
+            <section id="top_apps" class="group-list module module-narrow module-shadow">
+              <header class="module-heading">
+                <h3>Mais recentes</h3>
+              </header>
+              <!-- desabilitar temporariamente
+              <ul class="nav nav-tabs" id="top_apps_tabs">
+                <li> 
+                  <a href="#acessados" data-toggle="tab">+ Acessados </a>
+                </li>
+                <li class="active">
+                  <a href="#recentes" data-toggle="tab">+ Recentes </a>
+                </li>
+              </ul>
+              -->
+              <div class="tab-content">
+                <!-- desabilitar temporariamente
+                <div class="tab-pane active" id="acessados">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Conjunto de dados</th>
+                          <th>Mês</th>
+                          <th>Totais</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                       <py:for each="package_short, package, recent, ever in c.top_packages">
+                          <tr>
+                           <td>${h.link_to(package_short or package.name, h.url_for(controller='package', action='read', id=package.name), title=package.title)}
+                            </td>
+                            <td>${recent}</td>
+                            <td>${ever}</td>
+                          </tr>
+                       </py:for>
+                      </tbody>
+                    </table>
+                </div>
+                -->
+        
+                <div class="tab-pane active" id="recentes">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Conjunto de dados</th>
+                          <th>Organização</th>
+                          <th>Quando</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <py:for each="link, title_short, title, author_short, author, time_ago, timestamp in c.most_recent_datasets">
+                          <tr>
+                            <td><a href="${link}" title="${title}">${title_short}</a></td>
+                            <td title="${author}">${author_short}</td>
+                            <td title="${timestamp}">${time_ago}</td>
+                          </tr>
+                        </py:for>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script>
+              $(function () {
+                $('.nav-tabs a:first').tab('show')
+              })
+            </script>
+            </section>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="container" role="main">
+      <div class="row row2">
+
+        <div class="span5 col1">
+          <div class="box">
+            <section id="top_tags" class="group-list module module-narrow module-shadow">
+              <header class="module-heading">
+                <h3> <span>${h.link_to(u"Dados por etiqueta", h.url_for(controller='tag', action='index'), class_="mais")}</span></h3>
+              </header>
+              <ul class="tags clearfix">
+               <py:for each="link, tag, count in c.top_tags">
+                <li><a href="${link}">${tag} (${count})</a></li>
+               </py:for>
+              </ul>
+            </section>
+          </div>
+        </div>
+        
+        <div class="span7 col2">
+          <div class="box">
+            <section id="new" class="group-list module module-narrow module-shadow">
+              <header class="module-heading">
+                <h3><span><a class="mais" href="/noticia/">Notícias</a></span></h3>
+              </header>
+             <ul class="unstyled">
+             <py:for each="link, published_date, title, description in c.articles">
+              <li class="module-content">
+                <span class="datanoticia">${published_date}</span><h2><a href="${link}">${title}</a></h2>
+                <p>${description}</p>
+              </li>
+             </py:for>
+             </ul>
+            </section>
+          </div>
+        </div>
+
+      </div> <!-- class="row" -->
+    </div> <!-- class="container" -->
+
+  </div>
+  <py:match path="//div[@id='footerscripts']">
+  </py:match>
+  <xi:include href="layout.html" />
+</html>
+
