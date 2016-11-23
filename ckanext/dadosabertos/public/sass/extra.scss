@@ -232,9 +232,25 @@ header.masthead {
     padding: 15px 20px;
     text-align: center;
 
+
+    .half {
+      width: 50%;
+      float: left;
+    }
     a {
         padding: 15px 10px;
         display: inline-block;
+        text-decoration: none;
+        background: #fff;
+        transition: 0.2s;
+
+        &:hover {
+          background: #2c66ce;
+          border-radius: 40px;
+          .fa, span {
+            color: white;
+          }
+        }
     }
     .fa {
         display: inline-block;

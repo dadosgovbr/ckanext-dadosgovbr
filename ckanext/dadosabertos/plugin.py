@@ -223,7 +223,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
     implements(IConfigurer, inherit=True)
     implements(IRoutes, inherit=True)
 
-
     # Declare that this plugin will implement ITemplateHelpers.
     plugins.implements(plugins.ITemplateHelpers)
 
