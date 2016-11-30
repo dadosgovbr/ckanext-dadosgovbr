@@ -103,7 +103,16 @@ header.masthead {
 // Rodapé
 // ==========================================================================
 .footer {
-  overflow: hidden;
+
+  .row {
+    a {
+      &:hover {
+        color: white;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
 
   &.outer {
     position: relative; // FIX DEBUG area
