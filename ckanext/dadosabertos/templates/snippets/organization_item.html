@@ -15,9 +15,9 @@
         {% block organization_item_header_description %}
           {% if organization.description %}
             {% if truncate == 0 %}
-              <p>{{ h.markdown_extract(organization.description)|urlize }}</p>
+              <p class="hidden">{{ h.markdown_extract(organization.description)|urlize }}</p>
             {% else %}
-              <p>{{ h.markdown_extract(organization.description, truncate)|urlize }}</p>
+              <p class="hidden">{{ h.markdown_extract(organization.description, truncate)|urlize }}</p>
             {% endif %}
           {% endif %}
         {% endblock %}

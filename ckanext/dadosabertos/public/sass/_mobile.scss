@@ -73,6 +73,14 @@
       display: none !important;
     }
 
+    // Titulo
+    hgroup h2 {
+      bottom: 62px;
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+
     // Logo-imagem dos Dados Abertos
     #site_logo {
       float: none;
@@ -90,7 +98,7 @@
     // Links para o Github, RSS e Twitter
     #news {
       float: none;
-      margin: 10px auto;
+      margin: 70px auto 10px;
     }
 
 
