@@ -91,7 +91,7 @@ def most_recent_datasets():
 # Get Wordpress Domain
 # ============================================
 def wordpress_get_domain():
-    return 'http://dadosabertos.thenets.org'
+    return 'http://dados.gov.br/wp'
 
 
 # ============================================

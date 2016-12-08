@@ -4,7 +4,7 @@
   .list {
     z-index: 9999;
   }
-  
+
 }
 
 
@@ -149,7 +149,7 @@ header.masthead {
       margin: 26px 0 0;
       a {
         text-decoration: underline;
-        &:hover { color: white; cursor: pointer;}
+        &:hover,&:active,&:focus { color: white; cursor: pointer;}
       }
     }
 

@@ -10,3 +10,8 @@
 
         <link rel="icon" type="image/png" href="/img/dadosgovbr.ico">
       {% endblock %}
+
+      {% block meta %}
+        {{ super() }}
+        <meta name="description" value="O Portal Brasileiro de Dados Abertos (dados.gov.br) é o sítio eletrônico de referência para a busca e o acesso aos dados públicos, seus metadados, informações, aplicativos e serviços relacionados." />
+      {% endblock %}
