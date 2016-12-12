@@ -12,7 +12,7 @@ Plugin / Tema do Portal de Dados Abertos do Governo Federal - Brasil
 
 \# | Command
 --- | ---
-1 |  `su -s /bin/bash - ckan -c ". /usr/lib/ckan/default/bin/activate && pip install -e git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages"`
+1 |  `su -s /bin/bash - ckan -c ". /usr/lib/ckan/default/bin/activate && pip install -e git+https://github.com/dadosgovbr/ckanext-dadosabertos.git#egg=ckanext-dadosabertos"`
 2 | `su -s /bin/bash - ckan -c ". /usr/lib/ckan/default/bin/activate && pip install -r /usr/lib/ckan/default/src/ckanext-dadosabertos/pip-requirements.txt"`
 3 | `sed -i 's/dadosabertos/ /g' /etc/ckan/default/development.ini`
 4 | `sed -i 's/stats text_view image_view recline_view/stats text_view image_view recline_view dadosabertos /g' /etc/ckan/default/development.ini`
