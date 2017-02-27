@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-from logging import getLogger
-import urlparse
 
-import requests
+import ckan.plugins as p
+from ckan.lib.base import c, render
+from pylons import request
 
-from ckan.common import config
-
-import ckan.logic as logic
-import ckan.lib.base as base
-from ckan.common import _
-from ckan.plugins.toolkit import asint
+# Wordpress integration
+import ckanext.dadosabertos.helpers.wordpress as wp
 
 
-class PaginasController(base.BaseController):
+class PaginasController(p.toolkit.BaseController):
+    def index (ctrl, slug):
+        c.wp_page = wp.page(slug)
+        return render('paginas/index.html')

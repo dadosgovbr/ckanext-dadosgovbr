@@ -1,14 +1,15 @@
+# -*- coding: utf-8 -*-
+
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.lib.base import c, g, h, model
 
-# Dependence for Wordpress_Post
-import requests, json, BeautifulSoup
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IConfigurer
 from ckan.plugins import IRoutes
-import hashlib, os, json, time
 
+# Wordpress integration
+import ckanext.dadosabertos.helpers.wordpress as wp
 
 
 # ============================================
@@ -87,146 +88,22 @@ def most_recent_datasets():
 
 
 
-# ============================================
-# Get Wordpress Domain
-# ============================================
-def wordpress_get_domain():
-    return 'http://dados.gov.br/wp'
 
-
-# ============================================
-# Get News from Wordpress
-# ============================================
-def wordpress_cache_json(url):
-    # Check cache dir exists
-    cache_dir = '/tmp/ckan_cache/'
-    if(not os.path.isdir(cache_dir)):
-        os.makedirs(cache_dir)
-
-    # Cached file
-    f_key  = hashlib.md5(url).hexdigest()
-    f_name = cache_dir+'ckan_'+f_key
-
-    # Remove old cache file
-    # 14400 = 10 minutes
-    now = time.time()
-    file_is_old = False
-    if (os.path.isfile(f_name)):
-        if (os.stat(f_name).st_mtime < (now - 14400)):
-            file_is_old = True
-
-    # Check if cached file exists
-    if (os.path.isfile(f_name) and not file_is_old):
-        # Get JSON from cache
-        f       = open(f_name, 'r')
-        posts   = json.loads(f.read())
-        f.close()
-
-    # If cache file not exist or has expired
-    else:
-        # Try to get JSON from URL
-        try:
-            request = requests.get(url, timeout=3)  # Request of URL
-            posts   = request.json()
-            if(request.status_code > 200):
-                raise
-
-            # Remove old cache file
-            if (os.path.isfile(f_name)):
-                os.remove(f_name)
-
-            # Write cache file
-            f       = open(f_name, 'w')
-            f.write(request.text)
-            f.close()
-
-        # If can't get JSON from URL... return error message
-        except Exception as e:
-            error_post = {}
-            error_post["error"]    = True
-            error_post["title"]    = 'Nao pode ser carregado.'
-            error_post["content"]  = 'Nao pode ser carregado.<br>Tente novamente mais tarde.'
-            error_post["excerpt"]  = ''
-            error_post["modified"] = ''
-
-            return error_post
-
-
-    return posts # Convert JSON to Python object
-
-
-
-# ============================================
-# Get News from Wordpress
-# ============================================
-def wordpress_posts(type_content="", custom=10):
-    # Get all posts
-    if (type_content == "all"):
-        # URL
-        url   = wordpress_get_domain()+"/wp-json/wp/v2/posts?per_page="+str(custom)
-
-        # Get posts and return
-        return wordpress_cache_json(url)
-
-    # Get single post
-    if "noticias" in h.full_current_url():
-        items_url = h.full_current_url().split('/')
-        items_url.pop() # remove slug
-        post_id = items_url.pop() # get post id
-        url = wordpress_get_domain()+"/wp-json/wp/v2/posts/"+str(post_id)
-
-        return wordpress_cache_json(url)
-    pass
-
-
-
-# ============================================
-# Get Pages from Wordpress
-# ============================================
-def wordpress_pages(type_content="", custom=10):
-    # Get single post
-    if "paginas" in h.full_current_url():
-        items_url = h.full_current_url().split('/')
-        page_slug = items_url.pop() # get page slug
-        url = wordpress_get_domain()+"/wp-json/wp/v2/pages?filter[name]="+str(page_slug)+"&_embed"
-
-        # Check error
-        j = wordpress_cache_json(url)
-        if ('error' in j):
-            print(dir(j))
-            print(str(j.values()))
-            print('')
-            return j
-        else:
-            print(dir(j[0]))
-            print(str(j[0].values()))
-            print('')
-            return j[0]
-
-    pass
-
-
-
-
-
-
-
-
-
-
-# ============================================
-# Main plugin class
-# ============================================
 class DadosabertosPlugin(plugins.SingletonPlugin):
-    plugins.implements(plugins.IConfigurer)
+    ''' Plugin Dados Abertos
 
+        Classe principal.
+        - Define diretórios para imagens, CSS e JS
+        - Define mapeamento para novas rotas
+        - Define novos helpers
+    '''
+
+    plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.ITemplateHelpers)
     implements(IConfigurer, inherit=True)
     implements(IRoutes, inherit=True)
 
-    # Declare that this plugin will implement ITemplateHelpers.
-    plugins.implements(plugins.ITemplateHelpers)
-
-    # IConfigurer
+    # Diretórios para templates e arquivos estáticos
     def update_config(self, config_):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
@@ -234,13 +111,15 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
 
     # Mapeamento das URLs
     def after_map(self, map):
-        map.connect('/noticias/{id}/{slug}',
-                    controller='ckanext.dadosabertos.controller:NoticiasController',
-                    action='index',
-                    id=0)
-
+        map.connect('/noticias',
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='list')
+        map.connect('/noticias/{slug}',
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='show',
+                    slug=0)
         map.connect('/paginas/{slug}',
-                    controller='ckanext.dadosabertos.controller:PaginasController',
+                    controller='ckanext.dadosabertos.controllers.paginas:PaginasController',
                     action='index')
         return map
 
@@ -255,6 +134,5 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         # other extensions.
         return {'dadosabertos_most_popular_groups': most_popular_groups,
             'dadosabertos_most_recent_datasets': most_recent_datasets,
-            'dadosabertos_wordpress_posts': wordpress_posts,
-            'dadosabertos_wordpress_pages': wordpress_pages,
-            'dadosabertos_BeautifulSoup': BeautifulSoup.BeautifulSoup }
+            'dadosabertos_wordpress_posts': wp.posts,
+            'dadosabertos_format_timestamp': wp.format_timestamp }

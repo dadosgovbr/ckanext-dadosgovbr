@@ -1,8 +1,10 @@
 {% extends "page.html" %}
 
-{% block title %}{{h.dadosabertos_wordpress_posts().title.rendered}} - {{ _('Notícias') }} - {{ super() }}{% endblock %}
+{% block title %}{{c.wp_post.title.rendered}} - {{ _('Notícias') }} - {{ super() }}{% endblock %}
 
 {% block breadcrumb_content %}
+  <a href="{{h.url_for('home','index')}}noticias">Notícias</a>
+  / <strong>{{c.wp_post.title.rendered|safe}}</strong>
 {% endblock %}
 
 
@@ -12,11 +14,11 @@
       <article class="module">
         {% block page_header %}
           <header class="module-content page-header">
-            <h1>{{h.dadosabertos_wordpress_posts().title.rendered|safe}}</h1>
+            <h1>{{c.wp_post.title.rendered|safe}}</h1>
           </header>
         {% endblock %}
         <div class="module-content">
-          <p>{{h.dadosabertos_wordpress_posts().content.rendered|safe}}</p>
+          <p>{{c.wp_post.content.rendered|safe}}</p>
         </div>
       </article>
     {% endblock %}
@@ -29,12 +31,12 @@
     <div class="module-content">
       {% block secondary_content %}
         <h2>Resumo</h2>
-        <p>{{h.dadosabertos_wordpress_posts().excerpt.rendered|safe}}</p>
+        <p>{{c.wp_post.excerpt.rendered|safe}}</p>
 
         <hr>
 
         <h2>Data</h2>
-        <p>{{h.dadosabertos_wordpress_posts().modified}}</p>
+        <p>{{h.dadosabertos_format_timestamp(c.wp_post.modified)}}</p>
       {% endblock %}
     </div>
   </aside>

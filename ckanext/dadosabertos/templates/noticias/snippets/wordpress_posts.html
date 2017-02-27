@@ -1,0 +1,25 @@
+<div class="box">
+  <section>
+    <header class="module-heading">
+      <h3>
+        Notícias
+        <small><a href="{{h.url_for('home','index')}}noticias">Ver todas as notícias</a></small>
+      </h3>
+    </header>
+
+    <table class="table table-striped">
+      <tbody>
+        {% for post in h.dadosabertos_wordpress_posts(3) %}
+          <tr>
+            <td>
+            	<p><strong><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}">{{post.title.rendered|safe}}</a></strong></p>
+            	<p>{{post.excerpt.rendered|safe}}</p>
+                <p><small>{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</small></p>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </section>
+</div>

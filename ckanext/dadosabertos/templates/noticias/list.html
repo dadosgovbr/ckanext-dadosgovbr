@@ -1,0 +1,61 @@
+{% extends "page.html" %}
+
+{% block title %}{{ _('Notícias') }} - {{ super() }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <strong><a href="{{h.url_for('home','index')}}noticias">Notícias</a></strong>
+{% endblock %}
+
+{% macro wordpress_pagination(page_number) -%}
+  <!-- Pagination -->
+  <ul class="pager">
+    {% if page_number > 1 %}
+      <li class="next">
+        <a href="{{h.url_for('home','index')}}noticias?page={{page_number-1}}">Novas &rarr;</a>
+      </li>
+    {% endif %}
+
+    {% if page_number < 8 %}
+      <li class="previous">
+        <a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">&larr; Antigas</a>
+      </li>
+    {% endif %}
+  </ul>
+{%- endmacro %}
+
+
+{% block primary %}
+  <div id="noticia-content" class="noticia">
+
+    {% block primary_content %}
+      <article class="module">
+        {% block page_header %}
+          <header class="module-content page-header">
+            <h1>{{c.title}}</h1>
+          </header>
+        {% endblock %}
+        <div class="module-content">
+          {{ wordpress_pagination(c.wp_page_number) }}
+
+          {% for post in c.wp_posts %}
+            <div class="noticia">
+              <p>{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</p>
+              <h4><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}">{{post.title.rendered|safe}}</a></h4>
+              <p>{{post.excerpt.rendered|safe}}</p>
+              <hr>
+            </div>
+          {% endfor %}
+
+          {{ wordpress_pagination(c.wp_page_number) }}
+        </div>
+      </article>
+    {% endblock %}
+  </div>
+{% endblock %}
+
+
+{% block secondary %}
+{% endblock %}
+
+
+{% block sidebar %}{% endblock %}

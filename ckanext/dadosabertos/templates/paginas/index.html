@@ -1,6 +1,6 @@
 {% extends "page.html" %}
 
-{% block title %}{{h.dadosabertos_wordpress_pages().title.rendered}} - {{ super() }}{% endblock %}
+{% block title %}{{c.wp_page.title.rendered}} - {{ super() }}{% endblock %}
 
 {% block breadcrumb_content %}
 {% endblock %}
@@ -24,11 +24,11 @@
       <article class="module">
         {% block page_header %}
           <header class="module-content page-header">
-            <h1>{{h.dadosabertos_wordpress_pages().title.rendered|safe}}</h1>
+            <h1>{{c.wp_page.title.rendered|safe}}</h1>
           </header>
         {% endblock %}
         <div class="module-content">
-          <p>{{h.dadosabertos_wordpress_pages().content.rendered|safe}}</p>
+          <p>{{c.wp_page.content.rendered|safe}}</p>
         </div>
       </article>
     {% endblock %}
