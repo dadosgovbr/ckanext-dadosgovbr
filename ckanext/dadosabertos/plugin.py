@@ -11,6 +11,9 @@ from ckan.plugins import IRoutes
 # Wordpress integration
 import ckanext.dadosabertos.helpers.wordpress as wp
 
+# Custom helper tools
+import ckanext.dadosabertos.helpers.tools as tools
+
 
 # ============================================
 # Get the most popular groups
@@ -111,6 +114,9 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
 
     # Mapeamento das URLs
     def after_map(self, map):
+        map.connect('/feed',
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='feed')
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='list')
@@ -135,4 +141,8 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         return {'dadosabertos_most_popular_groups': most_popular_groups,
             'dadosabertos_most_recent_datasets': most_recent_datasets,
             'dadosabertos_wordpress_posts': wp.posts,
+            'dadosabertos_trim_string': tools.trim_string,
+            'dadosabertos_trim_letter': tools.trim_letter,
+            'dadosabertos_resource_count': tools.resource_count,
+            'dadosabertos_get_featured_datasets': tools.get_featured_datasets,
             'dadosabertos_format_timestamp': wp.format_timestamp }

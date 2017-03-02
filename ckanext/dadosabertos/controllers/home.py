@@ -14,17 +14,17 @@ locale.setlocale(locale.LC_ALL,('pt_BR', 'UTF8'))
 class DadosGovBrHomeController(HomeController):
     """dados.gov.br theme customized home controller
     """
-    
+
     # auxiliary static methods
     @staticmethod
     def limita_tamanho(s, tamanho):
         s = unicode(s)
         return s if (len(s) < tamanho) else s[:(tamanho - 5)].rsplit(u" ", 1)[0] + u" ..."
-    
+
     @staticmethod
     def formata_data(d):
         return d.strftime("%d/%m/%Y")
-    
+
     @staticmethod
     def tempo_atras(t):
         from datetime import datetime, timedelta
@@ -42,7 +42,7 @@ class DadosGovBrHomeController(HomeController):
             return u"há %d dias" % (now.date() - t.date()).days
         else:
             return t.strftime(u"%d %b")
-    
+
     @staticmethod
     def set_resource_count():
         try:
@@ -61,7 +61,7 @@ class DadosGovBrHomeController(HomeController):
         except SearchError, se:
             c.resource_count = 0
             c.groups = []
-    
+
     @classmethod
     def set_news_section(cls):
         from feedreader.parser import from_url, ParseError
@@ -78,7 +78,7 @@ class DadosGovBrHomeController(HomeController):
         except ParseError:
             # nao conseguiu ler o feed, deixe a area de noticias vazia
             pass
-    
+
     @classmethod
     def set_most_viewed_datasets(cls):
         #from ckanext.googleanalytics import dbutil
@@ -91,19 +91,19 @@ class DadosGovBrHomeController(HomeController):
 
         # Enable to set resources variable, don't forget to enable it on template too!
         #c.top_resources = dbutil.get_top_resources(limit=10)
-    
+
     @staticmethod
     def set_top_tags():
         """Sets the c.top_tags variable for a template to render the
         most used tags.
         """
         from ckan.logic import get_action
-        
+
         tag_limit = 20
-        
+
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author}
-        
+
         data_dict = {
             'all_fields': True,
             'return_objects': True,
@@ -127,7 +127,7 @@ class DadosGovBrHomeController(HomeController):
 
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author}
-        
+
         data_dict = {'id': 'dados-em-destaque'}
         packages = deepcopy(get_action('group_show')(context,data_dict)['packages'])
         shuffle(packages)
@@ -152,7 +152,7 @@ class DadosGovBrHomeController(HomeController):
 
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author}
-  
+
         #model = context['model']
         query = model.Session.query(model.Package, model.Activity)
         query = query.filter(model.Activity.object_id==model.Package.id)
@@ -167,7 +167,7 @@ class DadosGovBrHomeController(HomeController):
         #from activity act
         #join package pck on pck.id = act.object_id
         #where act.activity_type = 'new package' and pck.state = 'active' order by act.timestamp desc;
-        
+
         #Trace of how i got to the final line =p
         #model_dictize.package_dictize
         #obj_list_dictize
@@ -191,7 +191,7 @@ class DadosGovBrHomeController(HomeController):
         # get number of resources
         # note: number of packages is set by the default theme index controller
         #self.set_resource_count()
-        
+
         # news section, parsed from feed
         #self.set_news_section()
 
@@ -200,7 +200,7 @@ class DadosGovBrHomeController(HomeController):
 
         # most recent datasets section
         #self.set_most_recent_datasets()
-        
+
         # most viewed datasets section, from ckanext-googleanalytics
         #self.set_most_viewed_datasets()
 
@@ -208,4 +208,3 @@ class DadosGovBrHomeController(HomeController):
         #self.set_top_tags()
 
         return super(DadosGovBrHomeController, self).index()
-

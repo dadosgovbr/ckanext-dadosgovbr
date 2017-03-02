@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" id="latest-datasets" data-content="teste2">
   <section>
     <header class="module-heading">
       <h3>Publicações mais recentes</h3>
@@ -8,16 +8,33 @@
       <thead>
         <tr>
           <th>Conjunto de dados</th>
-          <!-- <th>Organização</th> -->
-          <th style="width: 80px;">Quando</th>
+          <!-- <th>Autor</th> -->
+          <!-- <th style="width: 80px;">Quando</th> -->
+          <th style="width: 140px;">Responsável</th>
         </tr>
       </thead>
       <tbody>
-        {% for dadaset in h.dadosabertos_most_recent_datasets() %}
+        {% for dataset in h.dadosabertos_most_recent_datasets() %}
           <tr>
-            <td><a href="{{dadaset.link}}" title="{{dadaset.title}}">{{dadaset.title}}</a></td>
-            <!-- <td title="{{dadaset.author}}">{{dadaset.author}}</td> -->
-            <td title="{{dadaset.timestamp}}">{{dadaset.time}}</td>
+            <td><a href="{{dataset.link}}" title="{{dataset.title}}">{{dataset.title}}</a></td>
+            <!-- <td title="{{dataset.author}}">{{dataset.author}}</td> -->
+            <!-- <td title="{{dataset.timestamp}}">{{dataset.time}}</td> -->
+
+            {# Organization #}
+            {% if dataset.owner_org %}
+              <td>
+                <a href="{{h.url_for('home','index')}}organization/{{h.get_organization(dataset.owner_org).name}}" title="{{h.group_name_to_title(h.get_organization(dataset.owner_org).name)}}">
+                  {{h.dadosabertos_trim_letter(h.group_name_to_title(h.get_organization(dataset.owner_org).name), 36)}}
+                </a>
+              </td>
+            {# Autor #}
+            {% else %}
+              <td>
+                <div class="author" data-content="{{dataset.author}}" title="{{dataset.author}}">
+                  {{h.dadosabertos_trim_letter(dataset.author, 36)}}
+                </div>
+              </td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>

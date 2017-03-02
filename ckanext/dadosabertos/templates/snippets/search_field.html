@@ -1,9 +1,9 @@
 {# Renders a search form #}
 
     <form action="/dataset" id="search" method="GET">
-      <input class="search-field" name="q" type="text" placeholder="Pesquisa ..." id="busca" />
+      <input class="search-field" name="q" type="text" placeholder="Pesquisar conjuntos de dados..." id="busca" />
       <input type="submit" alt="buscar" value="Pesquisar" id="btnbusca" />
-      <p>em {{c.package_count}} conjuntos de dados com {{c.resource_count}} recursos <span class="faq-link"><a href="/paginas/faq/#q10">(o que é isto?)</a></span></p>
+      <p>em {{c.package_count}} conjuntos de dados com {{h.dadosabertos_resource_count()}} recursos <span class="faq-link"><a href="/paginas/faq/#q10">(o que é isto?)</a></span></p>
     </form>
 
 

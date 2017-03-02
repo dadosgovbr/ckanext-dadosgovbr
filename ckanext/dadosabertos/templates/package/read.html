@@ -25,7 +25,7 @@
     {% block package_notes %}
       {% if pkg.notes %}
         <div class="notes embedded-content">
-          {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+          {{ pkg.notes|safe }}
         </div>
       {% endif %}
     {% endblock %}

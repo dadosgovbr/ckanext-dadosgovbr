@@ -3,7 +3,7 @@
 {% block title %}{{ _('Notícias') }} - {{ super() }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <strong><a href="{{h.url_for('home','index')}}noticias">Notícias</a></strong>
+  <li><a class="active" href="{{h.url_for('home','index')}}noticias">Notícias</a></li>
 {% endblock %}
 
 {% macro wordpress_pagination(page_number) -%}
@@ -25,7 +25,7 @@
 
 
 {% block primary %}
-  <div id="noticia-content" class="noticia">
+  <div id="noticia-list">
 
     {% block primary_content %}
       <article class="module">

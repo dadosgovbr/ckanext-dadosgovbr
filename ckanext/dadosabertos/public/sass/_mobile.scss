@@ -45,6 +45,7 @@
   // Breadcrumb
   .toolbar .breadcrumb {
     padding: 0 16px;
+    color: #444;
 
     li, li.home {
       display: inline-block;
@@ -74,8 +75,12 @@
     }
 
     // Titulo
+     #site_logo h1 a {
+      width: 200px;
+      margin: auto;
+    }
     hgroup h2 {
-      bottom: 62px;
+      bottom: 62px !important;
       width: 100%;
       display: block;
       text-align: center;
@@ -173,6 +178,9 @@
 
   // Pagina "Noticias" do Wordpress
   // ==========================================================================
+  #noticia-list {
+    margin: 0 20px;
+  }
   #noticia-sidebar {
     .module-content {
         margin: 0 10px !important;

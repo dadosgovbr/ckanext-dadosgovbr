@@ -29,7 +29,7 @@ class DadosGovBrTheme(SingletonPlugin):
                 'public')
         template_dir = os.path.join(rootdir, 'ckanext', 'dadosgovbr',
                 'templates')
-        
+
         # use new style plugin toolkit
         ckan.plugins.toolkit.add_public_directory(config, 'public')
         ckan.plugins.toolkit.add_resource('public/css', 'application.css')
@@ -39,4 +39,3 @@ class DadosGovBrTheme(SingletonPlugin):
                 config.get('extra_public_paths', '')])
         config['extra_template_paths'] = ','.join([template_dir,
                 config.get('extra_template_paths', '')])
-

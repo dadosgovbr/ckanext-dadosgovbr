@@ -105,12 +105,9 @@
     <hgroup id="site_logo" class="{{ g.header_class }}">
 
       {% block header_logo %}
-          <h1 class="hidden">
-            <a href="{{ h.url('home') }}"><span id="portal-title">dados.gov.br</span></a>
+          <h1>
+            <a href="{{ h.url('home') }}" title="Portal Brasileiro de Dados Abertos"><span id="portal-title">dados.gov.br</span></a>
           </h1>
-          <span class="logo-img">
-            <a href="{{ h.url('home') }}"><img src="/img/logo-mono.png" alt="Portal Brasileiro de Dados Abertos"></a>
-          </span>
           <h2><span id="portal-description">Portal Brasileiro de Dados Abertos</span></h2>
       {% endblock %}
 
@@ -162,6 +159,7 @@
                 <li class="link-perguntas-frequentes"><a href="/paginas/faq/">Perguntas frequentes</a></li>
                 <li class="link-contato"><a href="/paginas/contato/">Contato</a></li>
                 <li class="link-sobre"><a href="/paginas/sobre/">Sobre o portal</a></li>
+                <li class="link-inda"><a href="http://wiki.gtinda.ibge.gov.br/">INDA</a></li>
           </ul>
         </nav>
       {% endblock %}

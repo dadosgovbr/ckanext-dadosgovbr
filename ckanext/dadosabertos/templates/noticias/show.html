@@ -3,8 +3,8 @@
 {% block title %}{{c.wp_post.title.rendered}} - {{ _('Notícias') }} - {{ super() }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <a href="{{h.url_for('home','index')}}noticias">Notícias</a>
-  / <strong>{{c.wp_post.title.rendered|safe}}</strong>
+  <li><a href="{{h.url_for('home','index')}}noticias">Notícias</a></li>
+  <li><a class="active" href="{{h.url_for('home','index')}}noticias/{{c.wp_post.slug|safe}}">{{h.dadosabertos_trim_string(c.wp_post.title.rendered, 55)|safe}}</a></li>
 {% endblock %}
 
 

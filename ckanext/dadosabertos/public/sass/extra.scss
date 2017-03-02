@@ -7,11 +7,40 @@
 
 }
 
+// Helpers
+// ==========================================================================
+.hide {
+   position: absolute !important;
+   top: -9999px !important;
+   left: -9999px !important;
+}
+
 
 // Global
 // ==========================================================================
 
 @import "_bugfix.scss";
+
+// Logo
+body > header.masthead #site_logo {
+  h1 {
+    width: 100%;
+    height: 100px;
+
+    a {
+      width: 100%;
+      height: 80px;
+      background-image: url(/img/logo-mono.png);
+      background-size: auto 80px;
+      background-repeat: no-repeat;
+
+      span { display: none; }
+    }
+  }
+  h2 {
+    bottom: -1px;
+  }
+}
 
 // Remove default CKAN background
 body {
@@ -23,6 +52,13 @@ body div[role='main'] section{
   h2 {
     margin-left: 0;
     margin-right: 0;
+  }
+}
+
+// Titulos
+h3 {
+  small {
+    display: inline-block;
   }
 }
 
@@ -45,6 +81,13 @@ body div[role='main'] form#search {
   }
   p {
     padding: 15px 5px 0;
+  }
+}
+
+// Bloco de últimos datasets da homepage
+#latest-datasets {
+  a {
+    //text-decoration: underline;
   }
 }
 
@@ -184,7 +227,11 @@ header.masthead {
 
   &#noticia-sidebar {
     // Remove "Continuar lendo..." do Wordpress
-    .module-content a { display: none; }
+    .module-content a {
+       position: absolute !important;
+       top: -9999px !important;
+       left: -9999px !important;
+    }
   }
 }
 
@@ -234,7 +281,9 @@ header.masthead {
       margin-left: 180px;
   }
   .info-block [class^="icon-"] {
-    display: none;
+     position: absolute !important;
+     top: -9999px !important;
+     left: -9999px !important;
   }
 }
 

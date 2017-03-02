@@ -19,15 +19,10 @@
     <div class="row row2">
       <div class="span7 col1">
         {# Get "Noticias" from Wordpress #}
-        {% block featured_group %}
-          {% snippet 'noticias/snippets/wordpress_posts.html' %}
-        {% endblock %}
-        {# End template block example. #}
+        {% snippet 'noticias/snippets/wordpress_posts.html' %}
       </div>
       <div class="span5">
-        {% block featured_organization %}
-          {% snippet 'home/snippets/tags.html' %}
-        {% endblock %}
+        {% snippet 'home/snippets/tags.html' %}
       </div>
     </div>
   </div>
