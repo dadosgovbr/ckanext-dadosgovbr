@@ -14,6 +14,24 @@
    top: -9999px !important;
    left: -9999px !important;
 }
+.pagination {
+  a {
+    border-radius: 0 !important;
+  }
+}
+
+
+
+// Page: Home
+// ==========================================================================
+.homepage {
+  // Snippet: Featured Groups
+  .group-list.module.module-narrow.module-shallow {
+    .module-image {
+      display: none;
+    }
+  }
+}
 
 
 // Global
@@ -223,7 +241,12 @@ header.masthead {
 // Notícias (Wordpress API)
 // ==========================================================================
 .noticia {
-  //&#noticia-content {}
+  &#noticia-content {
+    a, a:link, a:active {
+        color: #769F29;
+        text-decoration: none;
+    }
+  }
 
   &#noticia-sidebar {
     // Remove "Continuar lendo..." do Wordpress
@@ -265,6 +288,11 @@ header.masthead {
       .page-header {
           background: none;
           padding-top: 0;
+      }
+
+      a, a:link, a:active {
+          color: #769F29;
+          text-decoration: none;
       }
     }
 

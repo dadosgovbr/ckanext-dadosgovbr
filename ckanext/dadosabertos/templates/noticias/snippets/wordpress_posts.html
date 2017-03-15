@@ -3,7 +3,6 @@
     <header class="module-heading">
       <h3>
         Notícias
-        <small><a href="{{h.url_for('home','index')}}noticias">Ver todas as notícias</a></small>
       </h3>
     </header>
 
@@ -12,14 +11,23 @@
         {% for post in h.dadosabertos_wordpress_posts(3) %}
           <tr>
             <td>
+              <p><small>{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</small></p>
             	<p><strong><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}">{{post.title.rendered|safe}}</a></strong></p>
-            	<p>{{h.dadosabertos_trim_string(post.excerpt.rendered, 240)|safe}}</p>
-                <p><small>{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</small></p>
+            	<p>
+                {{h.dadosabertos_trim_string(post.excerpt.rendered, 240)|safe}}
+                <br><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}" style="color: #769F29;">leia mais</a>
+              </p>
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
+
+    <hr>
+    <p style="margin: -4px 30px 16px;
+          text-align: right;">
+      <a href="{{h.url_for('home','index')}}noticias">Ver todas as notícias</a>
+    </p>
 
   </section>
 </div>

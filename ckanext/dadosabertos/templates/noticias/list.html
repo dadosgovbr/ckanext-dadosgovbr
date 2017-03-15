@@ -9,17 +9,47 @@
 {% macro wordpress_pagination(page_number) -%}
   <!-- Pagination -->
   <ul class="pager">
-    {% if page_number > 1 %}
-      <li class="next">
-        <a href="{{h.url_for('home','index')}}noticias?page={{page_number-1}}">Novas &rarr;</a>
-      </li>
-    {% endif %}
+    <!-- Mobile -->
+    <div class="visible-xs">
+      {% if page_number > 1 %}
+        <li class="next">
+          <a href="{{h.url_for('home','index')}}noticias?page={{page_number-1}}">Próxima página &rarr;</a>
+        </li>
+      {% endif %}
+      {% if page_number < 8 %}
+        <li class="previous">
+          <a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">&larr; Página anterior</a>
+        </li>
+      {% endif %}
+    </div>
 
-    {% if page_number < 8 %}
-      <li class="previous">
-        <a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">&larr; Antigas</a>
-      </li>
-    {% endif %}
+    <!-- Desktop -->
+    <div class="hidden-xs">
+      <div class="pagination" style="margin-bottom: -39px;">
+        <ul>
+          {% if page_number > 1 %}
+            <li><a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">Página anterior</a></li>
+          {% else %}
+            <li class="disabled"><a href="#">Página anterior</a></li>
+          {% endif %}
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{1}}">1</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{2}}">2</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{3}}">3</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{4}}">4</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{5}}">5</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{6}}">6</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{7}}">7</a></li>
+          <li><a href="{{h.url_for('home','index')}}noticias?page={{8}}">8</a></li>
+          {% if page_number < 8 %}
+            <li><a href="{{h.url_for('home','index')}}noticias?page={{page_number-1}}">Próxima página</a></li>
+          {% else %}
+            <li class="disabled"><a href="#">Próxima página</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+
   </ul>
 {%- endmacro %}
 
@@ -35,7 +65,6 @@
           </header>
         {% endblock %}
         <div class="module-content">
-          {{ wordpress_pagination(c.wp_page_number) }}
 
           {% for post in c.wp_posts %}
             <div class="noticia">

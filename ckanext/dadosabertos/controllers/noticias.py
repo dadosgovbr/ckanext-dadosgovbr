@@ -26,6 +26,8 @@ class NoticiasController(p.toolkit.BaseController):
         return render('noticias/list.html')
 
     def feed (ctrl):
+        return "Not available... try again later..."
+
         url = "https://blog.thenets.org/feed"
         response = requests.get(url)
 
