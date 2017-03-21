@@ -8,3 +8,9 @@ body div[role='main'] section h1, body div[role='main'] section p, body div[role
     margin-left: initial;
     margin-right: initial;
 }
+
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,
+.input-append .add-on, .input-prepend .add-on {
+    height: initial !important;
+}

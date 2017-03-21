@@ -3,7 +3,7 @@
 <div class="box">
   <section id="featureddata" class="group-list module module-narrow module-shadow">
     <header class="module-heading">
-      <h3> <span>{{h.link_to("Dados em destaque", h.url_for(controller='group', action='read', id='destaque'), class_="mais")}}</span> </h3>
+      <h3> <span>{{h.link_to("Dados em destaque", h.url_for(controller='group', action='read', id='dados-em-destaque'), class_="mais")}}</span> </h3>
     </header>
     <ul class="dataset-list unstyled">
     <py:for each="link, title, notes in c.featured_datasets">

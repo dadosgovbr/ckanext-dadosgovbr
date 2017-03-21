@@ -2,7 +2,7 @@
 
 import ckan.plugins as p
 from ckan.lib.base import c, render
-from pylons import request
+from pylons import request, response
 import requests
 
 # Wordpress integration
@@ -26,9 +26,12 @@ class NoticiasController(p.toolkit.BaseController):
         return render('noticias/list.html')
 
     def feed (ctrl):
-        return "Not available... try again later..."
+        #return "Not available... try again later..."
 
-        url = "https://blog.thenets.org/feed"
-        response = requests.get(url)
+        url = "http://dados.gov.br/wp/feed"
+        feed = requests.get(url)
 
-        return response.content
+        response.headers['Content-Type'] = (
+            b'text/xml; charset=utf-8')
+
+        return feed.content
