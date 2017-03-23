@@ -13,8 +13,23 @@
               {% block header_account_logged %}
               {% if c.userobj.sysadmin %}
                 <li>
+                  <a href="{{h.url_for('home','index')}}harvest" title="{{ _('Organizations') }}">
+                    <i class="icon-leaf"></i> {{ _('Harvest') }}
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ h.url_for(controller='group', action='index') }}" title="{{ _('Organizations') }}">
+                    <i class="icon-group"></i> {{ _('Groups') }}
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ h.url_for(controller='organization', action='index') }}" title="{{ _('Organizations') }}">
+                    <i class="icon-briefcase"></i> {{ _('Organizations') }}
+                  </a>
+                </li>
+                <li>
                   <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
-                    <i class="icon-legal"></i>
+                    <i class="icon-legal"></i> Sistema
                   </a>
                 </li>
               {% endif %}
@@ -35,7 +50,7 @@
               {% block header_account_settings_link %}
                 <li>
                   <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
-                    <i class="icon-cog"></i>
+                    <i class="icon-cog"></i> Conta
                   </a>
                 </li>
               {% endblock %}
@@ -137,7 +152,7 @@
       {% endblock %}
 
     </div>
-  </div>
+    </div>
     <div id="barra-menu">
     </div>
       {% block header_site_navigation %}
@@ -152,14 +167,15 @@
               ) }}
             {% endblock %} #}
             		<li class="first link-dados"><a href="/dataset/">Dados</a></li>
+            		<li class="link-organizacoes"><a href="/organization/">Organizações</a></li>
             		<li class="link-aplicativos"><a href="/paginas/aplicativos/">Aplicativos</a></li>
             		<!-- <li class="link-aplicativos"><a href="/aplicativo/">Aplicativos</a></li>
             		<li class="link-inventarios"><a href="/inventario/">Inventários</a></li>
             		<li class="link-concursos"><a href="/concurso/">Concursos</a></li> -->
+                <li class="link-wiki"><a href="http://wiki.dados.gov.br/"><abbr style="border: none;" title="Infraestrutura Nacional de Dados Abertos">INDA</abbr></a></li>
                 <li class="link-perguntas-frequentes"><a href="/paginas/faq/">Perguntas frequentes</a></li>
                 <li class="link-contato"><a href="/paginas/contato/">Contato</a></li>
                 <li class="link-sobre"><a href="/paginas/sobre/">Sobre o portal</a></li>
-                <li class="link-inda"><a href="http://wiki.gtinda.ibge.gov.br/">INDA</a></li>
           </ul>
         </nav>
       {% endblock %}

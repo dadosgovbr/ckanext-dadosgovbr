@@ -26,12 +26,16 @@ class NoticiasController(p.toolkit.BaseController):
         return render('noticias/list.html')
 
     def feed (ctrl):
-        #return "Not available... try again later..."
+        # Get content from feed URL
+        url     = "http://dados.gov.br/wp/feed"
+        feed    = requests.get(url)
+        content = feed.content
 
-        url = "http://dados.gov.br/wp/feed"
-        feed = requests.get(url)
+        # Update URL to mask Wordpress path
+        #content = content.replace("dados.gov.br/wp", "dados.gov.br/noticias")
 
+        # Set header for XML content
         response.headers['Content-Type'] = (
             b'text/xml; charset=utf-8')
 
-        return feed.content
+        return content
