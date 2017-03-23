@@ -174,7 +174,7 @@ body{
                 }
             }
             #twitter a{
-                background-position: -$iconsize 0;         
+                background-position: -$iconsize 0;
             }
             #identica a{
                 background-position: -$iconsize*2 0;
@@ -319,7 +319,7 @@ body{
             font-size: 1em;
         }
     }
-    
+
 
     form#search, #featureddata, #new{
       @include column(7);
@@ -343,8 +343,8 @@ body{
       margin-top: 20px;
       height: 20.769em;
     }
-    
-    #top_tags 
+
+    #top_tags
       .tags{
         margin-left: 1em;
         li {
@@ -365,7 +365,7 @@ body{
             }
         }
     }
-    
+
     form#search{
         margin-bottom:0;
         height: 30px;
@@ -412,7 +412,7 @@ body{
             margin-top: -0.3em;
         }
     }
-	
+
     #new{
       height: 19.077em;
       p{
@@ -496,7 +496,7 @@ body{
         color: white;
         text-decoration: none;
     }
-    
+
   }
 
 
@@ -524,13 +524,13 @@ body.index {
     border-bottom: 1px solid #73aae2;
     color: #FFF;
     a, h3 { color: inherit; }
-    
+
     .footer.inner{
         width: 100%;
         min-height: 230px;
         background: url("../img/bg/bg_footer.jpg") 0 0 repeat-x;
     }
-    
+
 
     footer{
 
@@ -565,7 +565,7 @@ body.index {
 //Correções no estilo do ckan
 #notes-extract{
     p{
-        margin-bottom:1em;    
+        margin-bottom:1em;
     }
     ul{
         margin-left:2em;
@@ -588,4 +588,3 @@ body.index {
 body.no-sidebar .row .content-outer {
 	width: 960px;
 }
-
