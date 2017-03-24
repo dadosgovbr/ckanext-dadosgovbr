@@ -24,7 +24,7 @@
     },
     {
       "field_name": "owner_org",
-      "label": "Órgão superior",
+      "label": "Organização",
       "preset": "dataset_organization"
     },
     {
