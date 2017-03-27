@@ -124,6 +124,10 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='show',
                     slug=0)
+        map.connect('/noticia/{slug}', # Legacy from dados.gov.br 2015 version
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='redirect',
+                    slug=0)
         map.connect('/paginas/{slug}',
                     controller='ckanext.dadosabertos.controllers.paginas:PaginasController',
                     action='index')
