@@ -24,15 +24,21 @@
     },
     {
       "field_name": "owner_org",
-      "label": "Órgão superior",
+      "label": "Organização",
       "preset": "dataset_organization"
     },
     {
       "field_name": "url",
-      "label": "URL do página",
+      "label": "URL da página",
       "display_snippet": "text.html",
       "form_placeholder": "ex.: http://www.exemplo.com/pagina-concurso",
       "help_text": "Endereço da página com informações do concurso."
+    },
+    {
+      "field_name": "tags",
+      "label": "Etiquetas",
+      "preset": "tag_string_autocomplete",
+      "help_text": "Ex.: hackathon, combate à corrupção, educação"
     },
     {
       "field_name": "datasets_used",
@@ -53,11 +59,20 @@
       "form_placeholder": "Descriminar as entregas realizadas ao final do concurso."
     },
     {
-      "field_name": "realization_date",
-      "label": "Período de realização",
+      "field_name": "start_date",
+      "label": "Data de início",
+      "preset": "date",
       "form_snippet": "text.html",
-      "form_placeholder": "ex.: Do dia 10 ao 15 de outubro de 2016.",
-      "help_text": "Informar qual instituição realizou o concurso."
+      "form_placeholder": "ex.: 2016-10-10",
+      "help_text": "Informar a data de início do concurso."
+    },
+    {
+      "field_name": "end_date",
+      "label": "Data de fim",
+      "preset": "date",
+      "form_snippet": "text.html",
+      "form_placeholder": "ex.: 2016-10-15",
+      "help_text": "Informar a data de finalização do concurso."
     }
 
   ],

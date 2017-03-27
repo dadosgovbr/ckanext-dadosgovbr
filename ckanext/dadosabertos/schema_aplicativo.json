@@ -24,7 +24,7 @@
     },
     {
       "field_name": "owner_org",
-      "label": "Órgão superior",
+      "label": "Organização",
       "preset": "dataset_organization"
     },
     {
@@ -71,7 +71,7 @@
       "help_text": "Nome do(s) autor(es), podendo ser nome da pessoa, empresa, grupo de pesquisa, etc."
     },
     {
-      "field_name": "date_release",
+      "field_name": "release_date",
       "label": "Data de lançamento",
       "preset": "date"
     },
