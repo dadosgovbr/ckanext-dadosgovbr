@@ -37,7 +37,7 @@ def resource_count():
         return 0
 
 
-def most_recent_datasets():
+def most_recent_datasets(limit_of_datasets=5):
         """ Return most recent datasets
         """
         import ckan.lib.dictization as d
@@ -52,7 +52,7 @@ def most_recent_datasets():
         query = query.filter(model.Activity.activity_type == 'new package')
         query = query.filter(model.Package.state == 'active')
         query = query.order_by(desc(model.Activity.timestamp))
-        query = query.limit(5)
+        query = query.limit(limit_of_datasets)
         most_recent_from_bd = query.all()
         most_recent_datasets = [
             (
@@ -73,56 +73,29 @@ def most_recent_datasets():
 
 
 
-def get_featured_datasets(group_name='dados-em-destaque', number_of_datasets=3):
+def get_featured_group(group_name='dados-em-destaque', number_of_datasets=3):
     """ Return a list of mainly datasets from a group
 
         @params group_name:string (group name)
                 number_of_datasets:int (number of datasets to be returned)
         @return list<packages> (list of datasets)
     """
+    from ckan.logic import get_action
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author}
 
-    query = model.Session.query(model.Package, model.Activity)
-    query = query.filter(model.Group.name==unicode(group_name))
-    query = query.limit(5)
-    most_recent_from_bd = query.all()
-    most_recent_datasets = [
-        (
-            g.site_url + '/dataset/' + dataset.name,
-            dataset.title,
-            dataset.author,
-            activity.timestamp.isoformat(),
-        )   for dataset, activity in most_recent_from_bd]
+    # Get group
+    data_dict = {'id': group_name, 'include_datasets': 'True'}
+    group = get_action('group_show')(context, data_dict)
 
-    most_recent_datasets = []
-    for dataset, activity in most_recent_from_bd:
-        dataset.link = 'dataset/' + dataset.name
-        dataset.time = activity.timestamp.strftime("%d/%m/%Y")
-        most_recent_datasets.append(dataset)
+    # Shuffle datasets list
+    import random
+    random.shuffle(group['packages'])
 
+    # Limit number of datasets
+    limit = number_of_datasets
+    if (len(group['packages']) < limit):
+        limit = len(group['packages'])
+    group['packages'] = group['packages'][:limit]
 
-    return most_recent_datasets
-
-
-
-
-    context = {'model': model, 'session': model.Session,
-               'user': c.user or c.author}
-
-    data_dict = {'id': unicode(group_name)}
-    return get_action('group_show')(context,data_dict)
-    packages = deepcopy(get_action('group_show')(context,data_dict)['packages'])
-    shuffle(packages)
-    packages = packages[:int(number_of_datasets)]
-    featured_datasets = []
-    for package in packages:
-        featured_datasets.append(
-            (
-            g.site_url+'dataset/'+package['name'],
-            package['title'],
-            package['notes']
-            )
-        )
-
-    return featured_datasets
+    return group

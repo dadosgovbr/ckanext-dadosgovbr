@@ -8,17 +8,13 @@
       <thead>
         <tr>
           <th>Conjunto de dados</th>
-          <!-- <th>Autor</th> -->
-          <!-- <th style="width: 80px;">Quando</th> -->
           <th style="width: 140px;">Responsável</th>
         </tr>
       </thead>
       <tbody>
-        {% for dataset in h.dadosabertos_most_recent_datasets() %}
+        {% for dataset in h.dadosabertos_most_recent_datasets(5) %}
           <tr>
             <td><a href="{{dataset.link}}" title="{{dataset.title}}">{{dataset.title}}</a></td>
-            <!-- <td title="{{dataset.author}}">{{dataset.author}}</td> -->
-            <!-- <td title="{{dataset.timestamp}}">{{dataset.time}}</td> -->
 
             {# Organization #}
             {% if dataset.owner_org %}
