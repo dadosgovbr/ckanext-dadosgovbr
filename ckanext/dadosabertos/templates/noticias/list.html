@@ -34,8 +34,8 @@
           {% endif %}
 
           {% for i in range(8) %}
-              <li {% if page_number is equalto (i+1) %} class="active" {% endif %}>
-                <a {% if page_number is equalto (i+1) %}
+              <li {% if page_number == (i+1) %} class="active" {% endif %}>
+                <a {% if page_number == (i+1) %}
                         href="#" onclick="event.preventDefault()"
                      {% else %}
                         href="{{h.url_for('home','index')}}noticias?page={{i+1}}"
