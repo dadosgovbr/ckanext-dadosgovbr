@@ -13,8 +13,8 @@
     {% for package in group['packages'] %}
       <li class="dataset-item module-content">
         <div class="dataset-content">
-          <h3 class="dataset-heading"><a href="{{h.url_for('home','index')}}dataset/{{package['name']}}">{{package.title}}</a></h3>
-          <p>{{package.notes}}</p>
+          <h3 class="dataset-heading"><a href="{{h.url_for('home','index')}}dataset/{{package['name']}}">{{h.dadosabertos_trim_string(package.title, 70)}}</a></h3>
+          <p>{{h.dadosabertos_trim_string(package.notes, 155)}}</p>
         </div>
       </li>
     {% endfor %}
