@@ -72,6 +72,38 @@ def most_recent_datasets(limit_of_datasets=5):
         return most_recent_datasets
 
 
+def cache_dict (d, lifetime=600):
+    """ Return a list of mainly datasets from a group
+
+        @params group_name:string (group name)
+                number_of_datasets:int (number of datasets to be returned)
+        @return list<packages> (list of datasets)
+    """
+    # Cache
+    cache_dir = '/tmp/ckan_cache/'
+    f_name = 'featured_group'
+
+    # Remove old cache file
+    # 14400 = 10 minutes
+    now = time.time()
+    file_is_old = False
+    if (os.path.isfile(f_name)):
+        if (os.stat(f_name).st_mtime < (now - 14400)):
+            file_is_old = True
+
+    # Check if cached file exists
+    if (os.path.isfile(f_name) and not file_is_old):
+        # Get JSON from cache
+        f       = open(f_name, 'r')
+        posts   = json.loads(f.read())
+        f.close()
+
+    # with open(cache_dir+f_name, 'wb') as f:
+    #     var = {1 : 'a' , 2 : 'b'}
+    #     pickle.dump(var, f)
+    # with open('filename','rb') as f:
+    #     var = pickle.load(f)
+
 
 def get_featured_group(group_name='dados-em-destaque', number_of_datasets=3):
     """ Return a list of mainly datasets from a group
