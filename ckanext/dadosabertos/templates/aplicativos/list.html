@@ -14,10 +14,15 @@
       </div>
 
         <!-- Lista de aplicativos abaixo -->
-        <div class="aplicativos">
-            {% for aplicativo in c.aplicativos %}
-                <div class="app" data-name="{{aplicativo.name}}">
-                    {{aplicativo.title}} | {{aplicativo.name}}
+        <hr>
+        <div id="aplicativos">
+            {% for app in c.aplicativos %}
+              
+                <div class="app" data-searchinfo="{{app.title}} {{app.name}}">
+
+                  <!--<img src="..." class="img-polaroid">-->
+                  <a href="{{app.url}}">{{app.title}}</a>
+                  {{app.note}}
                 </div>
             {% endfor %}
         </div>
@@ -25,11 +30,35 @@
   </article>
 
 <!-- ================================ -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
-// Busca
-document.getElementById("search-app").addEventListener('input', function (evt) {
-    console.log("foi! "+this.value)
-});
+(function() {
+  // DIV com todos os Aplicativos
+  var aplicativos = $("#aplicativos");
+
+  // Busca
+  var search_input = document.getElementById("search-app");
+  function search_app (){
+    var search_string = search_input.value;
+
+    // Loop para cada aplicativo em aplicativos
+    aplicativos.children(".app").each(function() {
+      // Exibe aplicativo encontrado
+      if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
+        $(this).removeClass("hide");
+      }
+      // Oculta aplicativo não encontrado
+      else{
+        $(this).addClass("hide");
+      }
+    });
+  };
+
+  // Verifica resultados a cada meio segundo
+  setInterval(search_app, 500);
+})();
+
+
 
 
 </script>
