@@ -1,0 +1,46 @@
+{% extends "page.html" %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      <h1>Aplicativos com dados públicos</h1>
+      <div>
+        <form class="form-search">
+            <input id="search-app" style="width: 70%" type="text" class="input-medium search-query" placeholder="Qual aplicativo você procura?">
+        </form>
+      </div>
+      <div>
+        Alguma descrição ou detalhes aqui.
+      </div>
+
+        <!-- Lista de aplicativos abaixo -->
+        <div class="aplicativos">
+            {% for aplicativo in c.aplicativos %}
+                <div class="app" data-name="{{aplicativo.name}}">
+                    {{aplicativo.title}} | {{aplicativo.name}}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+  </article>
+
+<!-- ================================ -->
+<script>
+// Busca
+document.getElementById("search-app").addEventListener('input', function (evt) {
+    console.log("foi! "+this.value)
+});
+
+
+</script>
+<!-- ================================ -->
+{% endblock %}
+
+{% block breadcrumb_content %}
+  <li><a class="active"  href="{{h.url_for('home','index')}}aplicativos">Aplicativos</a></li>
+{% endblock %}
+
+{% block flash %}
+{% endblock %}
+
+{% block secondary %}{% endblock %}

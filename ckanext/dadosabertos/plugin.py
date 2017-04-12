@@ -42,7 +42,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     action='feed')
         map.connect('/aplicativos',
                     controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
-                    action='aplicativos')
+                    action='index')
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='list')
