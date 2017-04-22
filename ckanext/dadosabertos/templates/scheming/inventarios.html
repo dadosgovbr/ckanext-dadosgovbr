@@ -3,10 +3,10 @@
 {% block primary %}
   <article class="module">
     <div class="module-content">
-      <h1>Aplicativos com dados públicos</h1>
+      <h1>Inventarios</h1>
       <div>
         <form class="form-search">
-            <input id="search-app" style="width: 70%" type="text" class="input-medium search-query" placeholder="Qual aplicativo você procura?">
+            <input id="search-app" value="{{c.s_result}}" style="width: 70%" type="text" class="input-medium search-query" placeholder="Qual aplicativo você procura?">
         </form>
       </div>
       <div>
@@ -17,10 +17,7 @@
         <hr>
         <div id="aplicativos">
             {% for app in c.aplicativos %}
-              
-                <div class="app" data-searchinfo="{{app.title}} {{app.name}}">
-
-                  <!--<img src="..." class="img-polaroid">-->
+                <div class="app hide" data-searchinfo="{{app.title}} {{app.name}}">
                   <a href="{{app.url}}">{{app.title}}</a>
                   {{app.note}}
                 </div>
@@ -28,6 +25,7 @@
         </div>
     </div>
   </article>
+  
 
 <!-- ================================ -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -57,10 +55,6 @@
   // Verifica resultados a cada meio segundo
   setInterval(search_app, 500);
 })();
-
-
-
-
 </script>
 <!-- ================================ -->
 {% endblock %}

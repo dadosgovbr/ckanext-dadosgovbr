@@ -9,46 +9,22 @@ import requests
 
 class AplicativosController(p.toolkit.BaseController):
     def index (ctrl):
-        import ckan.lib.dictization as d
-        from ckan.logic import get_action
-        from sqlalchemy import desc
+        # Query
+        schema_name = "aplicativo"
+        sql = "select pk.name as name, pk.title as title,(select pEx.value as author from package_extra pEx where pk.id = pEx.package_id and pEx.key = 'author_name'),pk.author_email as author_email,(select pExt.value as description from package_extra pExt where pk.id = pExt.package_id and pExt.key = 'description'),(select g.title as group_title from public.group g where g.id = pk.owner_org),pke.value as image  from package pk join package_extra pke on pk.id = pke.package_id where pk.type = '"+schema_name+"' and pke.key = 'image' and pk.state = 'active' and pk.private = FALSE"
 
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author}
+        # Get "aplicativos"
+        c.aplicativos = model.Session.execute(sql)
 
-        query = model.Session.query(model.Package, model.Activity)
-        query = query.filter(model.Activity.object_id==model.Package.id)
-        query = query.filter(model.Package.state == 'active')
-        query = query.filter(model.Package.type.like('aplicativo'))
-        aplicativos_query = query.all()
-
-        aplicativos = [
-            (
-                g.site_url + '/dataset/' + dataset.name,
-                #cls.limita_tamanho(dataset.title, 46),
-                dataset.title,
-                #cls.limita_tamanho(dataset.author, 28),
-                dataset.author,
-                #cls.tempo_atras(activity.timestamp),
-                activity.timestamp.isoformat(),
-            )   for dataset, activity in aplicativos_query]
-
-        aplicativos = []
-        for dataset, activity in aplicativos_query:
-            dataset.link = 'dataset/' + dataset.name
-            dataset.time = activity.timestamp.strftime("%d/%m/%Y")
-            aplicativos.append(dataset)
-
-        # Remove duplicados
-        aplicativos_clean = []
-        for app in aplicativos:
-            if app not in aplicativos_clean:
-                aplicativos_clean.append(app)
-                
+        # DEBUG
+        from pprint import pprint
+        pprint(model.Session.execute(sql).keys())
 
 
-        c.aplicativos = aplicativos_clean
+        # Get search params from URL
+        if request.method == 'GET' and 's' in request.GET:
+            c.s_result    = request.GET['s']
+        else:
+            c.s_result    = ""
 
-
-
-        return render('aplicativos/list.html')
+        return render('scheming/aplicativos.html')

@@ -14,7 +14,7 @@
 $barheight: 28px;
 $sitewidth: 980px;
 $sectionmargin: 12px;
-$iconsize: 36px;
+$iconsize: 36px; 
 
 @mixin menu-button($light-color, $dark-color) {
     background: mix($light-color, $dark-color);

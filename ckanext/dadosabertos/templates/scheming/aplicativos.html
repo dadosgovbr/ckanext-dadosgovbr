@@ -1,0 +1,79 @@
+{% extends "page.html" %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      <h1>Aplicativos com dados públicos</h1>
+      <div>
+        <form class="form-search">
+            <input id="search-app" value="{{c.s_result}}" style="width: 70%" type="text" class="input-medium search-query" placeholder="Qual aplicativo você procura?">
+        </form>
+      </div>
+      <div>
+        Alguma descrição ou detalhes aqui.
+      </div>
+
+        <!-- Lista de aplicativos abaixo -->
+        <hr>
+        <div class="ui link items" id="aplicativos">
+            {% for app in c.aplicativos %}
+              <div class="item app hide" data-searchinfo="{{app.title}} {{app.name}}">
+                <a class="ui tiny image" href="aplicativo/{{app.name}}">
+                  <img src="{{app.image}}" alt="{{app.title}}">
+                </a>
+                <div class="content ">
+                  <a class="header" href="aplicativo/{{app.name}}">{{app.title}}</a>
+                  <div class="meta">
+                    {{app.group_title}}
+                  </div>
+                  <div class="description">
+                    {{app.description}}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+    </div>
+  </article>
+  
+
+<!-- ================================ -->
+<script>
+(function() {
+  // DIV com todos os Aplicativos
+  var aplicativos = $("#aplicativos");
+
+  // Busca
+  var search_input = document.getElementById("search-app");
+  function search_app (){
+    var search_string = search_input.value;
+
+    // Loop para cada aplicativo em aplicativos
+    aplicativos.children(".app").each(function() {
+      // Exibe aplicativo encontrado
+      if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
+        $(this).removeClass("hide");
+      }
+      // Oculta aplicativo não encontrado
+      else{
+        $(this).addClass("hide");
+      }
+    });
+  };
+
+  // Verifica resultados a cada meio segundo
+  setInterval(search_app, 500);
+  search_app();
+})();
+</script>
+<!-- ================================ -->
+{% endblock %}
+
+{% block breadcrumb_content %}
+  <li><a class="active"  href="{{h.url_for('home','index')}}aplicativos">Aplicativos</a></li>
+{% endblock %}
+
+{% block flash %}
+{% endblock %}
+
+{% block secondary %}{% endblock %}

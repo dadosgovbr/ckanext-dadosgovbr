@@ -40,9 +40,22 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         map.connect('/feed',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='feed')
+
+        # ckanext-scheming
+        map.connect('/test',
+                    controller='ckanext.dadosabertos.controllers.test:TestController',
+                    action='index')
         map.connect('/aplicativos',
                     controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
                     action='index')
+        map.connect('/inventarios',
+                    controller='ckanext.dadosabertos.controllers.inventarios:InventariosController',
+                    action='index')
+        map.connect('/concursos',
+                    controller='ckanext.dadosabertos.controllers.concursos:ConcursosController',
+                    action='index')
+                    
+
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='list')
