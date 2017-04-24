@@ -20,6 +20,14 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
   margin: 20px 0;
 }
 
+.radio, .checkbox {
+    padding-left: initial;
+}
+.radio input[type="radio"], .checkbox input[type="checkbox"], .radio.inline + .radio.inline, .checkbox.inline + .checkbox.inline  {
+    margin-left: auto;
+}
+
+
 // Correção após reset e semantic-ui
 header.module-heading {
     padding-top: 18px;
@@ -31,7 +39,7 @@ h3 {
     line-height: 1.3;
 } 
 .ui {
-  font-size: 1.2rem !important;
+  //font-size: 1.2rem !important;
 }
 
 

@@ -1,25 +1,88 @@
-<div class="feedback-ouvidoria hidden">
-  <div class="row">
-    <div class="half">
-      <p class="titulo-ouvidoria">Esse dado foi útil?</p>
+<div id="feedback-eouv" class="ui segment">
 
-      <a href="https://sistema.ouvidorias.gov.br/publico/Manifestacao/RegistrarManifestacao.aspx?tipo=2&amp;orgaoDestinatario=1934">
-        <i class="fa fa-2x fa-thumbs-o-down fa-middle" title="Reclamação" aria-hidden="true"></i>
-        <span>Reclamação</span>
-      </a>
-      <a href="https://sistema.ouvidorias.gov.br/publico/Manifestacao/RegistrarManifestacao.aspx?tipo=3&amp;orgaoDestinatario=1934">
-        <i class="fa fa-2x fa-thumbs-o-up fa-middle" title="Elogio" aria-hidden="true"></i>
-        <span>Elogio</span>
-      </a>
+  <!-- Botões principais -->
+  <div class="ui basic center" style="text-align:center;">
+    <h4 class="ui header msg-title">Estes dados estão disponíveis como o esperado?</h4>
+    
+    <div class="ui buttons">
+      <button class="ui labeled icon button green sim">
+        <i class="thumbs up chevron icon"></i>
+        Sim
+      </button>
+      <div class="or" data-text="ou"></div>
+      <button class="ui right labeled icon button orange nao">
+        Não
+        <i class="thumbs down chevron icon"></i>
+      </button>
     </div>
+  </div>
 
+  <!-- Formulário / Ouvidoria -->
+  <div class="dimmable form-problems" style="display:none;">
+    <hr>
+    <div style="padding: 10px; position: relative;">
+        <form class="ui reply form">
+          <div class="ui inline checkbox">
+            <input type="checkbox" name="motivo-1">
+            <label>Não consegui acessar o serviço (link quebrado)</label>
+          </div>
+        
+          <div class="ui inline checkbox">
+            <input type="checkbox" name="motivo-2">
+            <label>Não entendi ou faltam informações de como utilizar o serviço</label>
+          </div>
+        
+          <div class="ui inline checkbox">
+            <input type="checkbox" name="motivo-3">
+            <label>As informações sobre o serviço estão erradas</label>
+          </div>
+      
+          <div class="ui attached field">
+            <textarea></textarea>
+          </div>
+          <div class="ui button enviar">Enviar relato para ouvidora</div>
+        </form>
+    </div>
+  </div>
 
-    <div class="half">
-      <p class="titulo-ouvidoria">O que você acho da qualidade do dado?</p>
-      <a href="https://sistema.ouvidorias.gov.br/publico/Manifestacao/RegistrarManifestacao.aspx?tipo=5&amp;orgaoDestinatario=1934">
-        <i class="fa fa-2x fa-commenting-o fa-middle" title="Sugestão" aria-hidden="true"></i>
-        <span>Sugestão</span>
-      </a>
+  <!-- Mensagem / Enviado com sucesso -->
+  <div class="ui dimmer transition">
+    <div class="content">
+      <div class="center">
+        <h2 class="ui inverted icon header">
+          <i class="checkmark icon" style="display:none;"></i>
+          <span class="msg">Obrigado!</span>
+        </h2>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+$(document).ready(function(){
+  var eouv = $("#feedback-eouv");
+
+  // Se avaliar como "Sim"
+  eouv.find(".sim").on("click", function(){
+    eouv.find(".msg").html("Obrigado!<br>Sua avaliação foi contabilizada.");
+    eouv.find('.dimmer').addClass('active');
+  });
+
+  // Se avaliar como "Não"
+  eouv.find(".nao").on("click", function(){
+    eouv.find(".form-problems").show();
+    eouv.find(".sim").removeClass("sim").addClass("disabled");
+    eouv.addClass("red").removeClass("green");
+    eouv.find(".msg-title").html("Desculpe. Diga-nos o motivo para que possamos buscar uma solução.");
+  });
+
+  // Enviar problema para ouvidoria
+  eouv.find('form .enviar').on('click', function() {
+    eouv.find("i.checkmark").show(); // Exibe ícone
+    eouv.removeClass("red"); // Remove top border
+    eouv.find(".msg").html("Obrigado!<br>Sua mensagem foi enviada para a ouvidoria do Governo.");
+    eouv.find('.dimmer').addClass('active');
+  });
+
+});
+</script>

@@ -27,6 +27,11 @@
 
 @import "_bugfix.scss";
 
+// Font-family
+body {
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif !important;
+}
+
 // Logo
 body > header.masthead #site_logo {
   h1 {
@@ -250,49 +255,8 @@ header.masthead {
 
 // Package (página única dos datasets)
 // ==========================================================================
-.feedback-ouvidoria {
-    margin: 35px 0;
-    background-color: #ffffff;
-    border: 1px solid #d5d5d5;
-    border-top: 1px solid #d5d5d5;
-    font-size: 16px;
-    padding: 15px 20px;
-    text-align: center;
-
-
-    .half {
-      width: 50%;
-      float: left;
-    }
-    a {
-        padding: 15px 10px;
-        display: inline-block;
-        text-decoration: none;
-        background: #fff;
-        transition: 0.2s;
-
-        &:hover {
-          background: #2c66ce;
-          border-radius: 40px;
-          .fa, span {
-            color: white;
-          }
-        }
-    }
-    .fa {
-        display: inline-block;
-        font: normal normal normal 14px/1 FontAwesome;
-        font-size: inherit;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #2c66ce;
-    }
-    span {
-        color: #606060;
-        line-height: 1.4em;
-        font-size: 0.9375em;
-    }
+#feedback-eouv {
+   margin: 20px 0;
 }
 
 
