@@ -19,3 +19,38 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .module-content .pagination {
   margin: 20px 0;
 }
+
+// Correção após reset e semantic-ui
+header.module-heading {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    min-height: 61px;
+}
+h3 {
+    font-size: 18px;
+    line-height: 1.3;
+} 
+.ui {
+  font-size: 1.2rem !important;
+}
+
+
+
+// Bootstrap 3 GRID
+@mixin container{
+  @include clearfix();
+  margin: 0 auto;
+}
+
+@mixin row(){
+  @include clearfix();
+}
+@mixin column($column, $isLast: false){
+  @include gridSystem-gridColumn($gridGutterWidth);
+  @include gridSystem-columns($gridGutterWidth, $gridColumnWidth, $gridColumnWidth, $column);
+  @if $isLast {
+    margin-right: 20px
+  }
+}
+
+

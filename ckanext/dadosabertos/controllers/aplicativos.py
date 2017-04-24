@@ -17,8 +17,8 @@ class AplicativosController(p.toolkit.BaseController):
         c.aplicativos = model.Session.execute(sql)
 
         # DEBUG
-        from pprint import pprint
-        pprint(model.Session.execute(sql).keys())
+        # from pprint import pprint
+        # pprint(model.Session.execute(sql).keys())
 
 
         # Get search params from URL

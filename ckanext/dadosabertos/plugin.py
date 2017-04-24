@@ -55,7 +55,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     controller='ckanext.dadosabertos.controllers.concursos:ConcursosController',
                     action='index')
                     
-
+        # Wordpress
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='list')
@@ -64,6 +64,10 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     action='show',
                     slug=0)
         map.connect('/noticia/{slug}', # Legacy from dados.gov.br 2015 version
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='redirect',
+                    slug=0)
+        map.connect('/noticias/{id}/{slug}', # Legacy from dados.gov.br 2016 version
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='redirect',
                     slug=0)

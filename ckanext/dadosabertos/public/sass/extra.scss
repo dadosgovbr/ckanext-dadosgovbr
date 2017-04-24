@@ -22,24 +22,6 @@
 
   
 
-// Page: Home
-// ==========================================================================
-.homepage {
-  // Snippet: Featured Groups
-  #featureddata {
-    .dataset-item {
-      padding-bottom: 0;
-      margin-bottom: 0;
-    } 
-  } 
-  .group-list.module.module-narrow.module-shallow {
-    .module-image {
-      display: none;
-    }
-  }
-}
- 
-
 // Global
 // ==========================================================================
 
@@ -89,6 +71,9 @@ h3 {
 // Links
 a {
   color: #222;
+  &:hover, &.ui.basic.label:hover {
+    color: #769F29;
+  }
 }
 
 
@@ -244,66 +229,6 @@ header.masthead {
 
 
 
-// Notícias (Wordpress API)
-// ==========================================================================
-.noticia {
-  &#noticia-content {
-    a, a:link, a:active {
-        color: #769F29;
-        text-decoration: none;
-    }
-  }
-
-  &#noticia-sidebar {
-    // Remove "Continuar lendo..." do Wordpress
-    .module-content a {
-       position: absolute !important;
-       top: -9999px !important;
-       left: -9999px !important;
-    }
-  }
-}
-
-
-// Páginas (Wordpress API)
-// ==========================================================================
-#pagina {
-    #content {
-      border: 1px solid #7d99aa;
-      -moz-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-      -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-      margin-top: 20px;
-      margin-bottom: 30px;
-      font-size: 16px;
-      line-height: 1.5em;
-      // -------
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      margin-bottom: 30px;
-      background: #ececec url('../img/bg/bg_boxes.png') 0 0 repeat;
-
-      h1 {
-        margin-top: 0;
-        margin-bottom: 15px;
-      }
-      .wrapper {
-        background: none;
-        border: none;
-        box-shadow: none;
-      }
-      .page-header {
-          background: none;
-          padding-top: 0;
-      }
-
-      a, a:link, a:active {
-          color: #769F29;
-          text-decoration: none;
-      }
-    }
-
-}
-
 
 // Novos datasets (forms)
 // ==========================================================================
@@ -400,9 +325,18 @@ header.masthead {
 
 
 // ==========================================================================
+// Custom pages
+// ==========================================================================
+@import "_pag_wordpress.scss";
+@import "_pag_home.scss";
+
+
+
+// ==========================================================================
 // Responsive versions
 // ==========================================================================
-@import "_mobile.scss";
-@import "_tablet.scss";
+@import "_r_mobile.scss";
+@import "_r_tablet.scss";
+@import "_r_desktop.scss";
 
 // END file

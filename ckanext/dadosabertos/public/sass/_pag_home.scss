@@ -1,0 +1,17 @@
+// Page: Home
+// ==========================================================================
+.homepage {
+  // Snippet: Featured Groups
+  #featureddata {
+    .dataset-item {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    } 
+  } 
+  .group-list.module.module-narrow.module-shallow {
+    .module-image {
+      display: none;
+    }
+  }
+}
+ 

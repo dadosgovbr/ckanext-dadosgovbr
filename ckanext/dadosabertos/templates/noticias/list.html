@@ -58,7 +58,7 @@
   </ul>
 {%- endmacro %}
 
-
+ 
 {% block primary %}
   <div id="noticia-list">
 
@@ -76,6 +76,7 @@
               <p>{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</p>
               <h4><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}">{{post.title.rendered|safe}}</a></h4>
               <p>{{post.excerpt.rendered|safe}}</p>
+              <p><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}" style="color: #769F29;">leia mais</a></p>
               <hr>
             </div>
           {% endfor %}
