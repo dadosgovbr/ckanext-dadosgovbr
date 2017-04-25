@@ -20,11 +20,15 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
   margin: 20px 0;
 }
 
+// Controles form
 .radio, .checkbox {
-    padding-left: initial;
+    padding: initial;
 }
 .radio input[type="radio"], .checkbox input[type="checkbox"], .radio.inline + .radio.inline, .checkbox.inline + .checkbox.inline  {
-    margin-left: auto;
+    margin: auto;
+}
+.ui input[type="radio"], .ui input[type="checkbox"] {
+    margin: 4px 0 0 !important;
 }
 
 
