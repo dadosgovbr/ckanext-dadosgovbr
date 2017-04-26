@@ -3,12 +3,12 @@
     <form action="/dataset" id="search" method="GET">
       <input class="search-field" name="q" type="text" placeholder="Pesquisar conjuntos de dados..." id="busca" />
       <input type="submit" alt="buscar" value="Pesquisar" id="btnbusca" />
-      <p>em {{c.package_count}} conjuntos de dados com {{h.dadosabertos_resource_count()}} recursos <span class="faq-link"><a href="/paginas/faq/#q10">(o que é isto?)</a></span></p>
+      <p>em {{c.package_count}} conjuntos de dados com {{h.dadosgovbr_resource_count()}} recursos <span class="faq-link"><a href="/paginas/faq/#q10">(o que é isto?)</a></span></p>
     </form>
 
 
 {#
-{% set groups_popular = h.dadosabertos_most_popular_groups() %}
+{% set groups_popular = h.dadosgovbr_most_popular_groups() %}
 
 {% for group in groups_popular %}
   <div class="box">

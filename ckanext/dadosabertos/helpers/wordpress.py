@@ -58,7 +58,8 @@ def cache_json(url):
 
     # If cache file not exist or has expired
     else:
-        while True:
+        triesCount=0
+        while True and triesCount < 10:
             # Try to get JSON from URL
             try:
                 request = requests.get(url, timeout=3)  # Request of URL
@@ -77,6 +78,7 @@ def cache_json(url):
 
             # Try again if got some error
             except Exception as e:
+                triesCount+=1
                 log.error('Wordpress API | Error getting url: %s', url)
                 log.info ('Wordpress API | trying again')
                 continue

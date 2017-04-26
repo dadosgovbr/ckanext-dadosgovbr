@@ -13,11 +13,11 @@ import ckanext.dadosabertos.helpers.wordpress as wp
 class NoticiasController(p.toolkit.BaseController):
 
     def redirect (ctrl, slug):
-        return redirect(b'/noticias/'+slug)
+        return redirect(b'/wordpress/'+slug)
 
     def show (ctrl, slug):
         c.wp_post = wp.post(slug)
-        return render('noticias/show.html')
+        return render('wordpress/post_single.html')
 
     def list (ctrl):
         if ('page' in request.GET):
@@ -27,7 +27,7 @@ class NoticiasController(p.toolkit.BaseController):
 
         c.title = "Notícias".decode('utf8')
         c.wp_posts = wp.posts(10, c.wp_page_number)
-        return render('noticias/list.html')
+        return render('wordpress/posts.html')
 
     def feed (ctrl):
         # Get content from feed URL
@@ -43,3 +43,9 @@ class NoticiasController(p.toolkit.BaseController):
             b'text/xml; charset=utf-8')
 
         return content
+
+
+class PaginasController(p.toolkit.BaseController):
+    def index (ctrl, slug):
+        c.wp_page = wp.page(slug)
+        return render('wordpress/page_single.html')

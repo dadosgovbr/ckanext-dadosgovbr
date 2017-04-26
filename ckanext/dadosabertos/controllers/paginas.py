@@ -8,7 +8,3 @@ from pylons import request
 import ckanext.dadosabertos.helpers.wordpress as wp
 
 
-class PaginasController(p.toolkit.BaseController):
-    def index (ctrl, slug):
-        c.wp_page = wp.page(slug)
-        return render('paginas/index.html')

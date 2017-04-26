@@ -4,7 +4,7 @@
 
 {% block breadcrumb_content %}
   <li><a href="{{h.url_for('home','index')}}noticias">Notícias</a></li>
-  <li><a class="active" href="{{h.url_for('home','index')}}noticias/{{c.wp_post.slug|safe}}">{{h.dadosabertos_trim_string(c.wp_post.title.rendered, 55)|safe}}</a></li>
+  <li><a class="active" href="{{h.url_for('home','index')}}noticias/{{c.wp_post.slug|safe}}">{{h.dadosgovbr_trim_string(c.wp_post.title.rendered, 55)|safe}}</a></li>
 {% endblock %}
 
 
@@ -20,7 +20,7 @@
         <div class="module-content">
           <div id="date" class="ui top left attached label">
             Data de publicação
-            <div class="detail">{{h.dadosabertos_format_timestamp(c.wp_post.modified)}}</div>
+            <div class="detail">{{h.dadosgovbr_format_timestamp(c.wp_post.modified)}}</div>
           </div>
 
           <div>{{c.wp_post.content.rendered|safe}}</div>

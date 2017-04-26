@@ -49,6 +49,9 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         map.connect('/aplicativos',
                     controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
                     action='index')
+        map.connect('/aplicativos/{title}',
+                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
+                    action='single')
         map.connect('/inventarios',
                     controller='ckanext.dadosabertos.controllers.inventarios:InventariosController',
                     action='index')
@@ -58,22 +61,22 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     
         # Wordpress
         map.connect('/noticias',
-                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='list')
         map.connect('/noticias/{slug}',
-                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='show',
                     slug=0)
         map.connect('/noticia/{slug}', # Legacy from dados.gov.br 2015 version
-                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='redirect',
                     slug=0)
         map.connect('/noticias/{id}/{slug}', # Legacy from dados.gov.br 2016 version
-                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='redirect',
                     slug=0)
         map.connect('/paginas/{slug}',
-                    controller='ckanext.dadosabertos.controllers.paginas:PaginasController',
+                    controller='ckanext.dadosabertos.controllers.wordpress:PaginasController',
                     action='index')
         return map
 
@@ -88,17 +91,17 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         # other extensions.
         return {
             # Homepage
-            'dadosabertos_most_recent_datasets': tools.most_recent_datasets,
+            'dadosgovbr_most_recent_datasets': tools.most_recent_datasets,
 
             # Wordpress
-            'dadosabertos_wordpress_posts': wp.posts,
-            'dadosabertos_format_timestamp': wp.format_timestamp,
+            'dadosgovbr_wordpress_posts': wp.posts,
+            'dadosgovbr_format_timestamp': wp.format_timestamp,
 
             # Generict tools
-            'dadosabertos_trim_string': tools.trim_string,
-            'dadosabertos_trim_letter': tools.trim_letter,
-            'dadosabertos_resource_count': tools.resource_count,
-            'dadosabertos_get_featured_group': tools.get_featured_group,
-            'dadosabertos_cache_create': tools.cache_create,
-            'dadosabertos_cache_load': tools.cache_load
+            'dadosgovbr_trim_string': tools.trim_string,
+            'dadosgovbr_trim_letter': tools.trim_letter,
+            'dadosgovbr_resource_count': tools.resource_count,
+            'dadosgovbr_get_featured_group': tools.get_featured_group,
+            'dadosgovbr_cache_create': tools.cache_create,
+            'dadosgovbr_cache_load': tools.cache_load
         }

@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for dataset in h.dadosabertos_most_recent_datasets(5) %}
+        {% for dataset in h.dadosgovbr_most_recent_datasets(5) %}
           <tr>
             <td><a href="{{dataset.link}}" title="{{dataset.title}}">{{dataset.title}}</a></td>
 
@@ -20,14 +20,14 @@
             {% if dataset.owner_org %}
               <td>
                 <a href="{{h.url_for('home','index')}}organization/{{h.get_organization(dataset.owner_org).name}}" title="{{h.group_name_to_title(h.get_organization(dataset.owner_org).name)}}">
-                  {{h.dadosabertos_trim_letter(h.group_name_to_title(h.get_organization(dataset.owner_org).name), 36)}}
+                  {{h.dadosgovbr_trim_letter(h.group_name_to_title(h.get_organization(dataset.owner_org).name), 36)}}
                 </a>
               </td>
             {# Autor #}
             {% else %}
               <td>
                 <div class="author" data-content="{{dataset.author}}" title="{{dataset.author}}">
-                  {{h.dadosabertos_trim_letter(dataset.author, 36)}}
+                  {{h.dadosgovbr_trim_letter(dataset.author, 36)}}
                 </div>
               </td>
             {% endif %}
