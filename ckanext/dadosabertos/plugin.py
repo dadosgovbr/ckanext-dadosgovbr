@@ -37,6 +37,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
 
     # Mapeamento das URLs
     def after_map(self, map):
+        # Wordpress feed redirect (if load balancer fail)
         map.connect('/feed',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='feed')
@@ -86,10 +87,18 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         # extension they belong to, to avoid clashing with functions from
         # other extensions.
         return {
+            # Homepage
             'dadosabertos_most_recent_datasets': tools.most_recent_datasets,
+
+            # Wordpress
             'dadosabertos_wordpress_posts': wp.posts,
+            'dadosabertos_format_timestamp': wp.format_timestamp,
+
+            # Generict tools
             'dadosabertos_trim_string': tools.trim_string,
             'dadosabertos_trim_letter': tools.trim_letter,
             'dadosabertos_resource_count': tools.resource_count,
             'dadosabertos_get_featured_group': tools.get_featured_group,
-            'dadosabertos_format_timestamp': wp.format_timestamp }
+            'dadosabertos_cache_create': tools.cache_create,
+            'dadosabertos_cache_load': tools.cache_load
+        }

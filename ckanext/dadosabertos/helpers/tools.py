@@ -5,6 +5,9 @@ from ckan.logic import get_action
 from random import shuffle
 from copy import deepcopy
 
+# Cache
+import hashlib, pickle, os, errno, time
+
 
 def trim_string(s, tamanho):
     s = unicode(s)
@@ -72,37 +75,61 @@ def most_recent_datasets(limit_of_datasets=5):
         return most_recent_datasets
 
 
-def cache_dict (d, lifetime=600):
-    """ Return a list of mainly datasets from a group
+def cache_create (d, name):
+    """ Create a cache for 'd' dict.
 
-        @params group_name:string (group name)
-                number_of_datasets:int (number of datasets to be returned)
-        @return list<packages> (list of datasets)
+        @params d:dict
+                name:string (to identify cache)
     """
-    # Cache
-    cache_dir = '/tmp/ckan_cache/'
-    f_name = 'featured_group'
 
-    # Remove old cache file
-    # 14400 = 10 minutes
+    # Cache path and file name
+    cache_checksum  = hashlib.sha256(name).hexdigest() 	# Create checksum by name
+    cache_file_path = '/tmp/ckan/dict_'+cache_checksum  # /tmp/ckan/dict_$cache_name
+
+    # Create cache dir, if not exist
+    if not os.path.exists('/tmp/ckan/'):
+        os.makedirs('/tmp/ckan/')
+
+    # Delete cached file, if exist
+    try:
+        os.remove(cache_file_path)
+    except OSError:
+        pass
+
+    # Create 'd' as a cache
+    with open(cache_file_path, 'wb') as handle:
+        pickle.dump(d, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def cache_load (name, lifetime=10):
+    """ Return a dict cached.
+
+        @params name:string (to identify cache)
+                lifetime:int (in minutes. Default: 10)
+        @return d:dict
+    """
+
+    # Cache path and file name
+    cache_checksum  = hashlib.sha256(name).hexdigest() 	# Create checksum by name
+    cache_file_path = '/tmp/ckan/dict_'+cache_checksum  # /tmp/ckan/dict_$cache_name
+
+    # Check if file is old
     now = time.time()
-    file_is_old = False
-    if (os.path.isfile(f_name)):
-        if (os.stat(f_name).st_mtime < (now - 14400)):
-            file_is_old = True
+    file_old = False
+    if (os.path.isfile(cache_file_path)):
+        if (os.stat(cache_file_path).st_mtime < (now - 60 * lifetime)):
+            file_old = True
 
-    # Check if cached file exists
-    if (os.path.isfile(f_name) and not file_is_old):
-        # Get JSON from cache
-        f       = open(f_name, 'r')
-        posts   = json.loads(f.read())
-        f.close()
-
-    # with open(cache_dir+f_name, 'wb') as f:
-    #     var = {1 : 'a' , 2 : 'b'}
-    #     pickle.dump(var, f)
-    # with open('filename','rb') as f:
-    #     var = pickle.load(f)
+    # Open and load cached 'd' dict if file exist and not expirate
+    if(os.path.exists(cache_file_path) and not file_old):
+        with open(cache_file_path, 'rb') as handle:
+            d = pickle.load(handle)
+        return d
+    
+    # Return none if no cache found or expirate
+    else:
+        return None
+    
 
 
 def get_featured_group(group_name='dados-em-destaque', number_of_datasets=3):
@@ -115,19 +142,30 @@ def get_featured_group(group_name='dados-em-destaque', number_of_datasets=3):
     from ckan.logic import get_action
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author}
+    
 
-    # Get group
-    data_dict = {'id': group_name, 'include_datasets': 'True'}
-    group = get_action('group_show')(context, data_dict)
+    # Get cache if exist
+    # or is older than 2 minutes
+    group = cache_load('dados_em_destaque', 2)
 
-    # Shuffle datasets list
-    import random
-    random.shuffle(group['packages'])
+    # Get from database if cache doesn't exist or expirate
+    if(group == None):
+        # Get group
+        data_dict = {'id': group_name, 'include_datasets': 'True'}
+        group = get_action('group_show')(context, data_dict)
 
-    # Limit number of datasets
-    limit = number_of_datasets
-    if (len(group['packages']) < limit):
-        limit = len(group['packages'])
-    group['packages'] = group['packages'][:limit]
+        # Shuffle datasets list
+        import random
+        random.shuffle(group['packages'])
+
+        # Limit number of datasets
+        limit = number_of_datasets
+        if (len(group['packages']) < limit):
+            limit = len(group['packages'])
+        group['packages'] = group['packages'][:limit]
+        
+        # Create cache
+        cache_create(group, 'dados_em_destaque')
+        
 
     return group
