@@ -21,7 +21,6 @@
       </div>
 
      
-      <hr>
 
       <!-- MSG Nenhum aplicativo encontrado-->
       <div class="ui warning message" id="search-not-found" style="display:none;">
@@ -31,7 +30,7 @@
       </div>
 
       <!-- Lista de aplicativos -->
-      <div class="ui segment link items" id="aplicativos">
+      <div class="ui segment basic" id="aplicativos">
 
         <!-- Loader -->
         <div class="ui inverted dimmer" id="aplicativos-loader">
@@ -40,27 +39,104 @@
         
         <!-- Aplicativos -->
         {% for app in c.aplicativos %}
-          <div class="item app" data-searchinfo="{{app.title}} {{app.name}} {{app.description}}">
-            <a class="ui tiny bordered image" href="aplicativo/{{app.name}}">
-              <img src="{{app.image}}" alt="{{app.title}}" style="border-radius: 3px;">
-            </a>
-            <div class="content">
-              <a class="header" href="aplicativo/{{app.name}}">{{app.title}}</a>
-              <div class="meta">
-                {{app.group_title}}
-              </div>
-              <div class="description">
-                {{app.description}}
+        <div class="ui segment app" data-searchinfo="{{app.title}} {{app.name}} {{app.description}}">
+          <div class="ui three column grid">
+            <div class="two wide column">
+              <div class="ui tiny bordered image">
+                <img src="{{app.image}}" alt="{{app.title}}" style="border-radius: 3px;">
               </div>
             </div>
+            <div class="five wide column content">
+              <div class="ui medium header">{{app.title}}</div>
+              <div class="meta">
+                <a class="ui positive tiny basic button" href="/aplicativo/{{app.name}}" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">Mais informações</a>
+                <!--<button class="ui positive tiny basic button open-modal" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">Mais informações</button>-->
+              </div>
+            </div>
+            <div class="description six wide column hidden-sm hidden-xs">
+              <div class="group" style="margin: 4px 0px;">{{app.group_title}}</div>
+              {{app.description}}
+            </div>
           </div>
+        </div>
         {% endfor %}
       </div>
     </div>
   </article>
-  
 
-<!-- ================================ -->
+
+<!-- Modal
+================================ -->
+<div class="ui modal">
+  <i class="close icon" onclick="$('.ui.modal').modal('hide');"></i>
+  <div class="header">
+    Error...
+  </div>
+  <div class="ui segment basic content" style="min-height: 120px;">
+    <div class="ui inverted dimmer">
+      <div class="ui medium text loader">Carregando</div>
+    </div>
+    <div class="content-area">
+      <!-- Conteúdo via Ajax -->
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button">Cancel</div>
+    <div class="ui button">OK</div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+
+  // Helper get URL parameters
+  $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if (results==null){
+        return null;
+      }
+      else{
+        return decodeURIComponent(results[1]) || 0;
+      }
+  }
+
+  // Modal
+  var modal = $('.ui.modal');
+
+  // Carrega conteúdo do modal
+  function appModalLoad(app_name, app_title) {
+    // Altera URL
+    window.history.pushState(app_name, app_title, '?s='+app_title+'&m='+app_name);
+
+    // Define título e mensagem de loading
+    modal.find('.header').html(app_title);
+    modal.find('.content-area').html('');
+    modal.find('.dimmer').addClass('active');
+    modal.modal('show');
+
+    // Carrega conteúdo via Ajax
+    $.ajax({url: "/aplicativos/"+app_name, success: function(result){
+      modal.find('.dimmer').removeClass('active');
+      modal.find('.content-area').html(result);
+    }});
+
+  }
+
+  // Eventos
+    // Abrir modal da aplicação
+    $("#aplicativos > .app .open-modal").on("click", function(){
+      appModalLoad($(this).data('app'), $(this).data('title'));
+    });
+    // Abre modal automaticamente se possuir GET['m']
+    if($.urlParam('m')) {
+      appModalLoad($.urlParam('m'), $.urlParam('s'));
+    }
+});
+</script>
+
+
+
+<!-- Busca
+================================ -->
 <script>
 (function() {
   // DIV com todos os Aplicativos
@@ -130,7 +206,7 @@
   search_app(); // Busca quando a página é carregada
 })();
 </script>
-<!-- ================================ -->
+
 {% endblock %}
 
 {% block breadcrumb_content %}

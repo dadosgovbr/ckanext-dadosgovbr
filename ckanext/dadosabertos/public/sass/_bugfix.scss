@@ -45,7 +45,15 @@ h3 {
 .ui {
   //font-size: 1.2rem !important;
 }
-
+.modal-backdrop {
+    z-index: 999;
+}
+.ui.modal.in .actions {
+    position: initial;
+}
+.ui.modal {
+    top: 20%;
+}
 
 
 // Bootstrap 3 GRID

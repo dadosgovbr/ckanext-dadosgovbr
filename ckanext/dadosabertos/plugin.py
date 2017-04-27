@@ -47,16 +47,16 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     controller='ckanext.dadosabertos.controllers.test:TestController',
                     action='index')
         map.connect('/aplicativos',
-                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
+                    controller='ckanext.dadosabertos.controllers.scheming:AplicativosController',
                     action='index')
         map.connect('/aplicativos/{title}',
-                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
+                    controller='ckanext.dadosabertos.controllers.scheming:AplicativosController',
                     action='single')
         map.connect('/inventarios',
-                    controller='ckanext.dadosabertos.controllers.inventarios:InventariosController',
+                    controller='ckanext.dadosabertos.controllers.scheming:InventariosController',
                     action='index')
         map.connect('/concursos',
-                    controller='ckanext.dadosabertos.controllers.concursos:ConcursosController',
+                    controller='ckanext.dadosabertos.controllers.scheming:ConcursosController',
                     action='index')
                     
         # Wordpress

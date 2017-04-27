@@ -1,69 +1,166 @@
 {% extends "page.html" %}
 
 {% block primary %}
-  <article class="module">
+  <article class="module primary span9">
     <div class="module-content">
-      <h1>Inventarios</h1>
-      <div>
-        <form class="form-search">
-            <input id="search-app" value="{{c.s_result}}" style="width: 70%" type="text" class="input-medium search-query" placeholder="Qual aplicativo você procura?">
-        </form>
-      </div>
-      <div>
-        Alguma descrição ou detalhes aqui.
+      <h1>Inventários</h1>
+
+      <!-- MSG Para desenvolvedores enviaram apps -->
+      <div class="ui icon message">
+        <i class="heart icon"></i>
+        <div class="content">
+          <div class="header">Mensagem para o usuário</div>
+          <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a>. Detalhes das informações para usuário que está procurando concursos.</p>
+        </div>
       </div>
 
-        <!-- Lista de aplicativos abaixo -->
-        <hr>
-        <div id="aplicativos">
-            {% for app in c.aplicativos %}
-                <div class="app hide" data-searchinfo="{{app.title}} {{app.name}}">
-                  <a href="{{app.url}}">{{app.title}}</a>
-                  {{app.note}}
-                </div>
-            {% endfor %}
+      <!-- Barra de busca -->
+      <div id="search" class="ui icon input fluid large">
+        <input id="search-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
+        <i class="search icon"></i>
+      </div>
+
+      <hr>
+
+      <!-- MSG Nenhum aplicativo encontrado-->
+      <div class="ui warning message" id="search-not-found" style="display:none;">
+        <div>
+          Nenhum inventário encontrado... :/
         </div>
+      </div>
+
+      <!-- Lista de Concursos -->
+      <div class="ui segment basic link" id="concursos">
+
+        <!-- Loader -->
+        <div class="ui inverted dimmer" id="concursos-loader">
+          <div class="ui huge text loader">Buscando</div>
+        </div>
+        
+        <!-- Concursos -->
+        {% for concurso in c.concursos %}
+        <div class="ui segment items concurso" data-searchinfo="{{concurso.title}} {{concurso.name}} {{concurso.observacao_base}}">
+          <div class="item ">
+            <div class="content">
+              <a class="header" href="inventario/{{concurso.name}}">{{concurso.title}}</a>
+              <div class="meta">
+                {{concurso.group_title}}
+              </div>
+              <div class="description">
+                {{concurso.observacao_base}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
   </article>
   
 
 <!-- ================================ -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 (function() {
-  // DIV com todos os Aplicativos
-  var aplicativos = $("#aplicativos");
+  // DIV com todos os concursos
+  var concursos = $("#concursos");
+
+  // Evento da barra de busca
+  $("#search-field").on('keyup', function(){
+    $(this).unbind();
+
+    // Exibe o loader
+    $("#concursos-loader").data("near_event", "1");
+    $("#concursos-loader").addClass("active");
+
+    // Busca animação
+    $("#search").addClass("loading");
+    setTimeout(function(){
+      $("#search").removeClass("loading");
+    }, 1500);
+
+    //search();
+    console.log("animação");
+  });
 
   // Busca
-  var search_input = document.getElementById("search-app");
-  function search_app (){
-    var search_string = search_input.value;
+  var search_input = document.getElementById("search-field");
+  function search (){
+    var search_string = search_input.value;    
 
-    // Loop para cada aplicativo em aplicativos
-    aplicativos.children(".app").each(function() {
-      // Exibe aplicativo encontrado
-      if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
-        $(this).removeClass("hide");
+    // Se houve um evento de busca a pouco tempo
+    if($("#concursos-loader").data("near_event") == "1") {
+      $("#concursos-loader").data("near_event", "0");
+    }
+
+    // Se não houve, filtra os resultados
+    else {
+      // Oculta o loader
+      $("#concursos-loader").removeClass("active");
+
+      // DEBUG
+      // console.log(search_string);
+      // console.log(concursos.children(".concurso"));
+
+      // Loop para cada aplicativo em concursos
+      concursos.children(".concurso").each(function() {
+        // Exibe aplicativo encontrado
+        if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
+          $(this).removeClass("hide");
+        }
+
+        // Oculta aplicativo não encontrado
+        else{
+          $(this).addClass("hide");
+        }
+      });
+
+      // Se existir resultados
+      if(concursos.find(".concurso").not(".hide").length != 0) {
+        $("#concurso").show();
+        $("#search-not-found").hide();
       }
-      // Oculta aplicativo não encontrado
-      else{
-        $(this).addClass("hide");
+      // Se não existir resultados
+      else {
+        $("#concurso").hide();
+        $("#search-not-found").show();
       }
-    });
+    }
+
   };
 
   // Verifica resultados a cada meio segundo
-  setInterval(search_app, 500);
+  setInterval(search, 400);
+  search(); // Busca quando a página é carregada
 })();
 </script>
 <!-- ================================ -->
 {% endblock %}
 
 {% block breadcrumb_content %}
-  <li><a class="active"  href="{{h.url_for('home','index')}}aplicativos">Aplicativos</a></li>
+  <li><a class="active"  href="{{h.url_for('home','index')}}inventarios">Inventários</a></li>
 {% endblock %}
 
 {% block flash %}
 {% endblock %}
 
-{% block secondary %}{% endblock %}
+{% block secondary %}
+  <aside class="secondary span3">
+    <div class="module-content">
+      <h2>O que é?</h2>
+      <hr>
+      <p><a href="#" style="color:#769F29">Confira o que são os inventários</a> e como utilizá-los.</p>
+
+    </div>
+    
+    <!-- Lista de categorias -->
+    <div class="module module-narrow">
+      <h2 class="module-heading"><i class="icon-ok"></i> Links importantes</h2>
+      <ul class="nav nav-simple">
+        <li class="nav-item"><a href="#">Link importante 1</a></li>
+        <li class="nav-item"><a href="#">Link importante 2</a></li>
+        <li class="nav-item"><a href="#">Link importante 3</a></li>
+        <li class="nav-item"><a href="#">Link importante 4</a></li>
+      </ul>
+    </div>
+  </aside>
+{% endblock %}

@@ -3,57 +3,55 @@
 {% block primary %}
   <article class="module primary span9">
     <div class="module-content">
-      <h1>Aplicativos com dados públicos</h1>
+      <h1>Concursos</h1>
 
       <!-- MSG Para desenvolvedores enviaram apps -->
       <div class="ui icon message">
-        <i class="code icon"></i>
+        <i class="heart icon"></i>
         <div class="content">
-          <div class="header">Deseja adicionar seu aplicativo?</div>
-          <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a> e diga-nos mais sobre seu problema com os dados do Portal Brasileiro de Dados Abertos!</p>
+          <div class="header">Mensagem para o usuário</div>
+          <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a>. Detalhes das informações para usuário que está procurando concursos.</p>
         </div>
       </div>
 
       <!-- Barra de busca -->
-      <div id="search-app" class="ui icon input fluid large">
-        <input id="search-app-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
+      <div id="search" class="ui icon input fluid large">
+        <input id="search-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
         <i class="search icon"></i>
       </div>
 
-     
       <hr>
 
       <!-- MSG Nenhum aplicativo encontrado-->
       <div class="ui warning message" id="search-not-found" style="display:none;">
         <div>
-          Nenhum aplicativo encontrado... :/
+          Nenhum concurso encontrado... :/
         </div>
       </div>
 
-      <!-- Lista de aplicativos -->
-      <div class="ui segment link items" id="aplicativos">
+      <!-- Lista de Concursos -->
+      <div class="ui segment basic link" id="concursos">
 
         <!-- Loader -->
-        <div class="ui inverted dimmer" id="aplicativos-loader">
+        <div class="ui inverted dimmer" id="concursos-loader">
           <div class="ui huge text loader">Buscando</div>
         </div>
         
-        <!-- Aplicativos -->
-        {% for app in c.aplicativos %}
-          <div class="item app" data-searchinfo="{{app.title}} {{app.name}} {{app.description}}">
-            <a class="ui tiny bordered image" href="aplicativo/{{app.name}}">
-              <img src="{{app.image}}" alt="{{app.title}}" style="border-radius: 3px;">
-            </a>
+        <!-- Concursos -->
+        {% for concurso in c.concursos %}
+        <div class="ui segment items concurso" data-searchinfo="{{concurso.title}} {{concurso.name}} {{concurso.description}}">
+          <div class="item ">
             <div class="content">
-              <a class="header" href="aplicativo/{{app.name}}">{{app.title}}</a>
+              <a class="header" href="concurso/{{concurso.name}}">{{concurso.title}}</a>
               <div class="meta">
-                {{app.group_title}}
+                {{concurso.group_title}}
               </div>
               <div class="description">
-                {{app.description}}
+                {{concurso.description}}
               </div>
             </div>
           </div>
+        </div>
         {% endfor %}
       </div>
     </div>
@@ -63,43 +61,48 @@
 <!-- ================================ -->
 <script>
 (function() {
-  // DIV com todos os Aplicativos
-  var aplicativos = $("#aplicativos");
+  // DIV com todos os concursos
+  var concursos = $("#concursos");
 
   // Evento da barra de busca
-  $("#search-app-field").on('keyup', function(){
+  $("#search-field").on('keyup', function(){
     $(this).unbind();
 
     // Exibe o loader
-    $("#aplicativos-loader").data("near_event", "1");
-    $("#aplicativos-loader").addClass("active");
+    $("#concursos-loader").data("near_event", "1");
+    $("#concursos-loader").addClass("active");
 
     // Busca animação
-    $("#search-app").addClass("loading");
+    $("#search").addClass("loading");
     setTimeout(function(){
-      $("#search-app").removeClass("loading");
+      $("#search").removeClass("loading");
     }, 1500);
 
-    //search_app();
+    //search();
+    console.log("animação");
   });
 
   // Busca
-  var search_input = document.getElementById("search-app-field");
-  function search_app (){
+  var search_input = document.getElementById("search-field");
+  function search (){
     var search_string = search_input.value;    
 
     // Se houve um evento de busca a pouco tempo
-    if($("#aplicativos-loader").data("near_event") == "1") {
-      $("#aplicativos-loader").data("near_event", "0");
+    if($("#concursos-loader").data("near_event") == "1") {
+      $("#concursos-loader").data("near_event", "0");
     }
 
     // Se não houve, filtra os resultados
     else {
       // Oculta o loader
-      $("#aplicativos-loader").removeClass("active");
+      $("#concursos-loader").removeClass("active");
 
-      // Loop para cada aplicativo em aplicativos
-      aplicativos.children(".app").each(function() {
+      // DEBUG
+      // console.log(search_string);
+      // console.log(concursos.children(".concurso"));
+
+      // Loop para cada aplicativo em concursos
+      concursos.children(".concurso").each(function() {
         // Exibe aplicativo encontrado
         if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
           $(this).removeClass("hide");
@@ -112,13 +115,13 @@
       });
 
       // Se existir resultados
-      if(aplicativos.find(".app").not(".hide").length != 0) {
-        $("#aplicativos").show();
+      if(concursos.find(".concurso").not(".hide").length != 0) {
+        $("#concurso").show();
         $("#search-not-found").hide();
       }
       // Se não existir resultados
       else {
-        $("#aplicativos").hide();
+        $("#concurso").hide();
         $("#search-not-found").show();
       }
     }
@@ -126,46 +129,38 @@
   };
 
   // Verifica resultados a cada meio segundo
-  setInterval(search_app, 400);
-  search_app(); // Busca quando a página é carregada
+  setInterval(search, 400);
+  search(); // Busca quando a página é carregada
 })();
 </script>
 <!-- ================================ -->
 {% endblock %}
 
 {% block breadcrumb_content %}
-  <li><a class="active"  href="{{h.url_for('home','index')}}aplicativos">Aplicativos</a></li>
+  <li><a class="active"  href="{{h.url_for('home','index')}}concursos">Concursos</a></li>
 {% endblock %}
 
 {% block flash %}
 {% endblock %}
 
 {% block secondary %}
-  <aside id="noticia-sidebar" class="noticia secondary span3">
+  <aside class="secondary span3">
     <div class="module-content">
-      <h2>Resumo</h2>
+      <h2>Editais</h2>
       <hr>
-      <p>123</p>
+      <p><a href="#" style="color:#769F29">Confira os editais</a> para conferir os pré-requisitos.</p>
 
     </div>
     
     <!-- Lista de categorias -->
     <div class="module module-narrow">
-      <h2 class="module-heading"><i class="icon-building"></i> Tags</h2>
-      
-      <section class="module-content">
-        <div class="image">
-          <a href="/organization/saude">
-            <img src="/base/images/placeholder-organization.png" width="200" alt="saude">
-          </a>
-        </div>
-      
-        <ul class="nav nav-simple">
-          <li class="nav-item"><a href="https://plus.google.com/share?url=http://localhost/aplicativo/pokemon-go" target="_blank"><i class="icon-google-plus-sign"></i> Google+</a></li>
-          <li class="nav-item"><a href="https://twitter.com/share?url=http://localhost/aplicativo/pokemon-go" target="_blank"><i class="icon-twitter-sign"></i> Twitter</a></li>
-          <li class="nav-item"><a href="https://www.facebook.com/sharer.php?u=http://localhost/aplicativo/pokemon-go" target="_blank"><i class="icon-facebook-sign"></i> Facebook</a></li>
-        </ul>
-      </section>
+      <h2 class="module-heading"><i class="icon-ok"></i> Links importantes</h2>
+      <ul class="nav nav-simple">
+        <li class="nav-item"><a href="#">Link importante 1</a></li>
+        <li class="nav-item"><a href="#">Link importante 2</a></li>
+        <li class="nav-item"><a href="#">Link importante 3</a></li>
+        <li class="nav-item"><a href="#">Link importante 4</a></li>
+      </ul>
     </div>
   </aside>
 {% endblock %}
