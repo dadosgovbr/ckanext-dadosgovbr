@@ -47,7 +47,7 @@
       "preset": "tag_string_autocomplete"
     },
     {
-      "field_name": "tags",
+      "field_name": "tag_string",
       "label": "Etiquetas",
       "preset": "tag_string_autocomplete",
       "help_text": "Ex.: medicamento, equipamento, ambulancia"
