@@ -24,6 +24,7 @@
     </h1>
     {% block package_notes %}
       {% if pkg.notes %}
+        <hr>
         <div class="notes embedded-content">
           {{ pkg.notes|safe }}
         </div>
@@ -33,16 +34,20 @@
     <span class="insert-comment-thread"></span>
   {% endblock %}
 
-  {% block package_resources %}
-    {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
+  {% block package_tags %}
+    <br>
+    {% snippet "package/snippets/tags.html", tags=pkg.tags %}
+
+    {% snippet "package/snippets/eouv.html" %}
+    <hr>
   {% endblock %}
 
-  {% block package_tags %}
-    {% snippet "package/snippets/tags.html", tags=pkg.tags %}
+  {% block package_resources %}
+    {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
+    <hr>
   {% endblock %}
 
   {% block package_additional_info %}
-    {% snippet "package/snippets/eouv.html" %}
     {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
   {% endblock %}
 

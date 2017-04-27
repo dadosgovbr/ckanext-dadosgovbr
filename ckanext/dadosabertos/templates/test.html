@@ -1,0 +1,31 @@
+{% extends "page.html" %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      <h1>Buscas ckanext-scheming</h1>
+      <div>
+        <form class="form-search" method="GET" action="/aplicativos">
+            <input type="text" name="s" placeholder="Buscar aplicativos..." class="input-medium search-query">
+            <button type="submit" class="btn">Buscar</button>
+        </form>
+        <form class="form-search" method="GET" action="/concursos">
+            <input type="text" name="s" placeholder="Buscar concursos..." class="input-medium search-query">
+            <button type="submit" class="btn">Buscar</button>
+        </form>
+        <form class="form-search" method="GET" action="/inventarios">
+            <input type="text" name="s" placeholder="Buscar inventarios..." class="input-medium search-query">
+            <button type="submit" class="btn">Buscar</button>
+        </form>
+      </div>
+    </div>
+  </article>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block flash %}
+{% endblock %}
+
+{% block secondary %}{% endblock %}

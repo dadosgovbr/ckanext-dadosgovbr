@@ -20,30 +20,17 @@
   }
 }
 
-
-
-// Page: Home
-// ==========================================================================
-.homepage {
-  // Snippet: Featured Groups
-  #featureddata {
-    .dataset-item {
-      padding-bottom: 0;
-      margin-bottom: 0;
-    }
-  }
-  .group-list.module.module-narrow.module-shallow {
-    .module-image {
-      display: none;
-    }
-  }
-}
-
+  
 
 // Global
 // ==========================================================================
 
 @import "_bugfix.scss";
+
+// Font-family
+body {
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif !important;
+}
 
 // Logo
 body > header.masthead #site_logo {
@@ -89,6 +76,9 @@ h3 {
 // Links
 a {
   color: #222;
+  &:hover, &.ui.basic.label:hover {
+    color: #769F29;
+  }
 }
 
 
@@ -244,66 +234,6 @@ header.masthead {
 
 
 
-// Notícias (Wordpress API)
-// ==========================================================================
-.noticia {
-  &#noticia-content {
-    a, a:link, a:active {
-        color: #769F29;
-        text-decoration: none;
-    }
-  }
-
-  &#noticia-sidebar {
-    // Remove "Continuar lendo..." do Wordpress
-    .module-content a {
-       position: absolute !important;
-       top: -9999px !important;
-       left: -9999px !important;
-    }
-  }
-}
-
-
-// Páginas (Wordpress API)
-// ==========================================================================
-#pagina {
-    #content {
-      border: 1px solid #7d99aa;
-      -moz-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-      -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-      margin-top: 20px;
-      margin-bottom: 30px;
-      font-size: 16px;
-      line-height: 1.5em;
-      // -------
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      margin-bottom: 30px;
-      background: #ececec url('../img/bg/bg_boxes.png') 0 0 repeat;
-
-      h1 {
-        margin-top: 0;
-        margin-bottom: 15px;
-      }
-      .wrapper {
-        background: none;
-        border: none;
-        box-shadow: none;
-      }
-      .page-header {
-          background: none;
-          padding-top: 0;
-      }
-
-      a, a:link, a:active {
-          color: #769F29;
-          text-decoration: none;
-      }
-    }
-
-}
-
 
 // Novos datasets (forms)
 // ==========================================================================
@@ -325,49 +255,8 @@ header.masthead {
 
 // Package (página única dos datasets)
 // ==========================================================================
-.feedback-ouvidoria {
-    margin: 35px 0;
-    background-color: #ffffff;
-    border: 1px solid #d5d5d5;
-    border-top: 1px solid #d5d5d5;
-    font-size: 16px;
-    padding: 15px 20px;
-    text-align: center;
-
-
-    .half {
-      width: 50%;
-      float: left;
-    }
-    a {
-        padding: 15px 10px;
-        display: inline-block;
-        text-decoration: none;
-        background: #fff;
-        transition: 0.2s;
-
-        &:hover {
-          background: #2c66ce;
-          border-radius: 40px;
-          .fa, span {
-            color: white;
-          }
-        }
-    }
-    .fa {
-        display: inline-block;
-        font: normal normal normal 14px/1 FontAwesome;
-        font-size: inherit;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #2c66ce;
-    }
-    span {
-        color: #606060;
-        line-height: 1.4em;
-        font-size: 0.9375em;
-    }
+#feedback-eouv {
+   margin: 20px 0;
 }
 
 
@@ -400,9 +289,18 @@ header.masthead {
 
 
 // ==========================================================================
+// Custom pages
+// ==========================================================================
+@import "_pag_wordpress.scss";
+@import "_pag_home.scss";
+
+
+
+// ==========================================================================
 // Responsive versions
 // ==========================================================================
-@import "_mobile.scss";
-@import "_tablet.scss";
+@import "_r_mobile.scss";
+@import "_r_tablet.scss";
+@import "_r_desktop.scss";
 
 // END file

@@ -1,0 +1,13 @@
+{
+    "version": "0.1.0",
+    "command": "gulp",
+    "isShellCommand": true,
+    "tasks": [
+        {
+            "taskName": "compile-scss",
+            "isBuildCommand": true,
+            "showOutput": "silent",
+            "isBackground": true
+        }
+    ]
+}

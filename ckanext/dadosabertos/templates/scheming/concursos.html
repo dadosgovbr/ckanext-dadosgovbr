@@ -1,0 +1,171 @@
+{% extends "page.html" %}
+
+{% block primary %}
+  <article class="module primary span9">
+    <div class="module-content">
+      <h1>Aplicativos com dados públicos</h1>
+
+      <!-- MSG Para desenvolvedores enviaram apps -->
+      <div class="ui icon message">
+        <i class="code icon"></i>
+        <div class="content">
+          <div class="header">Deseja adicionar seu aplicativo?</div>
+          <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a> e diga-nos mais sobre seu problema com os dados do Portal Brasileiro de Dados Abertos!</p>
+        </div>
+      </div>
+
+      <!-- Barra de busca -->
+      <div id="search-app" class="ui icon input fluid large">
+        <input id="search-app-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
+        <i class="search icon"></i>
+      </div>
+
+     
+      <hr>
+
+      <!-- MSG Nenhum aplicativo encontrado-->
+      <div class="ui warning message" id="search-not-found" style="display:none;">
+        <div>
+          Nenhum aplicativo encontrado... :/
+        </div>
+      </div>
+
+      <!-- Lista de aplicativos -->
+      <div class="ui segment link items" id="aplicativos">
+
+        <!-- Loader -->
+        <div class="ui inverted dimmer" id="aplicativos-loader">
+          <div class="ui huge text loader">Buscando</div>
+        </div>
+        
+        <!-- Aplicativos -->
+        {% for app in c.aplicativos %}
+          <div class="item app" data-searchinfo="{{app.title}} {{app.name}} {{app.description}}">
+            <a class="ui tiny bordered image" href="aplicativo/{{app.name}}">
+              <img src="{{app.image}}" alt="{{app.title}}" style="border-radius: 3px;">
+            </a>
+            <div class="content">
+              <a class="header" href="aplicativo/{{app.name}}">{{app.title}}</a>
+              <div class="meta">
+                {{app.group_title}}
+              </div>
+              <div class="description">
+                {{app.description}}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </article>
+  
+
+<!-- ================================ -->
+<script>
+(function() {
+  // DIV com todos os Aplicativos
+  var aplicativos = $("#aplicativos");
+
+  // Evento da barra de busca
+  $("#search-app-field").on('keyup', function(){
+    $(this).unbind();
+
+    // Exibe o loader
+    $("#aplicativos-loader").data("near_event", "1");
+    $("#aplicativos-loader").addClass("active");
+
+    // Busca animação
+    $("#search-app").addClass("loading");
+    setTimeout(function(){
+      $("#search-app").removeClass("loading");
+    }, 1500);
+
+    //search_app();
+  });
+
+  // Busca
+  var search_input = document.getElementById("search-app-field");
+  function search_app (){
+    var search_string = search_input.value;    
+
+    // Se houve um evento de busca a pouco tempo
+    if($("#aplicativos-loader").data("near_event") == "1") {
+      $("#aplicativos-loader").data("near_event", "0");
+    }
+
+    // Se não houve, filtra os resultados
+    else {
+      // Oculta o loader
+      $("#aplicativos-loader").removeClass("active");
+
+      // Loop para cada aplicativo em aplicativos
+      aplicativos.children(".app").each(function() {
+        // Exibe aplicativo encontrado
+        if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
+          $(this).removeClass("hide");
+        }
+
+        // Oculta aplicativo não encontrado
+        else{
+          $(this).addClass("hide");
+        }
+      });
+
+      // Se existir resultados
+      if(aplicativos.find(".app").not(".hide").length != 0) {
+        $("#aplicativos").show();
+        $("#search-not-found").hide();
+      }
+      // Se não existir resultados
+      else {
+        $("#aplicativos").hide();
+        $("#search-not-found").show();
+      }
+    }
+
+  };
+
+  // Verifica resultados a cada meio segundo
+  setInterval(search_app, 400);
+  search_app(); // Busca quando a página é carregada
+})();
+</script>
+<!-- ================================ -->
+{% endblock %}
+
+{% block breadcrumb_content %}
+  <li><a class="active"  href="{{h.url_for('home','index')}}aplicativos">Aplicativos</a></li>
+{% endblock %}
+
+{% block flash %}
+{% endblock %}
+
+{% block secondary %}
+  <aside id="noticia-sidebar" class="noticia secondary span3">
+    <div class="module-content">
+      <h2>Resumo</h2>
+      <hr>
+      <p>123</p>
+
+    </div>
+    
+    <!-- Lista de categorias -->
+    <div class="module module-narrow">
+      <h2 class="module-heading"><i class="icon-building"></i> Tags</h2>
+      
+      <section class="module-content">
+        <div class="image">
+          <a href="/organization/saude">
+            <img src="/base/images/placeholder-organization.png" width="200" alt="saude">
+          </a>
+        </div>
+      
+        <ul class="nav nav-simple">
+          <li class="nav-item"><a href="https://plus.google.com/share?url=http://localhost/aplicativo/pokemon-go" target="_blank"><i class="icon-google-plus-sign"></i> Google+</a></li>
+          <li class="nav-item"><a href="https://twitter.com/share?url=http://localhost/aplicativo/pokemon-go" target="_blank"><i class="icon-twitter-sign"></i> Twitter</a></li>
+          <li class="nav-item"><a href="https://www.facebook.com/sharer.php?u=http://localhost/aplicativo/pokemon-go" target="_blank"><i class="icon-facebook-sign"></i> Facebook</a></li>
+        </ul>
+      </section>
+    </div>
+  </aside>
+{% endblock %}

@@ -9,7 +9,7 @@
 
 
 {% block primary %}
-  <div id="noticia-content" class="noticia primary span9">
+  <div id="noticia-content" class="noticia">
     {% block primary_content %}
       <article class="module">
         {% block page_header %}
@@ -18,7 +18,12 @@
           </header>
         {% endblock %}
         <div class="module-content">
-          <p>{{c.wp_post.content.rendered|safe}}</p>
+          <div id="date" class="ui top left attached label">
+            Data de publicação
+            <div class="detail">{{h.dadosabertos_format_timestamp(c.wp_post.modified)}}</div>
+          </div>
+
+          <div>{{c.wp_post.content.rendered|safe}}</div>
         </div>
       </article>
     {% endblock %}
@@ -27,19 +32,6 @@
 
 
 {% block secondary %}
-  <aside id="noticia-sidebar" class="noticia secondary span3">
-    <div class="module-content">
-      {% block secondary_content %}
-        <h2>Resumo</h2>
-        <p>{{c.wp_post.excerpt.rendered|safe}}</p>
-
-        <hr>
-
-        <h2>Data</h2>
-        <p>{{h.dadosabertos_format_timestamp(c.wp_post.modified)}}</p>
-      {% endblock %}
-    </div>
-  </aside>
 {% endblock %}
 
 

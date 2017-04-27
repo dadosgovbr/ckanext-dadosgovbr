@@ -37,9 +37,26 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
 
     # Mapeamento das URLs
     def after_map(self, map):
+        # Wordpress feed redirect (if load balancer fail)
         map.connect('/feed',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='feed')
+
+        # ckanext-scheming
+        map.connect('/test',
+                    controller='ckanext.dadosabertos.controllers.test:TestController',
+                    action='index')
+        map.connect('/aplicativos',
+                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
+                    action='index')
+        map.connect('/inventarios',
+                    controller='ckanext.dadosabertos.controllers.inventarios:InventariosController',
+                    action='index')
+        map.connect('/concursos',
+                    controller='ckanext.dadosabertos.controllers.concursos:ConcursosController',
+                    action='index')
+                    
+        # Wordpress
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='list')
@@ -48,6 +65,10 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     action='show',
                     slug=0)
         map.connect('/noticia/{slug}', # Legacy from dados.gov.br 2015 version
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='redirect',
+                    slug=0)
+        map.connect('/noticias/{id}/{slug}', # Legacy from dados.gov.br 2016 version
                     controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
                     action='redirect',
                     slug=0)
@@ -66,10 +87,18 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         # extension they belong to, to avoid clashing with functions from
         # other extensions.
         return {
+            # Homepage
             'dadosabertos_most_recent_datasets': tools.most_recent_datasets,
+
+            # Wordpress
             'dadosabertos_wordpress_posts': wp.posts,
+            'dadosabertos_format_timestamp': wp.format_timestamp,
+
+            # Generict tools
             'dadosabertos_trim_string': tools.trim_string,
             'dadosabertos_trim_letter': tools.trim_letter,
             'dadosabertos_resource_count': tools.resource_count,
             'dadosabertos_get_featured_group': tools.get_featured_group,
-            'dadosabertos_format_timestamp': wp.format_timestamp }
+            'dadosabertos_cache_create': tools.cache_create,
+            'dadosabertos_cache_load': tools.cache_load
+        }

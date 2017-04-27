@@ -11,12 +11,10 @@
         {% for post in h.dadosabertos_wordpress_posts(3) %}
           <tr>
             <td>
-              <p><small>{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</small></p>
-            	<p><strong><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}">{{post.title.rendered|safe}}</a></strong></p>
-            	<p>
-                {{h.dadosabertos_trim_string(post.excerpt.rendered, 240)|safe}}
-                <br><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}" style="color: #769F29;">leia mais</a>
-              </p>
+              <div class="ui  basic ribbon label">{{h.dadosabertos_format_timestamp(post.date,'%d/%m/%Y')}}</div>
+            	<p style="margin-top: 12px;"><strong><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}">{{post.title.rendered|safe}}</a></strong></p>
+            	<p>{{h.dadosabertos_trim_string(post.excerpt.rendered, 240)|safe}}</p>
+              <p><a href="{{h.url_for('home','index')}}noticias/{{post.slug}}" style="color: #769F29;">leia mais</a></p>
             </td>
           </tr>
         {% endfor %}

@@ -42,11 +42,11 @@ def cache_json(url):
     f_name = cache_dir+'ckan_'+f_key
 
     # Remove old cache file
-    # 14400 = 10 minutes
+    # 600 = 10 minutes
     now = time.time()
     file_is_old = False
     if (os.path.isfile(f_name)):
-        if (os.stat(f_name).st_mtime < (now - 14400)):
+        if (os.stat(f_name).st_mtime < (now - 600)):
             file_is_old = True
 
     # Check if cached file exists
