@@ -6,6 +6,8 @@ from pylons import request, response
 from pylons.controllers.util import redirect
 import requests
 
+# Wordpress integration
+import ckanext.dadosabertos.helpers.wordpress as wp
 
 # ============================================================
 # Aplicativos
@@ -21,6 +23,16 @@ class AplicativosController(p.toolkit.BaseController):
         data_dict = {'fq': 'type:aplicativo'}
         c.aplicativos = get_action('package_search')(context, data_dict)['results']
 
+        # Get page content from Wordpress
+        wp_page_slug = 'scheming_aplicativos'
+        c.wp_page = type('Nothing', (object,), {})  
+        c.wp_page.content = type('Nothing', (object,), {})  
+        c.wp_page.content.rendered = "Conteudo da pagina nao encontrado..."
+        try:
+            c.wp_page = wp.page(wp_page_slug)
+        except:
+            pass
+
         # DEBUG
         # from pprint import pprint
         # pprint(c.aplicativos)
@@ -34,7 +46,6 @@ class AplicativosController(p.toolkit.BaseController):
 
 
         return render('scheming/aplicativos.html')
-    
 
 
     
@@ -43,17 +54,17 @@ class AplicativosController(p.toolkit.BaseController):
         context = {'model': model, 'session': model.Session,
                 'user': c.user or c.author}
 
-        # Get group
+        # Get app
         data_dict = {'id': title, 'include_extras': 'True'}
         app = get_action('package_show')(context, data_dict)
-
+        c.app_dict = app
 
         # DEBUG
         from pprint import pprint
         pprint(app)
 
         c.app_title = title
-        return render("scheming/aplicativo_single.html")
+        return render("scheming/aplicativo_modal.html")
 
 
 
@@ -72,6 +83,16 @@ class ConcursosController(p.toolkit.BaseController):
         # Get "concursos"
         data_dict = {'fq': 'type:concurso'}
         c.concursos = get_action('package_search')(context, data_dict)['results']
+
+        # Get page content from Wordpress
+        wp_page_slug = 'scheming_concursos'
+        c.wp_page = type('Nothing', (object,), {})  
+        c.wp_page.content = type('Nothing', (object,), {})  
+        c.wp_page.content.rendered = "Conteudo da pagina nao encontrado..."
+        try:
+            c.wp_page = wp.page(wp_page_slug)
+        except:
+            pass
 
         # DEBUG
         # from pprint import pprint
@@ -103,6 +124,17 @@ class InventariosController(p.toolkit.BaseController):
         # Get "inventarios"
         data_dict = {'fq': 'type:inventario'}
         c.concursos = get_action('package_search')(context, data_dict)['results']
+
+        # Get page content from Wordpress
+        wp_page_slug = 'scheming_inventarios'
+        c.wp_page = type('Nothing', (object,), {})  
+        c.wp_page.content = type('Nothing', (object,), {})  
+        c.wp_page.content.rendered = "Conteudo da pagina nao encontrado..."
+        try:
+            c.wp_page = wp.page(wp_page_slug)
+        except:
+            pass
+
 
         # DEBUG
         # from pprint import pprint

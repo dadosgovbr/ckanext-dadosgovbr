@@ -20,21 +20,28 @@
   <!-- Formulário / Ouvidoria -->
   <div class="dimmable form-problems" style="display:none;">
     <hr>
+    <h4 class="ui header msg-error" style="display:none;">Desculpe. Diga-nos o motivo para que possamos buscar uma solução.</h4>
+
     <div style="padding: 10px; position: relative;">
         <form class="ui reply form">
           <div class="ui inline checkbox">
             <input type="checkbox" name="motivo-1">
-            <label>Não consegui acessar o serviço (link quebrado)</label>
+            <label name="motivo-1">Os dados estão desatualizados.</label>
           </div>
         
           <div class="ui inline checkbox">
             <input type="checkbox" name="motivo-2">
-            <label>Não entendi ou faltam informações de como utilizar o serviço</label>
+            <label name="motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
           </div>
         
           <div class="ui inline checkbox">
             <input type="checkbox" name="motivo-3">
-            <label>As informações sobre o serviço estão erradas</label>
+            <label name="motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
+          </div>
+        
+          <div class="ui inline checkbox">
+            <input type="checkbox" name="motivo-4">
+            <label name="motivo-4">Os dados contém erro ou inconsistência.</label>
           </div>
       
           <div class="ui attached field">
@@ -73,7 +80,8 @@ $(document).ready(function(){
     eouv.find(".form-problems").show();
     eouv.find(".sim").removeClass("sim").addClass("disabled");
     eouv.addClass("red").removeClass("green");
-    eouv.find(".msg-title").html("Desculpe. Diga-nos o motivo para que possamos buscar uma solução.");
+    eouv.find(".msg-title").html('Verifique se a solução para o seu problema está na relação de <a href="/pagina/faq-dataset" style="color:#769F29;">perguntas frequentes</a>.');
+    eouv.find(".msg-error").show();
   });
 
   // Enviar problema para ouvidoria

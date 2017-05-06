@@ -26,7 +26,7 @@
       {% if pkg.notes %}
         <hr>
         <div class="notes embedded-content">
-          {{ pkg.notes|safe }}
+          {{ h.render_markdown(pkg.notes) }}
         </div>
       {% endif %}
     {% endblock %}
@@ -38,7 +38,10 @@
     <br>
     {% snippet "package/snippets/tags.html", tags=pkg.tags %}
 
-    {% snippet "package/snippets/eouv.html" %}
+    {{h.get_organization(pkg.organization.name).extras[0]}}
+    {% if pkg.organization.siorg %}
+      {% snippet "package/snippets/eouv.html" %}
+    {% endif %}
     <hr>
   {% endblock %}
 

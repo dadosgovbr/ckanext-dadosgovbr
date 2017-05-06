@@ -3,15 +3,18 @@
 {% block primary %}
   <article class="module">
     <div class="module-content">
-      <h1>Aplicativos com dados públicos</h1>
-
-      <!-- MSG Para desenvolvedores enviaram apps -->
+       <!--MSG Para desenvolvedores enviaram apps 
       <div class="ui icon message">
         <i class="code icon"></i>
         <div class="content">
           <div class="header">Deseja adicionar seu aplicativo?</div>
           <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a> e diga-nos mais sobre seu problema com os dados do Portal Brasileiro de Dados Abertos!</p>
         </div>
+      </div>-->
+
+      <!-- Conteúdo vindo do Wordpress -->
+      <div class="ui segment basic nopadding">
+        {{c.wp_page.content.rendered|safe}}
       </div>
 
       <!-- Barra de busca -->
@@ -19,7 +22,6 @@
         <input id="search-app-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
         <i class="search icon"></i>
       </div>
-
      
 
       <!-- MSG Nenhum aplicativo encontrado-->
@@ -30,7 +32,7 @@
       </div>
 
       <!-- Lista de aplicativos -->
-      <div class="ui segment basic" id="aplicativos">
+      <div class="ui segment basic nopadding" id="aplicativos">
 
         <!-- Loader -->
         <div class="ui inverted dimmer" id="aplicativos-loader">
@@ -50,7 +52,7 @@
               <div class="ui medium header">{{app.title}}</div>
               <div class="meta">
                 <a class="ui positive tiny basic button" href="/aplicativo/{{app.name}}" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">Mais informações</a>
-                <!--<button class="ui positive tiny basic button open-modal" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">Mais informações</button>-->
+                <!--<button class="ui positive tiny basic button open-modal" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">new</button>-->
               </div>
             </div>
             <div class="description six wide column hidden-sm hidden-xs">
@@ -67,7 +69,7 @@
 
 <!-- Modal
 ================================ -->
-<div class="ui modal">
+<div class="ui long modal">
   <i class="close icon" onclick="$('.ui.modal').modal('hide');"></i>
   <div class="header">
     Error...
@@ -81,8 +83,9 @@
     </div>
   </div>
   <div class="actions">
-    <div class="ui button">Cancel</div>
-    <div class="ui button">OK</div>
+    <div class="ui button blue">Android</div>
+    <div class="ui button blue">iOS</div>
+    <div class="ui button violet">Web</div>
   </div>
 </div>
 <script>
@@ -101,6 +104,7 @@ $(document).ready(function() {
 
   // Modal
   var modal = $('.ui.modal');
+  // $('.ui.modal').modal({observeChanges: true});
 
   // Carrega conteúdo do modal
   function appModalLoad(app_name, app_title) {
@@ -114,9 +118,10 @@ $(document).ready(function() {
     modal.modal('show');
 
     // Carrega conteúdo via Ajax
-    $.ajax({url: "/aplicativos/"+app_name, success: function(result){
+    $.ajax({url: "/aplicativos_busca/"+app_name, success: function(result){
       modal.find('.dimmer').removeClass('active');
       modal.find('.content-area').html(result);
+      // modal.modal('refresh');
     }});
 
   }
@@ -206,6 +211,12 @@ $(document).ready(function() {
   search_app(); // Busca quando a página é carregada
 })();
 </script>
+
+
+{% block body_extras -%}
+  {{ super() }}
+{%- endblock %}
+
 
 {% endblock %}
 

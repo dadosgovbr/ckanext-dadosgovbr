@@ -49,7 +49,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         map.connect('/aplicativos',
                     controller='ckanext.dadosabertos.controllers.scheming:AplicativosController',
                     action='index')
-        map.connect('/aplicativos/{title}',
+        map.connect('/aplicativos_busca/{title}',
                     controller='ckanext.dadosabertos.controllers.scheming:AplicativosController',
                     action='single')
         map.connect('/inventarios',
@@ -63,21 +63,24 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='list')
-        map.connect('/noticias/{slug}',
-                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
-                    action='show',
-                    slug=0)
-        map.connect('/noticia/{slug}', # Legacy from dados.gov.br 2015 version
+        map.connect('/noticias/{slug}', # Legacy from dados.gov.br 2017 version
                     controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='redirect',
+                    slug=0)
+        map.connect('/noticia/{slug}',
+                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
+                    action='show',
                     slug=0)
         map.connect('/noticias/{id}/{slug}', # Legacy from dados.gov.br 2016 version
                     controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
                     action='redirect',
                     slug=0)
-        map.connect('/paginas/{slug}',
+        map.connect('/pagina/{slug}', 
                     controller='ckanext.dadosabertos.controllers.wordpress:PaginasController',
                     action='index')
+        map.connect('/paginas/{slug}', # Legacy from dados.gov.br 2016 version
+                    controller='ckanext.dadosabertos.controllers.wordpress:PaginasController',
+                    action='redirect')
         return map
 
 

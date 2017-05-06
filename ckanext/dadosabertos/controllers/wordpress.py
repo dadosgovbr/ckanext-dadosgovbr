@@ -13,7 +13,7 @@ import ckanext.dadosabertos.helpers.wordpress as wp
 class NoticiasController(p.toolkit.BaseController):
 
     def redirect (ctrl, slug):
-        return redirect(b'/wordpress/'+slug)
+        return redirect(b'/noticia/'+slug)
 
     def show (ctrl, slug):
         c.wp_post = wp.post(slug)
@@ -49,3 +49,7 @@ class PaginasController(p.toolkit.BaseController):
     def index (ctrl, slug):
         c.wp_page = wp.page(slug)
         return render('wordpress/page_single.html')
+
+    def redirect (ctrl, slug):
+        return redirect(b'/pagina/'+slug)
+

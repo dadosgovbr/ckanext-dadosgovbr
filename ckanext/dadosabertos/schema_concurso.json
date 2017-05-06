@@ -62,7 +62,7 @@
       "field_name": "start_date",
       "label": "Data de início",
       "preset": "date",
-      "form_snippet": "text.html",
+      "form_snippet": "date.html",
       "form_placeholder": "ex.: 2016-10-10",
       "help_text": "Informar a data de início do concurso."
     },
@@ -70,7 +70,7 @@
       "field_name": "end_date",
       "label": "Data de fim",
       "preset": "date",
-      "form_snippet": "text.html",
+      "form_snippet": "date.html",
       "form_placeholder": "ex.: 2016-10-15",
       "help_text": "Informar a data de finalização do concurso."
     }

@@ -3,20 +3,14 @@
 {% block primary %}
   <article class="module primary span9">
     <div class="module-content">
-      <h1>Inventários</h1>
-
-      <!-- MSG Para desenvolvedores enviaram apps -->
-      <div class="ui icon message">
-        <i class="heart icon"></i>
-        <div class="content">
-          <div class="header">Mensagem para o usuário</div>
-          <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a>. Detalhes das informações para usuário que está procurando concursos.</p>
-        </div>
+      <!-- Conteúdo vindo do Wordpress -->
+      <div class="ui segment basic nopadding">
+        {{c.wp_page.content.rendered|safe}}
       </div>
 
       <!-- Barra de busca -->
       <div id="search" class="ui icon input fluid large">
-        <input id="search-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
+        <input id="search-field" value="{{c.s_result}}" type="text" placeholder="Qual inventário você procura?">
         <i class="search icon"></i>
       </div>
 
@@ -30,7 +24,7 @@
       </div>
 
       <!-- Lista de Concursos -->
-      <div class="ui segment basic link" id="concursos">
+      <div class="ui segment basic link nopadding" id="concursos">
 
         <!-- Loader -->
         <div class="ui inverted dimmer" id="concursos-loader">

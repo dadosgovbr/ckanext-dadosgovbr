@@ -5,18 +5,12 @@
         <img class="img-main" src="{{pkg.image|safe}}" alt="{{pkg.title|safe}}">
     </div>
     <div class="six wide computer three wide tablet six wide mobile column">
-        <a href="mailto:{{pkg.author_email|safe}}">{{pkg.author_name|safe}}</a>
+        <h3><a href="mailto:{{pkg.author_email|safe}}">{{pkg.author_name|safe}}</a></h3>
+        <p><strong>Gratuito:</strong> {{pkg.is_free|safe}}</p>
+        <p><strong>Código aberto:</strong> {{pkg.is_opensource|safe}}</p>
+        <p><a href="{{pkg.url|safe}}">{{pkg.url|safe}}</a></p>
     </div>
     <div class="six wide computer three wide tablet six wide mobile column">
         {{pkg.description|safe}}
     </div>
 </div>
-
-<div class="ui segment">
-    {% block package_additional_info %}
-        {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
-    {% endblock %}
-</div>
-
-Informações do aplicativo aqui...<br>
-{{pkg.title|safe}}

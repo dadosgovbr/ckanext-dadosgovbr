@@ -19,7 +19,9 @@
     border-radius: 0 !important;
   }
 }
-
+.nopadding {
+  padding: 0 !important;
+}
   
 
 // Global
@@ -286,6 +288,15 @@ header.masthead {
   box-shadow: 0 -7px 39px rgba(23, 117, 0, 0.42) inset;
 }
 
+
+
+// Scheming
+// ==========================================================================
+.app-modal {
+  .img-main {
+    width: 100%;
+  }
+}
 
 
 // ==========================================================================
