@@ -87,14 +87,32 @@ def most_recent_datasets(limit_of_datasets=5):
 
 
 def get_organization_extra(org_name, extra_name):
-    extras = h.get_organization(org_name)['extras']
 
-    # Search for organization extra by "extra_name"
-    for extra in extras:
-        if(extra['key'] == extra_name):
-            return extra
-    
-    return None
+    # Get cache if exist
+    # or is older than 2 minutes
+    extra = cache_load(str(org_name)+'/'+str(extra_name) , 1)
+
+    # Check if has nothing
+    if(extra == 'nothing'):
+        return None
+
+    # Get from database if cache doesn't exist or expirate
+    if(extra == None):
+        # Get extras from org
+        extras = h.get_organization(org_name)['extras']
+
+        # Search for organization extra by "extra_name"
+        for extra in extras:
+            if(extra['key'] == extra_name):
+                # Create cache
+                cache_create(extra, str(org_name)+'/'+str(extra_name) )        
+                return extra
+        
+        # Create cache
+        cache_create('nothing', str(org_name)+'/'+str(extra_name) )
+        return None
+
+    return extra
 
 
 
