@@ -3,6 +3,14 @@
 {% block primary %}
   <article class="module primary span9">
     <div class="module-content">
+      {% if h.check_access('package_create') %}
+        <div class="page_primary_action">
+          <a class="btn btn-primary" href="/inventario/new">
+            <i class="icon-plus-sign-alt"></i> Adicionar novo inventario
+          </a>
+        </div>
+      {% endif %}
+
       <!-- Conteúdo vindo do Wordpress -->
       <div class="ui segment basic nopadding">
         {{c.wp_page.content.rendered|safe}}
@@ -147,7 +155,7 @@
     </div>
     
     <!-- Lista de categorias -->
-    <div class="module module-narrow">
+    <div class="module module-narrow hidden">
       <h2 class="module-heading"><i class="icon-ok"></i> Links importantes</h2>
       <ul class="nav nav-simple">
         <li class="nav-item"><a href="#">Link importante 1</a></li>

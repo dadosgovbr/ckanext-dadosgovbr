@@ -19,8 +19,8 @@
             {# Organization #}
             {% if dataset.owner_org %}
               <td>
-                <a href="{{h.url_for('home','index')}}organization/{{h.get_organization(dataset.owner_org).name}}" title="{{h.group_name_to_title(h.get_organization(dataset.owner_org).name)}}">
-                  {{h.dadosgovbr_trim_letter(h.group_name_to_title(h.get_organization(dataset.owner_org).name), 36)}}
+                <a href="{{h.url_for('home','index')}}organization/{{dataset.organization.name}}" title="{{dataset.organization.title}}">
+                  {{h.dadosgovbr_trim_letter(dataset.organization.title, 36)}}
                 </a>
               </td>
             {# Autor #}

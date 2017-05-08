@@ -18,12 +18,15 @@
           </header>
         {% endblock %}
         <div class="module-content">
-          <div id="date" class="ui top left attached label">
-            Data de publicação
-            <div class="detail">{{h.dadosgovbr_format_timestamp(c.wp_post.date)}}</div>
-          </div>
+          <div class="ui segment basic">
+            <div id="date" class="ui top left attached label">
+              Data de publicação
+              <div class="detail">{{h.dadosgovbr_format_timestamp(c.wp_post.date)}}</div>
+            </div>
 
-          <div>{{c.wp_post.content.rendered|safe}}</div>
+            <div>{{c.wp_post.content.rendered|safe}}</div>
+
+          </div>
         </div>
       </article>
     {% endblock %}

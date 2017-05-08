@@ -3,14 +3,13 @@
 {% block primary %}
   <article class="module">
     <div class="module-content">
-       <!--MSG Para desenvolvedores enviaram apps 
-      <div class="ui icon message">
-        <i class="code icon"></i>
-        <div class="content">
-          <div class="header">Deseja adicionar seu aplicativo?</div>
-          <p><a href="{{ h.url('home') }}/paginas/contato">Entre em contato conosco</a> e diga-nos mais sobre seu problema com os dados do Portal Brasileiro de Dados Abertos!</p>
+      {% if h.check_access('package_create') %}
+        <div class="page_primary_action">
+          <a class="btn btn-primary" href="/aplicativo/new">
+            <i class="icon-plus-sign-alt"></i> Adicionar novo aplicativo
+          </a>
         </div>
-      </div>-->
+      {% endif %}
 
       <!-- Conteúdo vindo do Wordpress -->
       <div class="ui segment basic nopadding">
@@ -43,8 +42,8 @@
         {% for app in c.aplicativos %}
         <div class="ui segment app" data-searchinfo="{{app.title}} {{app.name}} {{app.description}}">
           <div class="ui three column grid">
-            <div class="two wide column">
-              <div class="ui tiny bordered image">
+            <div class="three wide column">
+              <div class="ui fluid bordered image">
                 <img src="{{app.image}}" alt="{{app.title}}" style="border-radius: 3px;">
               </div>
             </div>
@@ -55,9 +54,9 @@
                 <!--<button class="ui positive tiny basic button open-modal" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">new</button>-->
               </div>
             </div>
-            <div class="description six wide column hidden-sm hidden-xs">
+            <div class="description eight wide column hidden-sm hidden-xs">
               <div class="group" style="margin: 4px 0px;">{{app.group_title}}</div>
-              {{app.description}}
+              {{h.dadosgovbr_trim_string(app.description, 300)}}
             </div>
           </div>
         </div>

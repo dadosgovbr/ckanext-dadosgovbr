@@ -41,8 +41,16 @@ def resource_count():
 
 
 def most_recent_datasets(limit_of_datasets=5):
-        """ Return most recent datasets
-        """
+    """ Return most recent datasets
+    """
+
+    # Get cache if exist
+    # or is older than 5 minutes
+    most_recent_datasets = cache_load('most_recent_datasets', 5)
+
+    # Get from database if cache doesn't exist or expirate
+    if(most_recent_datasets == None):
+
         import ckan.lib.dictization as d
         from ckan.logic import get_action
         from sqlalchemy import desc
@@ -69,10 +77,13 @@ def most_recent_datasets(limit_of_datasets=5):
         for dataset, activity in most_recent_from_bd:
             dataset.link = 'dataset/' + dataset.name
             dataset.time = activity.timestamp.strftime("%d/%m/%Y")
+            dataset.organization = h.get_organization(dataset.owner_org)
             most_recent_datasets.append(dataset)
 
+        # Create cache
+        cache_create(most_recent_datasets, 'most_recent_datasets')
 
-        return most_recent_datasets
+    return most_recent_datasets
 
 
 def get_organization_extra(org_name, extra_name):

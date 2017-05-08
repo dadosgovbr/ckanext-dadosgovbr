@@ -16,10 +16,17 @@
 
 // Uma única notícia
 .noticia {
+    & > .module {
+        margin: 0;
+    }
+
   &#noticia-content {
     div.module-content {
         position: relative;
-        padding-top: 17px;
+        padding: 0;
+        @media (max-width: 767px) {
+            padding: 17px 25px 25px 25px;
+        }
         .conteudo {
             padding-top: 10px;
         }
