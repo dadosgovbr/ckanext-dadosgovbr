@@ -38,8 +38,7 @@
     <br>
     {% snippet "package/snippets/tags.html", tags=pkg.tags %}
 
-    {{h.get_organization(pkg.organization.name).extras[0]}}
-    {% if pkg.organization.siorg %}
+    {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
       {% snippet "package/snippets/eouv.html" %}
     {% endif %}
     <hr>

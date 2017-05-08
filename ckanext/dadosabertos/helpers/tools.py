@@ -75,6 +75,18 @@ def most_recent_datasets(limit_of_datasets=5):
         return most_recent_datasets
 
 
+def get_organization_extra(org_name, extra_name):
+    extras = h.get_organization(org_name)['extras']
+
+    # Search for organization extra by "extra_name"
+    for extra in extras:
+        if(extra['key'] == extra_name):
+            return extra
+    
+    return None
+
+
+
 def cache_create (d, name):
     """ Create a cache for 'd' dict.
 

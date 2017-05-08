@@ -104,6 +104,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
             'dadosgovbr_trim_string': tools.trim_string,
             'dadosgovbr_trim_letter': tools.trim_letter,
             'dadosgovbr_resource_count': tools.resource_count,
+            'dadosgovbr_get_organization_extra': tools.get_organization_extra,
             'dadosgovbr_get_featured_group': tools.get_featured_group,
             'dadosgovbr_cache_create': tools.cache_create,
             'dadosgovbr_cache_load': tools.cache_load
