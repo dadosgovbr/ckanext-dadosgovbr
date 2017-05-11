@@ -3,6 +3,7 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.lib.base import c, g, h, model
+from ckan.common import OrderedDict
 
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IConfigurer
@@ -15,7 +16,7 @@ import ckanext.dadosabertos.helpers.wordpress as wp
 import ckanext.dadosabertos.helpers.tools as tools
 
 
-class DadosabertosPlugin(plugins.SingletonPlugin):
+class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     ''' Plugin Dados Abertos
 
         Classe principal.
@@ -24,10 +25,68 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
         - Define novos helpers
     '''
 
+    plugins.implements(plugins.IPackageController)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
     implements(IConfigurer, inherit=True)
     implements(IRoutes, inherit=True)
+
+
+
+    def read(self, entity):
+        pass
+
+    def create(self, entity):
+        pass
+
+    def edit(self, entity):
+        pass
+
+    def authz_add_role(self, object_role):
+        pass
+
+    def authz_remove_role(self, object_role):
+        pass
+
+    def delete(self, entity):
+        pass
+
+    def before_search(self, search_params):
+        return search_params
+
+    def after_search(self, search_results, search_params):
+        return search_results
+
+    def before_index(self, data_dict):
+        import json
+        
+        kw = json.loads(data_dict.get('extras_keywords', '{}'))
+        data_dict['dados_abertos_base'] = json.loads(data_dict.get('dados_abertos_base', '[]'))
+        titles = json.loads(data_dict.get('title_translated', '{}'))
+
+        print(data_dict)
+        return data_dict
+
+    def before_view(self, pkg_dict):
+        return pkg_dict
+
+    def after_create(self, context, data_dict):
+        return data_dict
+
+    def after_update(self, context, data_dict):
+        return data_dict
+
+    def after_delete(self, context, data_dict):
+        return data_dict
+
+    def after_show(self, context, data_dict):
+        return data_dict
+
+    def update_facet_titles(self, facet_titles):
+        return facet_titles
+
+
+
 
     # Diretórios para templates e arquivos estáticos
     def update_config(self, config_):
@@ -47,17 +106,17 @@ class DadosabertosPlugin(plugins.SingletonPlugin):
                     controller='ckanext.dadosabertos.controllers.test:TestController',
                     action='index')
         map.connect('/aplicativos',
-                    controller='ckanext.dadosabertos.controllers.scheming:AplicativosController',
+                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
                     action='index')
         map.connect('/aplicativos_busca/{title}',
-                    controller='ckanext.dadosabertos.controllers.scheming:AplicativosController',
+                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
                     action='single')
         map.connect('/inventarios',
-                    controller='ckanext.dadosabertos.controllers.scheming:InventariosController',
-                    action='index')
+                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                    action='search')
         map.connect('/concursos',
-                    controller='ckanext.dadosabertos.controllers.scheming:ConcursosController',
-                    action='index')
+                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                    action='search')
                     
         # Wordpress
         map.connect('/noticias',

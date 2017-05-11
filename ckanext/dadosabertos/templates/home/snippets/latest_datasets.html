@@ -8,6 +8,7 @@
       <thead>
         <tr>
           <th>Conjunto de dados</th>
+          <th style="width: 90px;">Data</th>
           <th style="width: 140px;">Responsável</th>
         </tr>
       </thead>
@@ -15,6 +16,7 @@
         {% for dataset in h.dadosgovbr_most_recent_datasets(5) %}
           <tr>
             <td><a href="{{dataset.link}}" title="{{dataset.title}}">{{dataset.title}}</a></td>
+            <td>{{dataset.time}}</td>
 
             {# Organization #}
             {% if dataset.owner_org %}
