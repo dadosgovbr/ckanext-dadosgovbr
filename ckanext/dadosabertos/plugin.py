@@ -33,6 +33,8 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 
 
+    # Recriação do schema (Solr)
+    # =======================================================
     def read(self, entity):
         pass
 
@@ -58,13 +60,31 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return search_results
 
     def before_index(self, data_dict):
-        import json
-        
-        kw = json.loads(data_dict.get('extras_keywords', '{}'))
-        data_dict['dados_abertos_base'] = json.loads(data_dict.get('dados_abertos_base', '[]'))
-        titles = json.loads(data_dict.get('title_translated', '{}'))
+        import json, pprint
 
-        print(data_dict)
+        # All multiValue fields from ckanext-scheming
+        multiValue = ['dados_abertos_base', 'atualizacoes_base', 'informacoes_publicas_base']
+
+        for i, value in enumerate(multiValue):
+            # If package has "multiValue"
+            if('extras_'+value in data_dict):
+                # Add to Solr schema
+                data_dict[multiValue[i]] = []
+
+                # If package has multi value for multiValue field
+                try:
+                    for item in json.loads(data_dict['extras_'+value]):
+                        data_dict[multiValue[i]].append(item)
+                    #print(data_dict[multiValue[i]])
+                
+                # If package has just one value for multiValue field
+                except:
+                    data_dict[multiValue[i]].append(data_dict['extras_'+value])
+                    #print(data_dict['extras_'+value])
+                
+
+        
+
         return data_dict
 
     def before_view(self, pkg_dict):
@@ -89,12 +109,17 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 
     # Diretórios para templates e arquivos estáticos
+    # =======================================================
     def update_config(self, config_):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
         toolkit.add_resource('fanstatic', 'dadosabertos')
 
+
+
+
     # Mapeamento das URLs
+    # =======================================================
     def after_map(self, map):
         # Wordpress feed redirect (if load balancer fail)
         map.connect('/feed',
@@ -144,6 +169,9 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 
 
+
+    # Registro dos helpers
+    # =======================================================
     def get_helpers(self):
         '''Register all functions
 
