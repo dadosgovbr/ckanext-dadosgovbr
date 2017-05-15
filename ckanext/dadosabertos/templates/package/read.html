@@ -39,6 +39,7 @@
     {% snippet "package/snippets/tags.html", tags=pkg.tags %}
 
     {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
+      <span id="package_id" class="hidden">{{pkg.id}}</span>
       {% snippet "package/snippets/eouv.html" %}
     {% endif %}
     <hr>

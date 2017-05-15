@@ -266,6 +266,7 @@ class SchemingPagesController(base.BaseController):
                     fq += ' +dataset_type:dataset'
 
             facets = OrderedDict()
+            
 
             default_facet_titles = {
                 # Default package
@@ -278,9 +279,13 @@ class SchemingPagesController(base.BaseController):
                 # Inventário package
                 'situacao_base': _(u'Situação da base'),
                 'informacoes_sigilosas_base': _(u'Base possui informações sigilosas?'),
+                'vocab_sim': _(u'Sim'),
+                'vocab_nao': _(u'Não'),
                 'informacoes_publicas_base': _(u'Base possui informações públicas?'),
+                'informacoes_publicas_base_publico': _(u'Público'),
                 'atualizacoes_base': _(u'Período de atualização dos dados'),
                 'dados_abertos_base': _(u'Exporta para dados abertos?'),
+
 
 
                 # Concurso package

@@ -43,7 +43,7 @@
     {
       "field_name": "author_telefone",
       "label": "Telefone do Contato",
-      "form_placeholder": "Analista de Finanças",
+      "form_placeholder": "9999-9999",
       "display_property": "dc:creator"
     },
     {
@@ -68,17 +68,17 @@
     },
     {
       "field_name": "nome_base",
-      "label": "Nome da Base",
+      "label": "Nome do Inventário",
       "output_validators": "ignore_missing"
     },
     {
       "field_name": "sigla_base",
-      "label": "Sigla da Base",
+      "label": "Sigla do Inventário",
       "output_validators": "ignore_missing"
     },
     {
       "field_name": "situacao_base",
-      "label": "Situação da base",
+      "label": "Situação do Inventário",
       "preset": "select",
       "choices": [
         {
@@ -105,7 +105,7 @@
     },
     {
       "field_name": "descricao_base",
-      "label": "Descrição da Base",
+      "label": "Descrição do Inventário",
       "form_snippet": "markdown.html",
       "form_placeholder": "ex. Descreve a base. Recomenda-se incluir objetivos ou finalidades da base."
     },

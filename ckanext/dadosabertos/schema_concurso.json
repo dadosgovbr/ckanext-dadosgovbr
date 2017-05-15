@@ -35,7 +35,7 @@
       "help_text": "Endereço da página com informações do concurso."
     },
     {
-      "field_name": "tags",
+      "field_name": "etiquetas",
       "label": "Etiquetas",
       "preset": "tag_string_autocomplete",
       "help_text": "Ex.: hackathon, combate à corrupção, educação"

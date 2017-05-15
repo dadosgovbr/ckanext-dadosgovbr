@@ -20,6 +20,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     ''' Plugin Dados Abertos
 
         Classe principal.
+        - Define recriação do schema do Solr
         - Define diretórios para imagens, CSS e JS
         - Define mapeamento para novas rotas
         - Define novos helpers
@@ -81,9 +82,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 except:
                     data_dict[multiValue[i]].append(data_dict['extras_'+value])
                     #print(data_dict['extras_'+value])
-                
-
-        
 
         return data_dict
 
@@ -142,6 +140,11 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('/concursos',
                     controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
                     action='search')
+                    
+        # e-Ouv
+        map.connect('/eouv/new_negative',
+                    controller='ckanext.dadosabertos.controllers.eouv:EouvController',
+                    action='new_negative')
                     
         # Wordpress
         map.connect('/noticias',

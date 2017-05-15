@@ -23,7 +23,7 @@
     <h4 class="ui header msg-error" style="display:none;">Desculpe. Diga-nos o motivo para que possamos buscar uma solução.</h4>
 
     <div style="padding: 10px; position: relative;">
-        <form class="ui reply form">
+        <form class="ui reply form" id="form_eouv">
           <div class="ui inline checkbox">
             <input type="checkbox" name="motivo-1">
             <label name="motivo-1">Os dados estão desatualizados.</label>
@@ -47,6 +47,36 @@
           <div class="ui attached field">
             <textarea></textarea>
           </div>
+
+          <!-- Campos opcionais -->
+          <div class="botao_campos_opcionais">
+            <div class="ui segment">
+              <div class="field">
+                  <div class="ui button small right floated mostrar_campos_opcionais"><i class="user icon"></i> Desejo me identificar</div>
+                  <div>Ao se identificar, o órgão responsável poderá entrar em contato por email.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="campos_opcionais" style="display:none;">
+            <div class="field">
+              <label>Nome</label>
+              <input type="text" name="name" placeholder="(opcional)">
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="text" name="email" placeholder="(opcional)">
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" tabindex="0">
+                <label>Desejo receber email para acompanhar o relato.</label>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
           <div class="ui button enviar">Enviar relato para ouvidora</div>
         </form>
     </div>
@@ -69,6 +99,12 @@
 $(document).ready(function(){
   var eouv = $("#feedback-eouv");
 
+  // Mostrar campos opcionais
+  $('.mostrar_campos_opcionais').click(function() {
+    $('.botao_campos_opcionais').hide();
+    $('.campos_opcionais').show();
+  });
+
   // Se avaliar como "Sim"
   eouv.find(".sim").on("click", function(){
     eouv.find(".msg").html("Obrigado!<br>Sua avaliação foi contabilizada.");
@@ -86,10 +122,63 @@ $(document).ready(function(){
 
   // Enviar problema para ouvidoria
   eouv.find('form .enviar').on('click', function() {
-    eouv.find("i.checkmark").show(); // Exibe ícone
-    eouv.removeClass("red"); // Remove top border
-    eouv.find(".msg").html("Obrigado!<br>Sua mensagem foi enviada para a ouvidoria do Governo.");
-    eouv.find('.dimmer').addClass('active');
+    // Msg Sucesso
+    function msg_sucesso () {
+        eouv.find("i.checkmark").show(); // Exibe ícone
+        eouv.removeClass("red"); // Remove top border
+        eouv.find(".msg").html("Sua mensagem foi enviada para a ouvidoria do Governo.<br>Protocolo: <span class='protocolo'></span>");
+        eouv.find('.dimmer').addClass('active');
+    }
+
+    // Msg Erro
+    function msg_erro () {
+        eouv.find("i.checkmark").show().removeClass('checkmark').addClass('warning sign red'); // Exibe ícone
+        eouv.removeClass("red"); // Remove top border
+        eouv.find(".msg").html("Erro ao enviar sua mensagem para a ouvidoria.<br>Por favor, tente mais tarde.");
+        eouv.find('.dimmer').addClass('active');
+    }
+
+    // Conteúdo a ser enviado para o server
+    var data_eouv_text = '';
+    for (i=0; i<4; i++){
+      //$('td[name=tcol1]')
+    }
+    $('#' + id).is(":checked")
+
+    var data_eouv = { 
+      package_id: $('#package_id').html(),
+      form: $("#form_eouv").serialize()
+    }
+    
+    // Envia requisição
+    $.ajax({ url      : "/eouv/new_negative", 
+             type     : 'POST',
+             data     : data_eouv,
+             dataType : 'xml' 
+          })
+
+      // Sucesso na requisição
+      .done(function( data ) {
+        CodigoErro = data.getElementsByTagName('CodigoErro')[0].innerHTML
+        //console.log(data);
+
+        // Servidor retornou com sucesso
+        if (CodigoErro == 0) {
+          msg_sucesso();
+          eouv.find(".protocolo").html(data.getElementsByTagName('Protocolo')[0].innerHTML)
+        }
+
+        // Servidor retornou com erro
+        else {
+          msg_erro();
+        }
+      })
+
+      // Erro na requisição
+      .fail(function( data ) {
+        msg_erro();
+      });
+
   });
 
 });
