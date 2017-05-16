@@ -25,51 +25,59 @@
     <div style="padding: 10px; position: relative;">
         <form class="ui reply form" id="form_eouv">
           <div class="ui inline checkbox">
-            <input type="checkbox" name="motivo-1">
-            <label name="motivo-1">Os dados estão desatualizados.</label>
+            <input type="checkbox" class="hidden" name="eouv-motivo-1">
+            <label name="eouv-motivo-1">Os dados estão desatualizados.</label>
           </div>
         
           <div class="ui inline checkbox">
-            <input type="checkbox" name="motivo-2">
-            <label name="motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
+            <input type="checkbox" class="hidden" name="eouv-motivo-2">
+            <label name="eouv-motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
           </div>
         
           <div class="ui inline checkbox">
-            <input type="checkbox" name="motivo-3">
-            <label name="motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
+            <input type="checkbox" class="hidden" name="eouv-motivo-3">
+            <label name="eouv-motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
           </div>
         
           <div class="ui inline checkbox">
-            <input type="checkbox" name="motivo-4">
-            <label name="motivo-4">Os dados contém erro ou inconsistência.</label>
+            <input type="checkbox" class="hidden" name="eouv-motivo-4">
+            <label name="eouv-motivo-4">Os dados contém erro ou inconsistência.</label>
           </div>
       
           <div class="ui attached field">
-            <textarea></textarea>
+            <textarea name="eouv-text"></textarea>
           </div>
 
           <!-- Campos opcionais -->
           <div class="botao_campos_opcionais">
             <div class="ui segment">
-              <div class="field">
+              <div class="field hidden">
                   <div class="ui button small right floated mostrar_campos_opcionais"><i class="user icon"></i> Desejo me identificar</div>
                   <div>Ao se identificar, o órgão responsável poderá entrar em contato por email.</div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox mostrar_campos_opcionais">
+                  <input type="checkbox" class tabindex="0">
+                  <label>Quero ser notificado sobre o andamento desta solicitação.</label>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="campos_opcionais" style="display:none;">
+            <hr>
+
             <div class="field">
               <label>Nome</label>
-              <input type="text" name="name" placeholder="(opcional)">
+              <input type="text" name="eouv-name" placeholder="">
             </div>
             <div class="field">
               <label>Email</label>
-              <input type="text" name="email" placeholder="(opcional)">
+              <input type="email" name="eouv-email" placeholder="">
             </div>
-            <div class="field">
+            <div class="field hidden">
               <div class="ui checkbox">
-                <input type="checkbox" tabindex="0">
+                <input type="checkbox" name="eouv-receber-email" tabindex="0">
                 <label>Desejo receber email para acompanhar o relato.</label>
               </div>
             </div>
@@ -77,7 +85,7 @@
 
           <hr>
 
-          <div class="ui button enviar">Enviar relato para ouvidora</div>
+          <button type="submit" class="ui button enviar">Enviar relato para ouvidora</button>
         </form>
     </div>
   </div>
@@ -101,8 +109,8 @@ $(document).ready(function(){
 
   // Mostrar campos opcionais
   $('.mostrar_campos_opcionais').click(function() {
-    $('.botao_campos_opcionais').hide();
-    $('.campos_opcionais').show();
+    //$('.botao_campos_opcionais').hide();
+    $('.campos_opcionais').toggle();
   });
 
   // Se avaliar como "Sim"
@@ -121,8 +129,11 @@ $(document).ready(function(){
   });
 
   // Enviar problema para ouvidoria
-  eouv.find('form .enviar').on('click', function() {
+  eouv.find('form').submit(function(event) {
+    event.preventDefault();
+    
     // Msg Sucesso
+    // ==============================================
     function msg_sucesso () {
         eouv.find("i.checkmark").show(); // Exibe ícone
         eouv.removeClass("red"); // Remove top border
@@ -131,6 +142,7 @@ $(document).ready(function(){
     }
 
     // Msg Erro
+    // ==============================================
     function msg_erro () {
         eouv.find("i.checkmark").show().removeClass('checkmark').addClass('warning sign red'); // Exibe ícone
         eouv.removeClass("red"); // Remove top border
@@ -138,19 +150,36 @@ $(document).ready(function(){
         eouv.find('.dimmer').addClass('active');
     }
 
+    // ==============================================
     // Conteúdo a ser enviado para o server
+    // ==============================================
     var data_eouv_text = '';
-    for (i=0; i<4; i++){
-      //$('td[name=tcol1]')
-    }
-    $('#' + id).is(":checked")
+    $('input[name^=eouv-motivo-]').each(function() {
+      if ($(this).is(":checked")) {
+        data_eouv_text += "- "+$(this).parent().find('label').html();
+        data_eouv_text += "\n";
+      }
+    });
+    data_eouv_text += "\n# Texto livre, enviado pelo usuário:\n"+$('textarea[name=eouv-text]').val();
+    
+    $('input[name^=eouv-name]')
+    $('input[name^=eouv-email]')
+    $('input[name^=eouv-receber-email]')
 
     var data_eouv = { 
       package_id: $('#package_id').html(),
-      form: $("#form_eouv").serialize()
+      siorg: $('#package_siorg').html(),
+      text: data_eouv_text,
+      name: $('input[name^=eouv-name]').val(),
+      email: $('input[name^=eouv-email]').val(),
+      receber_email: +$('input[name^=eouv-receber-email]').is(":checked")
     }
+
+    // DEBUG
+    console.log(data_eouv);
     
     // Envia requisição
+    // ==============================================
     $.ajax({ url      : "/eouv/new_negative", 
              type     : 'POST',
              data     : data_eouv,
@@ -159,8 +188,9 @@ $(document).ready(function(){
 
       // Sucesso na requisição
       .done(function( data ) {
+        console.log(data);
+
         CodigoErro = data.getElementsByTagName('CodigoErro')[0].innerHTML
-        //console.log(data);
 
         // Servidor retornou com sucesso
         if (CodigoErro == 0) {
@@ -181,5 +211,15 @@ $(document).ready(function(){
 
   });
 
+
+
+  // ==============================================
+  // Semantic UI - FIX checkbox
+  // ==============================================
+  $('.ui.checkbox').click(function() {
+    var checkbox_field = $(this).find('input');
+    var checked = !checkbox_field.is(":checked");
+    checkbox_field.prop('checked', checked);
+  });
 });
 </script>

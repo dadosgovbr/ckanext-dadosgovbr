@@ -40,6 +40,7 @@
 
     {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
       <span id="package_id" class="hidden">{{pkg.id}}</span>
+      <span id="package_siorg" class="hidden">{{h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg').value}}</span>
       {% snippet "package/snippets/eouv.html" %}
     {% endif %}
     <hr>

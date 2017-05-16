@@ -37,16 +37,34 @@ class EouvController(base.BaseController):
         '''
 
         # Obtém parâmetros do POST
-        print(request.POST)
+        package_id          = request.POST['package_id'].encode('utf-8')
+        siorg               = request.POST['siorg'].encode('utf-8')
+        text                = request.POST['text'].encode('utf-8')
+        name                = request.POST['name'].encode('utf-8')
+        email               = request.POST['email'].encode('utf-8')
+        #receber_email       = request.POST['receber_email'].encode('utf-8')
+
+        # DEBUG
+        import pprint
+        pprint.pprint(request.POST)
 
         # Set header for XML content
         response.headers['Content-Type'] = (b'text/xml; charset=utf-8')
 
         # Envia requisição anônima
-        return self.send_request(462, 1, 'oioioi')
+        if(len(email) == 0):
+            ouvidoria_response = self.send_request(siorg, 1, text)
 
         # Envia requisição não-anônima
-        return self.send_request(462, 1, 'oioioi', 'phelip@thenets.org', 'Luiz', '1',)
+        else:
+            receber_email      = 1 # FIXADO A PEDIDO DO MP
+            ouvidoria_response = self.send_request(siorg, 1, text, email, name, receber_email)
+
+        # Retorna para protocolo ou erro para o JS
+        return ouvidoria_response
+
+
+
 
     def send_request (
         self,
