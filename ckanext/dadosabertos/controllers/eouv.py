@@ -2,7 +2,7 @@
 
 import ckan.plugins as p
 import urllib2
-from ckan.lib.base import c, g, render, model
+from ckan.lib.base import c, g, h, render, model
 import ckan.lib.base as base
 from pylons import request, response
 from pylons.controllers.util import redirect
@@ -44,8 +44,27 @@ class EouvController(base.BaseController):
         email               = request.POST['email'].encode('utf-8')
         #receber_email       = request.POST['receber_email'].encode('utf-8')
 
+        # Cabeçalho dados.gov.br
+        cabecalho = "Trata-se de manifestação registrada por cidadão no Portal Brasileiro de Dados Abertos(dados.gov.br).\n\n"
+
+        # Obtém informações do package
+        from ckan.logic import get_action
+        context = {'model': model, 'session': model.Session,
+                'user': c.user or c.author}
+        data_dict = {'id': package_id}
+        package  = get_action('package_show')(context, data_dict)
+
+        # Adiciona dados do package
+        package_info  = 'Conjunto de Dados: '+str(package['title'].encode('utf-8'))+"\n"
+        package_info += 'Link: http://dados.gov.br/dataset/'+str(package['id'].encode('utf-8'))+"\n\n"
+
+        # Preenche o texto de envio
+        text = cabecalho + package_info + text
+        
+
         # DEBUG
         import pprint
+        pprint.pprint(package['title'])
         pprint.pprint(request.POST)
 
         # Set header for XML content
@@ -136,7 +155,7 @@ class EouvController(base.BaseController):
         )
 
         # DEBUG
-        #return xml
+        return xml
         
         # Faz requisição à ouvidoria
         response = requests.post(url,data=xml, headers = headers)

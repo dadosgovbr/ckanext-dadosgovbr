@@ -196,6 +196,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'dadosgovbr_resource_count': tools.resource_count,
             'dadosgovbr_get_organization_extra': tools.get_organization_extra,
             'dadosgovbr_get_featured_group': tools.get_featured_group,
+            'dadosgovbr_get_package': tools.get_package,
             'dadosgovbr_cache_create': tools.cache_create,
             'dadosgovbr_cache_load': tools.cache_load
         }

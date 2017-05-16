@@ -5,12 +5,12 @@
     <h4 class="ui header msg-title">Estes dados estão disponíveis como o esperado?</h4>
     
     <div class="ui buttons">
-      <button class="ui labeled icon button green sim">
+      <button class="ui labeled icon button green sim" tabindex="0">
         <i class="thumbs up chevron icon"></i>
         Sim
       </button>
       <div class="or" data-text="ou"></div>
-      <button class="ui right labeled icon button orange nao">
+      <button class="ui right labeled icon button orange nao" tabindex="0">
         Não
         <i class="thumbs down chevron icon"></i>
       </button>
@@ -25,40 +25,37 @@
     <div style="padding: 10px; position: relative;">
         <form class="ui reply form" id="form_eouv">
           <div class="ui inline checkbox">
-            <input type="checkbox" class="hidden" name="eouv-motivo-1">
-            <label name="eouv-motivo-1">Os dados estão desatualizados.</label>
+            <input type="checkbox" name="eouv-motivo-1" tabindex="1">
+            <label style="z-index: 4;" name="eouv-motivo-1">Os dados estão desatualizados.</label>
           </div>
         
           <div class="ui inline checkbox">
-            <input type="checkbox" class="hidden" name="eouv-motivo-2">
-            <label name="eouv-motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
+            <input type="checkbox" name="eouv-motivo-2" tabindex="2">
+            <label style="z-index: 4;" name="eouv-motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
           </div>
         
           <div class="ui inline checkbox">
-            <input type="checkbox" class="hidden" name="eouv-motivo-3">
-            <label name="eouv-motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
+            <input type="checkbox" name="eouv-motivo-3" tabindex="3">
+            <label style="z-index: 4;" name="eouv-motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
           </div>
         
           <div class="ui inline checkbox">
-            <input type="checkbox" class="hidden" name="eouv-motivo-4">
-            <label name="eouv-motivo-4">Os dados contém erro ou inconsistência.</label>
+            <input type="checkbox" name="eouv-motivo-4" tabindex="4">
+            <label style="z-index: 4;" name="eouv-motivo-4">Os dados contém erro ou inconsistência.</label>
           </div>
       
           <div class="ui attached field">
-            <textarea name="eouv-text"></textarea>
+            <label for="eouv-text">Descreva a situação encontrada</label>
+            <textarea name="eouv-text" tabindex="5"></textarea>
           </div>
 
           <!-- Campos opcionais -->
           <div class="botao_campos_opcionais">
             <div class="ui segment">
-              <div class="field hidden">
-                  <div class="ui button small right floated mostrar_campos_opcionais"><i class="user icon"></i> Desejo me identificar</div>
-                  <div>Ao se identificar, o órgão responsável poderá entrar em contato por email.</div>
-              </div>
               <div class="field">
                 <div class="ui checkbox mostrar_campos_opcionais">
-                  <input type="checkbox" class tabindex="0">
-                  <label>Quero ser notificado sobre o andamento desta solicitação.</label>
+                  <input type="checkbox" name="ser_identificado" tabindex="6">
+                  <label style="z-index: 4;" for="ser_identificado">Quero ser notificado sobre o andamento desta solicitação.</label>
                 </div>
               </div>
             </div>
@@ -69,23 +66,23 @@
 
             <div class="field">
               <label>Nome</label>
-              <input type="text" name="eouv-name" placeholder="">
+              <input type="text" name="eouv-name" placeholder="" tabindex="7">
             </div>
             <div class="field">
               <label>Email</label>
-              <input type="email" name="eouv-email" placeholder="">
+              <input type="email" name="eouv-email" placeholder="" tabindex="8">
             </div>
-            <div class="field hidden">
+            <!--<div class="field">
               <div class="ui checkbox">
-                <input type="checkbox" name="eouv-receber-email" tabindex="0">
+                <input type="checkbox" class="hidden" name="eouv-receber-email" tabindex="0">
                 <label>Desejo receber email para acompanhar o relato.</label>
               </div>
-            </div>
+            </div>-->
           </div>
 
           <hr>
 
-          <button type="submit" class="ui button enviar">Enviar relato para ouvidora</button>
+          <button type="submit" class="ui button enviar" tabindex="9">Enviar relato para ouvidora</button>
         </form>
     </div>
   </div>
@@ -107,11 +104,36 @@
 $(document).ready(function(){
   var eouv = $("#feedback-eouv");
 
+    
+  // function Rebuild tabindex
+  // ==============================================
+  function rebuildTabindex () {
+    var tabindex = 1;
+    $('input,select').each(function() {
+        if (this.type != "hidden") {
+            var $input = $(this);
+            $input.attr("tabindex", tabindex);
+            tabindex++;
+        }
+    });
+  }
+
+  
+
+  // Eventos
+  // ==============================================
   // Mostrar campos opcionais
+  function campos_opcionais_atualizar () {
+    if($('.mostrar_campos_opcionais input').is(":checked"))
+      $('.campos_opcionais').show();
+    else
+      $('.campos_opcionais').hide();
+  }
+  $('.mostrar_campos_opcionais input').get()[0].addEventListener('change', campos_opcionais_atualizar);
   $('.mostrar_campos_opcionais').click(function() {
-    //$('.botao_campos_opcionais').hide();
-    $('.campos_opcionais').toggle();
+    setTimeout(campos_opcionais_atualizar, 80);
   });
+
 
   // Se avaliar como "Sim"
   eouv.find(".sim").on("click", function(){
@@ -128,7 +150,10 @@ $(document).ready(function(){
     eouv.find(".msg-error").show();
   });
 
+
+
   // Enviar problema para ouvidoria
+  // ==============================================
   eouv.find('form').submit(function(event) {
     event.preventDefault();
     
@@ -153,15 +178,20 @@ $(document).ready(function(){
     // ==============================================
     // Conteúdo a ser enviado para o server
     // ==============================================
-    var data_eouv_text = '';
+    var data_eouv_text = "";
     $('input[name^=eouv-motivo-]').each(function() {
       if ($(this).is(":checked")) {
         data_eouv_text += "- "+$(this).parent().find('label').html();
         data_eouv_text += "\n";
       }
     });
-    data_eouv_text += "\n# Texto livre, enviado pelo usuário:\n"+$('textarea[name=eouv-text]').val();
-    
+    if(data_eouv_text.length > 0){
+      data_eouv_text = 'Opções marcadas:\n'+data_eouv_text
+    }
+    if($('textarea[name=eouv-text]').val().length > 0){
+      data_eouv_text += "\nDescrição da manifestação:\n"+$('textarea[name=eouv-text]').val();
+    }
+
     $('input[name^=eouv-name]')
     $('input[name^=eouv-email]')
     $('input[name^=eouv-receber-email]')
@@ -220,6 +250,13 @@ $(document).ready(function(){
     var checkbox_field = $(this).find('input');
     var checked = !checkbox_field.is(":checked");
     checkbox_field.prop('checked', checked);
+  });
+  $('.ui.checkbox').bind('keypress', function(e) {
+    if (e.which == 32){ // Spacebar press
+      var checkbox_field = $(this).find('input');
+      var checked = !checkbox_field.is(":checked");
+      checkbox_field.prop('checked', checked);
+    }
   });
 });
 </script>

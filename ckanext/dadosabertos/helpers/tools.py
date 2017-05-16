@@ -210,3 +210,19 @@ def get_featured_group(group_name='dados-em-destaque', number_of_datasets=3):
         
 
     return group
+
+
+
+def get_package(package_id):
+    ''' Return package by name/id '''
+
+    from ckan.logic import get_action
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author}
+
+    # Get package
+    data_dict = {'id': package_id}
+    package  = get_action('package_show')(context, data_dict)
+    
+    return package
+    
