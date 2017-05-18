@@ -63,9 +63,9 @@ class EouvController(base.BaseController):
         
 
         # DEBUG
-        import pprint
-        pprint.pprint(package['title'])
-        pprint.pprint(request.POST)
+        # import pprint
+        # pprint.pprint(package['title'])
+        # pprint.pprint(request.POST)
 
         # Set header for XML content
         response.headers['Content-Type'] = (b'text/xml; charset=utf-8')
@@ -155,7 +155,7 @@ class EouvController(base.BaseController):
         )
 
         # DEBUG
-        return xml
+        # return xml
         
         # Faz requisição à ouvidoria
         response = requests.post(url,data=xml, headers = headers)
