@@ -26,7 +26,7 @@ eouv.pass = SENHA_AQUI
 
 class EouvController(base.BaseController):
     def simple(self):
-        return 'simple msg'
+        return 'mensagem de teste'
 
 
     def new_negative (self):
