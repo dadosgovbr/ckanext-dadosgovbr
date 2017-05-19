@@ -27,6 +27,24 @@ eouv.pass = SENHA_AQUI
 class EouvController(base.BaseController):
     def simple(self):
         return 'mensagem de teste'
+    
+    def check_package_eouv(self, package_id):
+        ''' Cria tupla do eouv no package_extra se não existir.
+            
+            @params package_id
+        '''
+        print(str(package_id))
+        pass
+
+
+    def vote(self, acao, package_id):
+        ''' ''' 
+        self.check_package_eouv(package_id)
+        pass
+
+    def new_positive (self):
+        package_id = 0 # TODO
+        self.vote(1, package_id)
 
 
     def new_negative (self):
@@ -61,6 +79,9 @@ class EouvController(base.BaseController):
         # Preenche o texto de envio
         text = cabecalho + package_info + text
         
+
+        # Contabiliza voto negativo
+        self.vote(-1, package_id)
 
         # DEBUG
         # import pprint
