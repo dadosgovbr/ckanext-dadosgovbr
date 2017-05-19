@@ -33,7 +33,31 @@ class EouvController(base.BaseController):
             
             @params package_id
         '''
-        print(str(package_id))
+
+        #Consulta no banco
+        query_posit = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE') as positivo"
+        query_negat = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'UNLIKE') as negativo"
+
+        exist_tupla_positiva = model.Session.execute(query_posit)
+        exist_tupla_negativa = model.Session.execute(query_negat)
+
+        for row in exist_tupla_positiva:
+            exist_tuple_like = row['positivo']
+
+        for row in exist_tupla_negativa:
+            exist_tuple_unlike = row['negativo']
+        
+        #Verifica se existe tuplas para o dataset em package_extra, se não houver, ele cria
+        if not(exist_tuple_like):
+            sql = "insert into package_extra values ('"+str(package_id)+"-like', '"+str(package_id)+"', 'LIKE', '0', 'bd318920-4bc9-4693-8d23-4ccb65650fbf', 'active')"
+            a = model.Session.execute(sql)
+            model.Session.commit()
+
+        if not(exist_tuple_unlike):
+            sql = "insert into package_extra values ('"+str(package_id)+"-unlike', '"+str(package_id)+"', 'UNLIKE', '0', 'bd318920-4bc9-4693-8d23-4ccb65650fbf', 'active')"
+            model.Session.execute(sql)
+            model.Session.commit()
+            
         pass
 
 
