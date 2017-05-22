@@ -34,7 +34,22 @@ class EouvController(base.BaseController):
             @params package_id
         '''
 
-        #Consulta no banco
+        # Para adcionar as tuplas com os contadores de like de unlike é necessário ter uma tupla de revisão
+        # na tabela revision, nesta etapa verificamos se esta tupla existe e se não existir criamos ela
+
+        query_revision = "SELECT EXISTS (SELECT id FROM revision WHERE id = 'e-ouv') as exist"
+        exist_tupla_revision = model.Session.execute(query_revision)
+
+        for row in exist_tupla_revision:
+            exist_tuple_revision = row['exist']
+            print "entrei aqui"
+
+        if not(exist_tuple_revision):
+            sql = "insert into revision values ('e-ouv','2017-05-22','system', 'Integracao com o e-ouv', 'active')"
+            model.Session.execute(sql)
+            model.Session.commit()
+
+        #Consulta no banco se existe as tuplas com os contadores de like e unlike em package_extra
         query_posit = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE') as positivo"
         query_negat = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'UNLIKE') as negativo"
 
@@ -47,14 +62,14 @@ class EouvController(base.BaseController):
         for row in exist_tupla_negativa:
             exist_tuple_unlike = row['negativo']
         
-        #Verifica se existe tuplas para o dataset em package_extra, se não houver, ele cria
+        #Verifica se existe tuplas package_extra, se não houver, ele cria
         if not(exist_tuple_like):
-            sql = "insert into package_extra values ('"+str(package_id)+"-like', '"+str(package_id)+"', 'LIKE', '0', 'bd318920-4bc9-4693-8d23-4ccb65650fbf', 'active')"
-            a = model.Session.execute(sql)
+            sql = "insert into package_extra values ('"+str(package_id)+"-like', '"+str(package_id)+"', 'LIKE', '0', 'e-ouv', 'active')"
+            model.Session.execute(sql)
             model.Session.commit()
 
         if not(exist_tuple_unlike):
-            sql = "insert into package_extra values ('"+str(package_id)+"-unlike', '"+str(package_id)+"', 'UNLIKE', '0', 'bd318920-4bc9-4693-8d23-4ccb65650fbf', 'active')"
+            sql = "insert into package_extra values ('"+str(package_id)+"-unlike', '"+str(package_id)+"', 'UNLIKE', '0', 'e-ouv', 'active')"
             model.Session.execute(sql)
             model.Session.commit()
             
@@ -64,6 +79,35 @@ class EouvController(base.BaseController):
     def vote(self, acao, package_id):
         ''' ''' 
         self.check_package_eouv(package_id)
+
+        #Inclementa um nos likes em package_extra
+        if (acao == 1):
+            query_nro_like = "SELECT value as nro_like FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE'"
+            num_like_array = model.Session.execute(query_nro_like)
+
+            for row in num_like_array:
+                nro_likes = row['nro_like']
+            
+            nro_likes = int(nro_likes) + 1
+
+            query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'LIKE'"
+            model.Session.execute(query_update_like)
+            model.Session.commit()
+        
+        #Inclementa um nos deslikes em package_extra
+        if (acao == -1):
+            query_nro_unlike = "SELECT value as nro_unlike FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'UNLIKE'"
+            num_unlike_array = model.Session.execute(query_nro_unlike)
+
+            for row in num_unlike_array:
+                nro_likes = row['nro_unlike']
+            
+            nro_likes = int(nro_likes) + 1
+
+            query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'UNLIKE'"
+            model.Session.execute(query_update_like)
+            model.Session.commit()
+
         pass
 
     def new_positive (self):
