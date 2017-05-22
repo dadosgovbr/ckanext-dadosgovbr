@@ -77,10 +77,13 @@ class EouvController(base.BaseController):
 
 
     def vote(self, acao, package_id):
-        ''' ''' 
+        '''
+         Acao devera ser 1 para incrementar 1 no contador de likes
+         Acao devera ser -1 para incrementar 1 no contador de unlike
+        ''' 
         self.check_package_eouv(package_id)
 
-        #Inclementa um nos likes em package_extra
+        #Incrementa um nos likes em package_extra
         if (acao == 1):
             query_nro_like = "SELECT value as nro_like FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE'"
             num_like_array = model.Session.execute(query_nro_like)
@@ -94,7 +97,7 @@ class EouvController(base.BaseController):
             model.Session.execute(query_update_like)
             model.Session.commit()
         
-        #Inclementa um nos deslikes em package_extra
+        #Incrementa um nos deslikes em package_extra
         if (acao == -1):
             query_nro_unlike = "SELECT value as nro_unlike FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'UNLIKE'"
             num_unlike_array = model.Session.execute(query_nro_unlike)
