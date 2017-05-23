@@ -4,15 +4,23 @@
   <div class="ui basic center" style="text-align:center;">
     <h4 class="ui header msg-title">Estes dados estão disponíveis como o esperado?</h4>
     
-    <div class="ui buttons">
-      <button class="ui labeled icon button green sim" tabindex="0">
-        <i class="thumbs up chevron icon"></i>
-        Sim
+    <div class="ui labeled buttons">
+      <button class="ui labeled button sim" tabindex="0">
+        <a class="ui basic green right pointing label" id="ouv_like_counter" style="min-height: 36px; border-radius: 5px 0 0 5px;">
+          ?
+        </a>
+        <div class="ui green button">
+          <i class="thumbs up chevron icon"></i> Sim
+        </div>
       </button>
       <div class="or" data-text="ou"></div>
-      <button class="ui right labeled icon button orange nao" tabindex="0">
-        Não
-        <i class="thumbs down chevron icon"></i>
+      <button class="ui labeled button nao" tabindex="0">
+        <div class="ui orange button" style="border-radius: 0;">
+          <i class="thumbs down chevron icon"></i> Não
+        </div>
+        <a class="ui basic orange left pointing label" id="ouv_dislike_counter" style="min-height: 36px; border-radius: 0 5px 5px 0;">
+          ?
+        </a>
       </button>
     </div>
   </div>
@@ -104,7 +112,26 @@
 $(document).ready(function(){
   var eouv = $("#feedback-eouv");
 
-    
+
+  // function Get counter (like / dislike)
+  // ==============================================
+  function updateLikeCounter () {
+    var like = $("section.additional-info").find("th:contains('LIKE')");
+
+    like.each(function(i){
+      if($(this).html() == "LIKE") {
+        $(this).parent('tr').hide();
+        $('#ouv_like_counter').html( $(this).parent('tr').find('td').html() );
+      }
+      if($(this).html() == "DISLIKE") {
+        $(this).parent('tr').hide();
+        $('#ouv_dislike_counter').html( $(this).parent('tr').find('td').html() );
+      }
+    });
+  }
+  updateLikeCounter();
+
+
   // function Rebuild tabindex
   // ==============================================
   function rebuildTabindex () {
@@ -118,11 +145,8 @@ $(document).ready(function(){
     });
   }
 
-  
-
-  // Eventos
+  // function Mostrar campos opcionais
   // ==============================================
-  // Mostrar campos opcionais
   function campos_opcionais_atualizar () {
     if($('.mostrar_campos_opcionais input').is(":checked"))
       $('.campos_opcionais').show();
@@ -135,13 +159,35 @@ $(document).ready(function(){
   });
 
 
+  // ==============================================
   // Se avaliar como "Sim"
+  // ==============================================
   eouv.find(".sim").on("click", function(){
     eouv.find(".msg").html("Obrigado!<br>Sua avaliação foi contabilizada.");
     eouv.find('.dimmer').addClass('active');
+
+
+    var data_eouv = { 
+      package_id: $('#package_id').html()
+    }
+      
+    // Envia requisição
+    $.ajax({ url      : "/eouv/new_positive", 
+             type     : 'POST',
+             data     : data_eouv,
+             dataType : 'xml' 
+          })
+
+      // Sucesso na requisição
+      .done(function( data ) {
+        console.log(data);
+      });
   });
 
+
+  // ==============================================
   // Se avaliar como "Não"
+  // ==============================================
   eouv.find(".nao").on("click", function(){
     eouv.find(".form-problems").show();
     eouv.find(".sim").removeClass("sim").addClass("disabled");
@@ -150,10 +196,7 @@ $(document).ready(function(){
     eouv.find(".msg-error").show();
   });
 
-
-
   // Enviar problema para ouvidoria
-  // ==============================================
   eouv.find('form').submit(function(event) {
     event.preventDefault();
     
@@ -209,7 +252,6 @@ $(document).ready(function(){
     console.log(data_eouv);
     
     // Envia requisição
-    // ==============================================
     $.ajax({ url      : "/eouv/new_negative", 
              type     : 'POST',
              data     : data_eouv,

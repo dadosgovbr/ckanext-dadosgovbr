@@ -110,12 +110,12 @@ class EouvController(base.BaseController):
             query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'DISLIKE'"
             model.Session.execute(query_update_like)
             model.Session.commit()
-
-        pass
+        return
 
     def new_positive (self):
-        package_id = 0 # TODO
+        package_id = request.POST['package_id'].encode('utf-8')
         self.vote(1, package_id)
+        return '{"success": true}'
 
 
     def new_negative (self):
