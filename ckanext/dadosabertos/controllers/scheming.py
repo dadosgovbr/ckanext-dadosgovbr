@@ -49,7 +49,6 @@ def _encode_params(params):
     return [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
             for k, v in params]
 
-
 def url_with_params(url, params):
     params = _encode_params(params)
     return url + u'?' + urlencode(params)
@@ -63,9 +62,12 @@ def search_url(params, package_type=None):
     return url_with_params(url, params)
 
 
+
+
 class SchemingPagesController(base.BaseController):
 
     def _package_form(self, package_type=None):
+        print("oioi") 
         return lookup_package_plugin(package_type).package_form()
 
     def _setup_template_variables(self, context, data_dict, package_type=None):

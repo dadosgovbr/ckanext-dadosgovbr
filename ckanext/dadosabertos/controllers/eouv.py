@@ -34,7 +34,7 @@ class EouvController(base.BaseController):
             @params package_id
         '''
 
-        # Para adcionar as tuplas com os contadores de like de unlike é necessário ter uma tupla de revisão
+        # Para adcionar as tuplas com os contadores de like de dislike é necessário ter uma tupla de revisão
         # na tabela revision, nesta etapa verificamos se esta tupla existe e se não existir criamos ela
 
         query_revision = "SELECT EXISTS (SELECT id FROM revision WHERE id = 'e-ouv') as exist"
@@ -49,9 +49,9 @@ class EouvController(base.BaseController):
             model.Session.execute(sql)
             model.Session.commit()
 
-        #Consulta no banco se existe as tuplas com os contadores de like e unlike em package_extra
+        #Consulta no banco se existe as tuplas com os contadores de like e dislike em package_extra
         query_posit = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE') as positivo"
-        query_negat = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'UNLIKE') as negativo"
+        query_negat = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'DISLIKE') as negativo"
 
         exist_tupla_positiva = model.Session.execute(query_posit)
         exist_tupla_negativa = model.Session.execute(query_negat)
@@ -60,7 +60,7 @@ class EouvController(base.BaseController):
             exist_tuple_like = row['positivo']
 
         for row in exist_tupla_negativa:
-            exist_tuple_unlike = row['negativo']
+            exist_tuple_dislike = row['negativo']
         
         #Verifica se existe tuplas package_extra, se não houver, ele cria
         if not(exist_tuple_like):
@@ -68,8 +68,8 @@ class EouvController(base.BaseController):
             model.Session.execute(sql)
             model.Session.commit()
 
-        if not(exist_tuple_unlike):
-            sql = "insert into package_extra values ('"+str(package_id)+"-unlike', '"+str(package_id)+"', 'UNLIKE', '0', 'e-ouv', 'active')"
+        if not(exist_tuple_dislike):
+            sql = "insert into package_extra values ('"+str(package_id)+"-dislike', '"+str(package_id)+"', 'DISLIKE', '0', 'e-ouv', 'active')"
             model.Session.execute(sql)
             model.Session.commit()
             
@@ -79,7 +79,7 @@ class EouvController(base.BaseController):
     def vote(self, acao, package_id):
         '''
          Acao devera ser 1 para incrementar 1 no contador de likes
-         Acao devera ser -1 para incrementar 1 no contador de unlike
+         Acao devera ser -1 para incrementar 1 no contador de dislike
         ''' 
         self.check_package_eouv(package_id)
 
@@ -99,15 +99,15 @@ class EouvController(base.BaseController):
         
         #Incrementa um nos deslikes em package_extra
         if (acao == -1):
-            query_nro_unlike = "SELECT value as nro_unlike FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'UNLIKE'"
-            num_unlike_array = model.Session.execute(query_nro_unlike)
+            query_nro_dislike = "SELECT value as nro_dislike FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'DISLIKE'"
+            num_dislike_array = model.Session.execute(query_nro_dislike)
 
-            for row in num_unlike_array:
-                nro_likes = row['nro_unlike']
+            for row in num_dislike_array:
+                nro_likes = row['nro_dislike']
             
             nro_likes = int(nro_likes) + 1
 
-            query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'UNLIKE'"
+            query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'DISLIKE'"
             model.Session.execute(query_update_like)
             model.Session.commit()
 
@@ -145,19 +145,20 @@ class EouvController(base.BaseController):
 
         # Adiciona dados do package
         package_info  = 'Conjunto de Dados: '+str(package['title'].encode('utf-8'))+"\n"
-        package_info += 'Link: http://dados.gov.br/dataset/'+str(package['id'].encode('utf-8'))+"\n\n"
+        package_info += 'Link: http://dados.gov.br/dataset/'+str(package['id'].encode('utf-8'))+"\n"
+        package_info += 'Link alternativo: http://dados.gov.br/dataset/'+str(package['name'].encode('utf-8'))+"\n\n"
 
         # Preenche o texto de envio
         text = cabecalho + package_info + text
         
-
-        # Contabiliza voto negativo
-        self.vote(-1, package_id)
-
         # DEBUG
         # import pprint
         # pprint.pprint(package['title'])
         # pprint.pprint(request.POST)
+        # return ""
+
+        # Contabiliza voto negativo
+        self.vote(-1, package_id)
 
         # Set header for XML content
         response.headers['Content-Type'] = (b'text/xml; charset=utf-8')
@@ -228,9 +229,12 @@ class EouvController(base.BaseController):
                     <idAssunto>254</idAssunto>
                     <idCanalEntrada>1</idCanalEntrada>
                     <textoManifestacao>{p_textoManifestacao}</textoManifestacao>
-                    <idTipoIdentificacaoManifestante>{p_idTipoIdentificacaoManifestante}</idTipoIdentificacaoManifestante>
 
                     {p_dadosPessoais}
+
+                    <idTipoIdentificacaoManifestante>{p_idTipoIdentificacaoManifestante}</idTipoIdentificacaoManifestante>
+
+                    
                 </RegistrarManifestacaoTerceiro>
             </Body>
             </Envelope>"""
@@ -242,12 +246,12 @@ class EouvController(base.BaseController):
             p_idTipoManifestacao = str(idTipoManifestacao),
             p_idOrgaoDestinatario = str(idOrgaoDestinatario),
             p_textoManifestacao = str(textoManifestacao),
-            p_idTipoIdentificacaoManifestante = str(idTipoIdentificacaoManifestante),
-            p_dadosPessoais = str(dadosPessoais)
+            p_dadosPessoais = str(dadosPessoais),
+            p_idTipoIdentificacaoManifestante = str(idTipoIdentificacaoManifestante)
         )
 
         # DEBUG
-        # return xml
+        return xml
         
         # Faz requisição à ouvidoria
         response = requests.post(url,data=xml, headers = headers)
