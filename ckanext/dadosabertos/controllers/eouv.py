@@ -251,7 +251,7 @@ class EouvController(base.BaseController):
         )
 
         # DEBUG
-        return xml
+        # return xml
         
         # Faz requisição à ouvidoria
         response = requests.post(url,data=xml, headers = headers)

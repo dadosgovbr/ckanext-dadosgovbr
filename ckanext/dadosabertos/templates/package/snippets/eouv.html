@@ -91,6 +91,7 @@
           <hr>
 
           <button type="submit" class="ui button enviar" tabindex="9">Enviar relato para ouvidora</button>
+          <button class="ui loading button carregando" style="display:none">Carregando</button>
         </form>
     </div>
   </div>
@@ -199,6 +200,9 @@ $(document).ready(function(){
   // Enviar problema para ouvidoria
   eouv.find('form').submit(function(event) {
     event.preventDefault();
+    eouv.find('.enviar').hide();
+    eouv.find('.carregando').show();
+
     
     // Msg Sucesso
     // ==============================================
@@ -262,7 +266,11 @@ $(document).ready(function(){
       .done(function( data ) {
         console.log(data);
 
-        CodigoErro = data.getElementsByTagName('CodigoErro')[0].innerHTML
+        CodigoErro = $(data).find("CodigoErro").html();
+
+        // Exibe botão de submit de novo
+        eouv.find('.enviar').show();
+        eouv.find('.carregando').hide();
 
         // Servidor retornou com sucesso
         if (CodigoErro == 0) {
@@ -278,6 +286,10 @@ $(document).ready(function(){
 
       // Erro na requisição
       .fail(function( data ) {
+        // Exibe botão de submit de novo
+        eouv.find('.enviar').show();
+        eouv.find('.carregando').hide();
+
         msg_erro();
       });
 
