@@ -37,42 +37,31 @@ class EouvController(base.BaseController):
         # Para adcionar as tuplas com os contadores de like de dislike é necessário ter uma tupla de revisão
         # na tabela revision, nesta etapa verificamos se esta tupla existe e se não existir criamos ela
 
-        query_revision = "SELECT EXISTS (SELECT id FROM revision WHERE id = 'e-ouv') as exist"
-        exist_tupla_revision = model.Session.execute(query_revision)
+        query_revision = "select exists (select * from pg_tables where tablename = 'eouv') as exist"
+        result_exist_table_eouv = model.Session.execute(query_revision)
 
-        for row in exist_tupla_revision:
-            exist_tuple_revision = row['exist']
-            print "entrei aqui"
+        for row in result_exist_table_eouv:
+            exist_table_eouv = row['exist']
 
-        if not(exist_tuple_revision):
-            sql = "insert into revision values ('e-ouv','2017-05-22','system', 'Integracao com o e-ouv', 'active')"
+        if not(exist_table_eouv):
+            sql = "create table eouv (package_id text primary key, nro_like text, nro_dislike text, FOREIGN KEY (package_id) REFERENCES public.package (id))"
             model.Session.execute(sql)
             model.Session.commit()
 
         #Consulta no banco se existe as tuplas com os contadores de like e dislike em package_extra
-        query_posit = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE') as positivo"
-        query_negat = "SELECT EXISTS (SELECT 1 FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'DISLIKE') as negativo"
+        query_posit = "SELECT EXISTS (SELECT 1 FROM eouv WHERE package_id = '"+str(package_id)+"') as positivo"
 
         exist_tupla_positiva = model.Session.execute(query_posit)
-        exist_tupla_negativa = model.Session.execute(query_negat)
 
         for row in exist_tupla_positiva:
-            exist_tuple_like = row['positivo']
-
-        for row in exist_tupla_negativa:
-            exist_tuple_dislike = row['negativo']
+            exist_tuple = row['positivo']
         
         #Verifica se existe tuplas package_extra, se não houver, ele cria
-        if not(exist_tuple_like):
-            sql = "insert into package_extra values ('"+str(package_id)+"-like', '"+str(package_id)+"', 'LIKE', '0', 'e-ouv', 'active')"
+        if not(exist_tuple):
+            sql = "insert into eouv values ('"+str(package_id)+"', '0', '0')"
             model.Session.execute(sql)
             model.Session.commit()
 
-        if not(exist_tuple_dislike):
-            sql = "insert into package_extra values ('"+str(package_id)+"-dislike', '"+str(package_id)+"', 'DISLIKE', '0', 'e-ouv', 'active')"
-            model.Session.execute(sql)
-            model.Session.commit()
-            
         pass
 
 
@@ -85,7 +74,7 @@ class EouvController(base.BaseController):
 
         #Incrementa um nos likes em package_extra
         if (acao == 1):
-            query_nro_like = "SELECT value as nro_like FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'LIKE'"
+            query_nro_like = "SELECT nro_like FROM eouv WHERE package_id = '"+str(package_id)+"'"
             num_like_array = model.Session.execute(query_nro_like)
 
             for row in num_like_array:
@@ -93,21 +82,21 @@ class EouvController(base.BaseController):
             
             nro_likes = int(nro_likes) + 1
 
-            query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'LIKE'"
+            query_update_like = "UPDATE eouv SET nro_like = "+str(nro_likes)+" WHERE package_id = '"+str(package_id)+"'"
             model.Session.execute(query_update_like)
             model.Session.commit()
         
-        #Incrementa um nos deslikes em package_extra
+        #Incrementa um nos dislikes em package_extra
         if (acao == -1):
-            query_nro_dislike = "SELECT value as nro_dislike FROM package_extra WHERE package_id = '"+str(package_id)+"' AND key = 'DISLIKE'"
+            query_nro_dislike = "SELECT nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"
             num_dislike_array = model.Session.execute(query_nro_dislike)
 
             for row in num_dislike_array:
-                nro_likes = row['nro_dislike']
+                nro_dislikes = row['nro_dislike']
             
-            nro_likes = int(nro_likes) + 1
+            nro_dislikes = int(nro_dislikes) + 1
 
-            query_update_like = "UPDATE package_extra SET value = "+str(nro_likes)+"WHERE package_id = '"+str(package_id)+"' and key = 'DISLIKE'"
+            query_update_like = "UPDATE eouv SET nro_dislike = "+str(nro_dislikes)+" WHERE package_id = '"+str(package_id)+"'"
             model.Session.execute(query_update_like)
             model.Session.commit()
         return
