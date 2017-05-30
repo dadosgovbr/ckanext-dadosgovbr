@@ -29,6 +29,7 @@ def helper_get_contador_eouv (package_id):
     for row in result_exist_table_eouv:
         exist_table_eouv = row['exist']
     if not(exist_table_eouv): error=1
+    print('exist_table_eouv', error)
 
     # Verifica se possui a tupla com like/dislike
     if exist_table_eouv:
@@ -36,7 +37,8 @@ def helper_get_contador_eouv (package_id):
         exist_tupla_positiva = model.Session.execute(query_posit)
         for row in exist_tupla_positiva:
             exist_tuple = row['positivo']
-    if not(exist_table_eouv): error=1
+    if not(exist_tuple): error=1
+    print('exist_tuple', error)
 
     # Obtém valor do like/dislike se a tupla existir
     if exist_tuple:
