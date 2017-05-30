@@ -34,8 +34,8 @@ class EouvController(base.BaseController):
             @params package_id
         '''
 
-        # Para adcionar as tuplas com os contadores de like de dislike é necessário ter uma tupla de revisão
-        # na tabela revision, nesta etapa verificamos se esta tupla existe e se não existir criamos ela
+        # Para adcionar as tuplas com os contadores de like de dislike é necessário ter o banco eouv
+        # nesta etapa verificamos se esta tabela existe e se não existir criamos ela
 
         query_revision = "select exists (select * from pg_tables where tablename = 'eouv') as exist"
         result_exist_table_eouv = model.Session.execute(query_revision)
@@ -48,7 +48,7 @@ class EouvController(base.BaseController):
             model.Session.execute(sql)
             model.Session.commit()
 
-        #Consulta no banco se existe as tuplas com os contadores de like e dislike em package_extra
+        #Consulta no banco se existe a tupla com os contador de like e dislike em package_extra
         query_posit = "SELECT EXISTS (SELECT 1 FROM eouv WHERE package_id = '"+str(package_id)+"') as positivo"
 
         exist_tupla_positiva = model.Session.execute(query_posit)
@@ -56,7 +56,7 @@ class EouvController(base.BaseController):
         for row in exist_tupla_positiva:
             exist_tuple = row['positivo']
         
-        #Verifica se existe tuplas package_extra, se não houver, ele cria
+        #Verifica se existe a tupla, se não houver, ele cria
         if not(exist_tuple):
             sql = "insert into eouv values ('"+str(package_id)+"', '0', '0')"
             model.Session.execute(sql)
@@ -72,7 +72,7 @@ class EouvController(base.BaseController):
         ''' 
         self.check_package_eouv(package_id)
 
-        #Incrementa um nos likes em package_extra
+        #Incrementa um nos likes em eouv
         if (acao == 1):
             query_nro_like = "SELECT nro_like FROM eouv WHERE package_id = '"+str(package_id)+"'"
             num_like_array = model.Session.execute(query_nro_like)
@@ -86,7 +86,7 @@ class EouvController(base.BaseController):
             model.Session.execute(query_update_like)
             model.Session.commit()
         
-        #Incrementa um nos dislikes em package_extra
+        #Incrementa um nos dislikes em eouv
         if (acao == -1):
             query_nro_dislike = "SELECT nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"
             num_dislike_array = model.Session.execute(query_nro_dislike)
@@ -100,6 +100,19 @@ class EouvController(base.BaseController):
             model.Session.execute(query_update_like)
             model.Session.commit()
         return
+
+    def helper_get_contador_eouv (self, package_id):
+
+        query_nro_dislike = "SELECT nro_like, nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"    
+        num_dislike_array = model.Session.execute(query_nro_dislike)
+
+        out = {}
+        
+        for row in num_dislike_array:
+            out['nro_dislikes'] = row['nro_dislike']
+            out['nro_likes'] = row['nro_like']
+    
+        return out
 
     def new_positive (self):
         package_id = request.POST['package_id'].encode('utf-8')

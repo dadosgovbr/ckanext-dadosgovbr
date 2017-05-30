@@ -17,6 +17,24 @@ def trim_letter(s, tamanho):
     s = unicode(s)
     return s if (len(s) < tamanho) else s[:(tamanho)] + u"..."
 
+def helper_get_contador_eouv (package_id):
+    out = {}
+
+    try:
+        query_nro_dislike = "SELECT nro_like, nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"    
+        num_dislike_array = model.Session.execute(query_nro_dislike)
+        success=0
+        for row in num_dislike_array:
+            success=1
+            out['nro_dislikes'] = row['nro_dislike']
+            out['nro_likes'] = row['nro_like']
+        if(success==0): raise
+    except:
+        out['nro_dislikes'] = 0
+        out['nro_likes'] = 0
+
+    return out
+
 
 def resource_count():
     ''' Return total number of resources on current CKAN platform

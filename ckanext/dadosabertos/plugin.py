@@ -201,5 +201,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'dadosgovbr_get_organization_extra': tools.get_organization_extra,
             'dadosgovbr_get_package': tools.get_package,
             'dadosgovbr_cache_create': tools.cache_create,
-            'dadosgovbr_cache_load': tools.cache_load
+            'dadosgovbr_cache_load': tools.cache_load,
+            'dadosgovbr_get_contador_eouv': tools.helper_get_contador_eouv
         }
