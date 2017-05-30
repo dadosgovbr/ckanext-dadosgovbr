@@ -19,17 +19,38 @@ def trim_letter(s, tamanho):
 
 def helper_get_contador_eouv (package_id):
     out = {}
+    error=0
+    exist_tuple=None
+    exist_table_eouv=None
 
-    try:
+    # Verificar se a tabela exist
+    query_revision = "select exists (select * from pg_tables where tablename = 'eouv') as exist"
+    result_exist_table_eouv = model.Session.execute(query_revision)
+    for row in result_exist_table_eouv:
+        exist_table_eouv = row['exist']
+    if not(exist_table_eouv): error=1
+
+    # Verifica se possui a tupla com like/dislike
+    if exist_table_eouv:
+        query_posit = "SELECT EXISTS (SELECT 1 FROM eouv WHERE package_id = '"+str(package_id)+"') as positivo"
+        exist_tupla_positiva = model.Session.execute(query_posit)
+        for row in exist_tupla_positiva:
+            exist_tuple = row['positivo']
+    if not(exist_table_eouv): error=1
+
+    # Obtém valor do like/dislike se a tupla existir
+    if exist_tuple:
         query_nro_dislike = "SELECT nro_like, nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"    
         num_dislike_array = model.Session.execute(query_nro_dislike)
-        success=0
+        count=0
         for row in num_dislike_array:
-            success=1
+            count += 1
             out['nro_dislikes'] = row['nro_dislike']
             out['nro_likes'] = row['nro_like']
-        if(success==0): raise
-    except:
+        if count == 0: error=1
+            
+    # Se houve algum erro, então valores iguais a zero
+    if error == 1:
         out['nro_dislikes'] = 0
         out['nro_likes'] = 0
 
