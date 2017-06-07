@@ -65,7 +65,7 @@ def get_schema_name(dataset_name=None):
         schema_name = str(h.full_current_url()).replace(g.site_url, '').split('/')[1].split('?')[0]
         if(schema_name[-1:]=='s'):
             schema_name=schema_name[:-1]
-        # print(schema_name)
+        print(schema_name)
         return schema_name
     return 'dataset'
 

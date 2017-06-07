@@ -51,6 +51,39 @@
 
 
       {%- block scripts %}
+
+      {# TODO REMOVE FROM HERE Filter / Facet #}
+      {% if c.controller=='ckanext.dadosabertos.controllers.scheming:SchemingPagesController' and c.action=='search' %}
+        <script>
+            // Filter / Facet
+            // Set new URL for tags based on package type
+            (function() {
+              function updateFacetsLinks(){
+                $('#content .secondary > .filters section.module li a, #content .primary #dataset-search-form .filter-list a').each(function(){
+                  //console.log(this);
+                  try {
+                    var new_url = $(this).attr('href');
+                    ['dataset','aplicativo','concurso','inventario'].forEach(function(item, index){
+                      //console.log('/'+item);
+                      //console.log('/{{h.dadosgovbr_get_schema_name()}}')
+                      //console.log(new_url);
+                      new_url = new_url.replace('/'+item, '/{{h.dadosgovbr_get_schema_name()}}');
+                    });
+                    
+                    //console.log($(this).attr('href'));
+                    $(this).attr('href', new_url);
+                  }
+                  catch(err) {
+                      //error
+                  }
+                });
+              }
+              setTimeout(updateFacetsLinks, 1000);
+              updateFacetsLinks();
+            })();
+        </script>
+        {% endif %}
+
       {% endblock -%}
 
       {% block body_extras -%}

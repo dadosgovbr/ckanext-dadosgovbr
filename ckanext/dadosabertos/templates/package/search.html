@@ -97,26 +97,3 @@
 
   {% endblock %}
 {% endif %}
-
-{% block scripts %}
-    <script>
-        // Set new URL for tags based on package type
-        (function() {
-          setTimeout(function(){
-            $('#content .secondar .filters a,#content .primary .filter-list a').each(function(){
-              try {
-                console.log($(this).attr('href'));
-                var new_url = $(this).attr('href').replace('/dataset', '/{{h.dadosgovbr_get_schema_name()}}');
-                //$(this).attr('href', new_url);
-              }
-              catch(err) {
-                  //error
-              }
-            });
-
-          }, 1000);
-        
-        })();
-    </script>
-  {{super()}}
-{% endblock %}

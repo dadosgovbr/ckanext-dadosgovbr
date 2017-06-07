@@ -69,7 +69,6 @@ then itself be extended to add/remove blocks of functionality. #}
           label.parent('.control-group.control-full').attr('style', 'display:none !important');
         }
       });
-        
     }
     //setTimeout(removeUploadButton, 100);
     //setTimeout(removeUploadButton, 1000);
@@ -80,7 +79,7 @@ then itself be extended to add/remove blocks of functionality. #}
     function updatePackageName() {
       $('.dataset-form span.add-on, .dataset-form span.slug-preview-prefix').each(function(){
         var package_type = $(this).html().replace('/dataset/', '/{{h.dadosgovbr_get_schema_name()}}/');
-        $(this).html(package_type);
+        //$(this).html(package_type);
       });
     }
     setTimeout(updatePackageName, 100);
