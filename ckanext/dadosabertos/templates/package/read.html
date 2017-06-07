@@ -1,58 +1,70 @@
-{% extends "package/read_base.html" %}
-
 {% set pkg = c.pkg_dict %}
 
-{% block primary_content_inner %}
-  {{ super() }}
-  {% block package_description %}
-    {% if pkg.private %}
-      <span class="dataset-private label label-inverse pull-right">
-        <i class="icon-lock"></i>
-        {{ _('Private') }}
-      </span>
-    {% endif %}
-    <h1>
-      {% block page_heading %}
-        {{ h.dataset_display_name(pkg) }}
-        {% if pkg.state.startswith('draft') %}
-          [{{ _('Draft') }}]
-        {% endif %}
-        {% if pkg.state == 'deleted' %}
-          [{{ _('Deleted') }}]
+{# Scheming pages #}
+{% set pkg_type = h.dadosgovbr_get_schema_name() %}
+{% if pkg_type == 'aplicativo' %}
+  {% snippet "scheming/aplicativo/read.html", pkg=pkg %}
+{% elif pkg_type == 'concurso' %}
+  {% snippet "scheming/concurso/read.html", pkg=pkg %}
+{% elif pkg_type == 'inventario' %}
+  {% snippet "scheming/inventario/read.html", pkg=pkg %}
+
+{% else %}
+{% extends "package/read_base.html" %}
+  {% block primary_content_inner %}
+    {{ super() }}
+    {% block package_description %}
+      {% if pkg.private %}
+        <span class="dataset-private label label-inverse pull-right">
+          <i class="icon-lock"></i>
+          {{ _('Private') }}
+        </span>
+      {% endif %}
+      <h1>
+        {% block page_heading %}
+          {{ h.dataset_display_name(pkg) }}
+          {% if pkg.state.startswith('draft') %}
+            [{{ _('Draft') }}]
+          {% endif %}
+          {% if pkg.state == 'deleted' %}
+            [{{ _('Deleted') }}]
+          {% endif %}
+        {% endblock %}
+      </h1>
+      {% block package_notes %}
+        {% if pkg.notes %}
+          <hr>
+          <div class="notes embedded-content">
+            {{ h.render_markdown(pkg.notes) }}
+          </div>
         {% endif %}
       {% endblock %}
-    </h1>
-    {% block package_notes %}
-      {% if pkg.notes %}
-        <hr>
-        <div class="notes embedded-content">
-          {{ h.render_markdown(pkg.notes) }}
-        </div>
-      {% endif %}
+      {# FIXME why is this here? seems wrong #}
+      <span class="insert-comment-thread"></span>
     {% endblock %}
-    {# FIXME why is this here? seems wrong #}
-    <span class="insert-comment-thread"></span>
+
+    {% block package_tags %}
+      <br>
+      {% snippet "package/snippets/tags.html", tags=pkg.tags %}
+
+      {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') and False %}
+        <span id="package_id" class="hidden">{{pkg.id}}</span>
+        <span id="package_siorg" class="hidden">{{h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg').value}}</span>
+        {% snippet "package/snippets/eouv.html", pkg_id=pkg.id %}
+      {% endif %}
+      <hr>
+    {% endblock %}
+
+    {% block package_resources %}
+      {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
+      <hr>
+    {% endblock %}
+
+    {% block package_additional_info %}
+      {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
+    {% endblock %}
+
   {% endblock %}
 
-  {% block package_tags %}
-    <br>
-    {% snippet "package/snippets/tags.html", tags=pkg.tags %}
 
-    {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
-      <span id="package_id" class="hidden">{{pkg.id}}</span>
-      <span id="package_siorg" class="hidden">{{h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg').value}}</span>
-      {% snippet "package/snippets/eouv.html", pkg_id=pkg.id %}
-    {% endif %}
-    <hr>
-  {% endblock %}
-
-  {% block package_resources %}
-    {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
-    <hr>
-  {% endblock %}
-
-  {% block package_additional_info %}
-    {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
-  {% endblock %}
-
-{% endblock %}
+{% endif %}

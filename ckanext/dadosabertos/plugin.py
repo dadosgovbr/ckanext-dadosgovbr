@@ -25,7 +25,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         - Define mapeamento para novas rotas
         - Define novos helpers
     '''
-
     plugins.implements(plugins.IPackageController)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
@@ -55,6 +54,12 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         pass
 
     def before_search(self, search_params):
+        # Redirect for search page
+        schemas = ['concurso', 'aplicativo', 'inventario']
+        url_current = h.full_current_url()
+        if(url_current.replace(g.site_url+'/','') in schemas):
+            from pylons.controllers.util import redirect
+            redirect(url_current.replace(g.site_url,'')+'s')
         return search_params
 
     def after_search(self, search_results, search_params):
@@ -82,10 +87,22 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 except:
                     data_dict[multiValue[i]].append(data_dict['extras_'+value])
                     #print(data_dict['extras_'+value])
-
         return data_dict
 
     def before_view(self, pkg_dict):
+        # Redirect to correct URL based on schema name
+        actions_accepted = ['read','edit','new']
+        if (c.action in actions_accepted and c.controller=='package'):
+            schema_expected = pkg_dict['type']
+            schema_current  = str(h.full_current_url()).replace(g.site_url, '').split('/')[1]
+            if (schema_current != schema_expected):
+                from pylons.controllers.util import redirect
+                url_current = h.full_current_url()
+                url_current = str(url_current).replace(g.site_url+'/'+schema_current, g.site_url+'/'+schema_expected)
+                # print('redir_to',url_current)
+                # print(schema_expected)
+                # print(schema_current)
+                redirect(url_current.replace(g.site_url,''))
         return pkg_dict
 
     def after_create(self, context, data_dict):
@@ -104,8 +121,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return facet_titles
 
 
-
-
     # Diretórios para templates e arquivos estáticos
     # =======================================================
     def update_config(self, config_):
@@ -114,23 +129,21 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #toolkit.add_resource('fanstatic', 'dadosabertos')
 
 
-
-
     # Mapeamento das URLs
     # =======================================================
     def after_map(self, map):
-        # Wordpress feed redirect (if load balancer fail)
-        map.connect('/feed',
-                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
-                    action='feed')
-
-        # ckanext-scheming
+        # Testing
         map.connect('/test',
                     controller='ckanext.dadosabertos.controllers.test:TestController',
                     action='index')
+
+        # ckanext-scheming
         map.connect('/aplicativos',
-                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
-                    action='index')
+                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                    action='search')
+        # map.connect('/aplicativos',
+        #             controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
+        #             action='index')
         map.connect('/aplicativos_busca/{title}',
                     controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
                     action='single')
@@ -149,6 +162,11 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.dadosabertos.controllers.eouv:EouvController',
                     action='new_negative')
                     
+        # Wordpress feed redirect (if load balancer fail)
+        map.connect('/feed',
+                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    action='feed')
+
         # Wordpress
         map.connect('/noticias',
                     controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
@@ -192,6 +210,10 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             # Wordpress
             'dadosgovbr_wordpress_posts': wp.posts,
             'dadosgovbr_format_timestamp': wp.format_timestamp,
+
+            # Scheming
+            'dadosgovbr_get_schema_name': tools.get_schema_name,
+            'dadosgovbr_get_schema_title': tools.get_schema_title,
 
             # Generict tools
             'dadosgovbr_trim_string': tools.trim_string,

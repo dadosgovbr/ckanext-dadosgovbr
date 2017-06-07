@@ -1,0 +1,26 @@
+{% if not h.organizations_available('create_dataset')
+        and not h.check_config_permission('ckan.auth.create_unowned_dataset') %}
+    {% include "package/snippets/cannot_create_package.html" %}
+
+{% else %}
+    {% extends "package/base_form_page.html" %}
+    {% block subtitle %}{{ _('Criar '+h.dadosgovbr_get_schema_title()) }}{% endblock %}
+    
+    {% block secondary_content %}
+        {% block info_module %}
+        <section class="module module-narrow module-shallow">
+            <h2 class="module-heading"><i class="icon-info-sign"></i> O que é?</h2>
+            <div class="module-content">
+                <p>
+                Concursos, hackathons e outros eventos de promoção do uso de dados abertos.
+                </p>
+            </div>
+        </section>
+        {% endblock %}
+    {% endblock %}
+
+    {% block breadcrumb_content %}
+        <li><a href="{{h.url_for('home','index')}}{{h.dadosgovbr_get_schema_name()}}">{{h.dadosgovbr_get_schema_title(plural=True)}}</a></li>
+        <li><a class="active" href="{{h.url_for('home','index')}}{{h.dadosgovbr_get_schema_name()}}">Adicionar novo {{h.dadosgovbr_get_schema_title()}}</a></li>
+    {% endblock %}
+{% endif  %}

@@ -1,0 +1,24 @@
+{# Scheming pages #}
+{% set pkg = c.pkg_dict %}
+{% if pkg.type == 'aplicativo' %}
+  {% snippet "scheming/aplicativo/edit.html", pkg=pkg, form_vars=form_vars, form_snippet=form_snippet %}
+{% elif pkg.type == 'concurso' %}
+  {% snippet "scheming/concurso/edit.html", pkg=pkg, form_vars=form_vars, form_snippet=form_snippet %}
+{% elif pkg.type == 'inventario' %}
+  {% snippet "scheming/inventario/edit.html", pkg=pkg, form_vars=form_vars, form_snippet=form_snippet %}
+
+
+{# Default CKAN package #}
+{% else %}
+  {% extends 'package/edit_base.html' %}
+  {% block primary_content_inner %}
+    {% block form %}
+    {#- passing c to a snippet is bad but is required here
+        for backwards compatibility with old templates and
+        plugins using setup_template_variables() -#}
+    {{- h.snippet(form_snippet, c=c, **form_vars) -}}
+    {% endblock %}
+  {% endblock %}
+{% endif %}
+
+

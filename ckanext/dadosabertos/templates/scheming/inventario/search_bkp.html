@@ -1,0 +1,230 @@
+{% extends "page.html" %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% if h.check_access('package_create') %}
+        <div class="page_primary_action">
+          <a class="btn btn-primary" href="/aplicativo/new">
+            <i class="icon-plus-sign-alt"></i> Adicionar novo aplicativo
+          </a>
+        </div>
+      {% endif %}
+
+      <!-- Conteúdo vindo do Wordpress -->
+      <div class="ui segment basic nopadding">
+        {{c.wp_page.content.rendered|safe}}
+      </div>
+
+      <!-- Barra de busca -->
+      <div id="search-app" class="ui icon input fluid large">
+        <input id="search-app-field" value="{{c.s_result}}" type="text" placeholder="Qual aplicativo você procura?">
+        <i class="search icon"></i>
+      </div>
+     
+
+      <!-- MSG Nenhum aplicativo encontrado-->
+      <div class="ui warning message" id="search-not-found" style="display:none;">
+        <div>
+          Nenhum aplicativo encontrado... :/
+        </div>
+      </div>
+
+      <!-- Lista de aplicativos -->
+      <div class="ui segment basic nopadding" id="aplicativos">
+
+        <!-- Loader -->
+        <div class="ui inverted dimmer" id="aplicativos-loader">
+          <div class="ui huge text loader">Buscando</div>
+        </div>
+        
+        <!-- Aplicativos -->
+        {% for app in c.aplicativos %}
+        <div class="ui segment app" data-searchinfo="{{app.title}} {{app.name}} {{app.description}}">
+          <div class="ui three column grid">
+            <div class="three wide column">
+              <div class="ui fluid bordered image">
+                <img src="{{app.image}}" alt="{{app.title}}" style="border-radius: 3px;">
+              </div>
+            </div>
+            <div class="five wide column content">
+              <div class="ui medium header">{{app.title}}</div>
+              <div class="meta">
+                <a class="ui positive tiny basic button" href="/aplicativo/{{app.name}}" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">Mais informações</a>
+                <!--<button class="ui positive tiny basic button open-modal" style="margin-top: 12px;" data-title="{{app.title}}" data-app="{{app.name}}">new</button>-->
+              </div>
+            </div>
+            <div class="description eight wide column hidden-sm hidden-xs">
+              <div class="group" style="margin: 4px 0px;">{{app.group_title}}</div>
+              {{h.dadosgovbr_trim_string(app.description, 300)}}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </article>
+
+
+<!-- Modal
+================================ -->
+<div class="ui long modal">
+  <i class="close icon" onclick="$('.ui.modal').modal('hide');"></i>
+  <div class="header">
+    Error...
+  </div>
+  <div class="ui segment basic content" style="min-height: 120px;">
+    <div class="ui inverted dimmer">
+      <div class="ui medium text loader">Carregando</div>
+    </div>
+    <div class="content-area">
+      <!-- Conteúdo via Ajax -->
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button blue">Android</div>
+    <div class="ui button blue">iOS</div>
+    <div class="ui button violet">Web</div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+
+  // Helper get URL parameters
+  $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if (results==null){
+        return null;
+      }
+      else{
+        return decodeURIComponent(results[1]) || 0;
+      }
+  }
+
+  // Modal
+  var modal = $('.ui.modal');
+  // $('.ui.modal').modal({observeChanges: true});
+
+  // Carrega conteúdo do modal
+  function appModalLoad(app_name, app_title) {
+    // Altera URL
+    window.history.pushState(app_name, app_title, '?s='+app_title+'&m='+app_name);
+
+    // Define título e mensagem de loading
+    modal.find('.header').html(app_title);
+    modal.find('.content-area').html('');
+    modal.find('.dimmer').addClass('active');
+    modal.modal('show');
+
+    // Carrega conteúdo via Ajax
+    $.ajax({url: "/aplicativos_busca/"+app_name, success: function(result){
+      modal.find('.dimmer').removeClass('active');
+      modal.find('.content-area').html(result);
+      // modal.modal('refresh');
+    }});
+
+  }
+
+  // Eventos
+    // Abrir modal da aplicação
+    $("#aplicativos > .app .open-modal").on("click", function(){
+      appModalLoad($(this).data('app'), $(this).data('title'));
+    });
+    // Abre modal automaticamente se possuir GET['m']
+    if($.urlParam('m')) {
+      appModalLoad($.urlParam('m'), $.urlParam('s'));
+    }
+});
+</script>
+
+
+
+<!-- Busca
+================================ -->
+<script>
+(function() {
+  // DIV com todos os Aplicativos
+  var aplicativos = $("#aplicativos");
+
+  // Evento da barra de busca
+  $("#search-app-field").on('keyup', function(){
+    $(this).unbind();
+
+    // Exibe o loader
+    $("#aplicativos-loader").data("near_event", "1");
+    $("#aplicativos-loader").addClass("active");
+
+    // Busca animação
+    $("#search-app").addClass("loading");
+    setTimeout(function(){
+      $("#search-app").removeClass("loading");
+    }, 1500);
+
+    //search_app();
+  });
+
+  // Busca
+  var search_input = document.getElementById("search-app-field");
+  function search_app (){
+    var search_string = search_input.value;    
+
+    // Se houve um evento de busca a pouco tempo
+    if($("#aplicativos-loader").data("near_event") == "1") {
+      $("#aplicativos-loader").data("near_event", "0");
+    }
+
+    // Se não houve, filtra os resultados
+    else {
+      // Oculta o loader
+      $("#aplicativos-loader").removeClass("active");
+
+      // Loop para cada aplicativo em aplicativos
+      aplicativos.children(".app").each(function() {
+        // Exibe aplicativo encontrado
+        if( this.dataset['searchinfo'].indexOf(search_string) != -1 ){
+          $(this).removeClass("hide");
+        }
+
+        // Oculta aplicativo não encontrado
+        else{
+          $(this).addClass("hide");
+        }
+      });
+
+      // Se existir resultados
+      if(aplicativos.find(".app").not(".hide").length != 0) {
+        $("#aplicativos").show();
+        $("#search-not-found").hide();
+      }
+      // Se não existir resultados
+      else {
+        $("#aplicativos").hide();
+        $("#search-not-found").show();
+      }
+    }
+
+  };
+
+  // Verifica resultados a cada meio segundo
+  setInterval(search_app, 400);
+  search_app(); // Busca quando a página é carregada
+})();
+</script>
+
+
+{% block body_extras -%}
+  {{ super() }}
+{%- endblock %}
+
+
+{% endblock %}
+
+{% block breadcrumb_content %}
+  <li><a class="active"  href="{{h.url_for('home','index')}}aplicativos">Aplicativos</a></li>
+{% endblock %}
+
+{% block flash %}
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}

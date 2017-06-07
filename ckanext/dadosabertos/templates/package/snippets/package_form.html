@@ -1,0 +1,91 @@
+{% import 'macros/form.html' as form %}
+{% set action = c.form_action or '' %}
+
+{# This provides a full page that renders a form for adding a dataset. It can
+then itself be extended to add/remove blocks of functionality. #}
+<form id="dataset-edit" class="dataset-form form-horizontal" method="post" action="{{ action }}" data-module="basic-form" novalidate>
+  {% block stages %}
+    {{ h.snippet('package/snippets/stages.html', stages=stage) }}
+  {% endblock %}
+
+  <input type="hidden" name="_ckan_phase" value="dataset_new_1" />
+  {# pkg_name used in 3 stage edit #}
+  <input type="hidden" name="pkg_name" value="{{ data.id }}" />
+  {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
+
+  {% block basic_fields %}
+    {% snippet 'package/snippets/package_basic_fields.html', data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
+  {% endblock %}
+
+  {% block metadata_fields %}
+    {% snippet 'package/snippets/package_metadata_fields.html', data=data, errors=errors %}
+  {% endblock %}
+
+  {% block form_actions %}
+    <div class="form-actions">
+      {% block disclaimer %}
+        {% if c.pkg_dict.type == 'dataset' %}
+            <p class="action-info small">
+            {%- trans -%}
+            The <i>data license</i> you select above only applies to the contents
+            of any resource files that you add to this dataset. By submitting
+            this form, you agree to release the <i>metadata</i> values that you
+            enter into the form under the
+            <a href="http://opendatacommons.org/licenses/odbl/1-0/">Open Database License</a>.
+            {%- endtrans -%}
+            </p>
+        {% endif %}
+      {% endblock %}
+      {% block delete_button %}
+        {% if h.check_access('package_delete', {'id': data.id}) and not data.state == 'deleted' %}
+          <a class="btn btn-danger pull-left" href="{% url_for controller='package', action='delete', id=data.id %}" data-module="confirm-action" data-module-content="{{ _('Are you sure you want to delete this dataset?') }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
+        {% endif %}
+      {% endblock %}
+      {% block save_button %}
+        {% if c.pkg_dict.type != 'dataset' and c.action=='edit' %}
+          <button class="btn btn-primary" type="submit" name="save">Atualizar</button>
+        {% elif c.pkg_dict.type != 'dataset' and c.action=='new' %}
+          <button class="btn btn-primary" type="submit" name="save">Próximo passo</button>
+        {% else %}
+          <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
+        {% endif %}
+      {% endblock %}
+      {{ form.required_message() }}
+    </div>
+  {% endblock %}
+</form>
+
+
+<script>
+  (function() {
+    // Remove upload button
+    function removeUploadButton() {
+      $('.dataset-form .image-upload .control-group.control-full').each(function(){
+        $(this).find('.btn-remove-url').hide();
+        var label = $(this).find('> label.control-label');
+        if(label.attr('for') == 'field-image-url') {
+          label.parent('.control-group.control-full').attr('style', 'display:block !important');
+        } else {
+          label.parent('.control-group.control-full').attr('style', 'display:none !important');
+        }
+      });
+        
+    }
+    //setTimeout(removeUploadButton, 100);
+    //setTimeout(removeUploadButton, 1000);
+    //setTimeout(removeUploadButton, 2000);
+    //setTimeout(removeUploadButton, 3000);
+
+    // Set new URL on package type
+    function updatePackageName() {
+      $('.dataset-form span.add-on, .dataset-form span.slug-preview-prefix').each(function(){
+        var package_type = $(this).html().replace('/dataset/', '/{{h.dadosgovbr_get_schema_name()}}/');
+        $(this).html(package_type);
+      });
+    }
+    setTimeout(updatePackageName, 100);
+    setTimeout(updatePackageName, 1000);
+    setTimeout(updatePackageName, 2000);
+    setTimeout(updatePackageName, 3000);
+  })();
+</script>

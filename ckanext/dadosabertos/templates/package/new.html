@@ -1,0 +1,23 @@
+{# Scheming pages #}
+{% set pkg_type = h.dadosgovbr_get_schema_name() %}
+{% if pkg_type == 'aplicativo' %}
+  {% snippet "scheming/aplicativo/new.html", pkg=pkg, form_vars=form_vars, form_snippet=form_snippet %}
+{% elif pkg_type == 'concurso' %}
+  {% snippet "scheming/concurso/new.html", pkg=pkg, form_vars=form_vars, form_snippet=form_snippet %}
+{% elif pkg_type == 'inventario' %}
+  {% snippet "scheming/inventario/new.html", pkg=pkg, form_vars=form_vars, form_snippet=form_snippet %}
+
+
+{# Default CKAN package #}
+{% else %}
+    {% if not h.organizations_available('create_dataset')
+            and not h.check_config_permission('ckan.auth.create_unowned_dataset') %}
+
+        {% include "package/snippets/cannot_create_package.html" %}
+
+    {% else %}
+        {% extends "package/base_form_page.html" %}
+
+        {% block subtitle %}{{ _('Create Dataset') }}{% endblock %}
+    {% endif  %}
+{% endif  %}

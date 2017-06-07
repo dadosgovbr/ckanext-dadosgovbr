@@ -1,0 +1,16 @@
+{% if tags %}
+  <section class="tags">
+    {% snippet 'snippets/tag_list.html', tags=tags, _class='tag-list well' %}
+  </section>
+
+    <script>
+        // Set new URL for tags based on package type
+        (function() {
+        $('.tags .tag').each(function(){
+            var new_url = $(this).attr('href').replace('/dataset?', '/{{h.dadosgovbr_get_schema_name()}}?');
+            $(this).attr('href', new_url);
+            //console.log(new_url);
+        });
+        })();
+    </script>
+{% endif %}

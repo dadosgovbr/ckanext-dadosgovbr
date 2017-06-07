@@ -18,7 +18,7 @@ class AplicativosController(p.toolkit.BaseController):
         from ckan.logic import get_action
         context = {'model': model, 'session': model.Session,
                 'user': c.user or c.author}
-        
+
         # Get "aplicativos"
         data_dict = {'fq': 'type:aplicativo'}
         c.aplicativos = get_action('package_search')(context, data_dict)['results']
@@ -45,7 +45,7 @@ class AplicativosController(p.toolkit.BaseController):
             c.s_result    = ""
 
 
-        return render('scheming/aplicativos.html')
+        return render('scheming/aplicativo/search_bkp.html')
 
 
     
@@ -65,86 +65,3 @@ class AplicativosController(p.toolkit.BaseController):
 
         c.app_title = title
         return render("scheming/aplicativo_modal.html")
-
-
-
-
-
-# ============================================================
-# Concursos
-# ============================================================
-class ConcursosController(p.toolkit.BaseController):
-    def index (ctrl):
-        # Query
-        from ckan.logic import get_action
-        context = {'model': model, 'session': model.Session,
-                'user': c.user or c.author}
-        
-        # Get "concursos"
-        data_dict = {'fq': 'type:concurso'}
-        c.concursos = get_action('package_search')(context, data_dict)['results']
-
-        # Get page content from Wordpress
-        wp_page_slug = 'scheming_concursos'
-        c.wp_page = type('Nothing', (object,), {})  
-        c.wp_page.content = type('Nothing', (object,), {})  
-        c.wp_page.content.rendered = "Conteudo da pagina nao encontrado..."
-        try:
-            c.wp_page = wp.page(wp_page_slug)
-        except:
-            pass
-
-        # DEBUG
-        # from pprint import pprint
-        # pprint(c.concursos)
-
-
-        # Get search params from URL
-        if request.method == 'GET' and 's' in request.GET:
-            c.s_result    = request.GET['s']
-        else:
-            c.s_result    = ""
-
-        return render('scheming/concursos.html')
-
-
-
-
-
-# ============================================================
-# Inventários
-# ============================================================
-class InventariosController(p.toolkit.BaseController):
-    def index (ctrl):
-        # Query
-        from ckan.logic import get_action
-        context = {'model': model, 'session': model.Session,
-                'user': c.user or c.author}
-        
-        # Get "inventarios"
-        data_dict = {'fq': 'type:inventario'}
-        c.concursos = get_action('package_search')(context, data_dict)['results']
-
-        # Get page content from Wordpress
-        wp_page_slug = 'scheming_inventarios'
-        c.wp_page = type('Nothing', (object,), {})  
-        c.wp_page.content = type('Nothing', (object,), {})  
-        c.wp_page.content.rendered = "Conteudo da pagina nao encontrado..."
-        try:
-            c.wp_page = wp.page(wp_page_slug)
-        except:
-            pass
-
-
-        # DEBUG
-        # from pprint import pprint
-        # pprint(c.concursos)
-
-
-        # Get search params from URL
-        if request.method == 'GET' and 's' in request.GET:
-            c.s_result    = request.GET['s']
-        else:
-            c.s_result    = ""
-
-        return render('scheming/inventarios.html')

@@ -1,0 +1,66 @@
+{% extends "scheming/concurso/read_base.html" %}
+
+{% block breadcrumb_content %}
+  <li><a href="{{h.url_for('home','index')}}{{h.dadosgovbr_get_schema_name()}}">{{h.dadosgovbr_get_schema_title(plural=True).title()}}</a></li>
+  <li><a class="active" href="{{h.url_for('home','index')}}{{h.dadosgovbr_get_schema_name()}}/{{pkg.name}}">{{pkg.title|safe}}</a></li>
+{% endblock %}
+
+{% block primary_content_inner %}
+  {{ super() }}
+  {% block package_description %}
+    {% if pkg.private %}
+      <span class="dataset-private label label-inverse pull-right">
+        <i class="icon-lock"></i>
+        {{ _('Private') }}
+      </span>
+    {% endif %}
+    <h1>
+      {% block page_heading %}
+        {{ h.dataset_display_name(pkg) }}
+        {% if pkg.state.startswith('draft') %}
+          [{{ _('Draft') }}]
+        {% endif %}
+        {% if pkg.state == 'deleted' %}
+          [{{ _('Deleted') }}]
+        {% endif %}
+      {% endblock %}
+    </h1>
+    {% block package_notes %}
+      {% if pkg.notes %}
+        <hr>
+        <div class="notes embedded-content">
+          {{ h.render_markdown(pkg.notes) }}
+        </div>
+      {% endif %}
+    {% endblock %}
+    {# FIXME why is this here? seems wrong #}
+    <span class="insert-comment-thread"></span>
+  {% endblock %}
+
+  {% block package_tags %}
+    <br>
+    {% snippet "package/snippets/tags.html", tags=pkg.tags %}
+    <hr>
+    <script>
+      // Set new URL for tags based on package type
+      (function() {
+        $('.tags .tag').each(function(){
+          var new_url = $(this).attr('href').replace('/dataset?', '/{{pkg.type}}?');
+          $(this).attr('href', new_url);
+          //console.log(new_url);
+        });
+      })();
+    </script>
+  {% endblock %}
+
+  {% block package_resources %}
+    {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
+    <hr>
+  {% endblock %}
+
+  {% block package_additional_info %}
+    {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
+  {% endblock %}
+
+{% endblock %}
+

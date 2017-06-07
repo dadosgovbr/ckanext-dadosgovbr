@@ -1,10 +1,10 @@
 {% extends "page.html" %}
 {% import 'macros/form.html' as form %}
 
-{% block subtitle %}{{ _("Datasets") }}{% endblock %}
+{% block subtitle %}{{h.dadosgovbr_get_schema_title()}}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active"><a href="/{{c.package_type}}s">Concursos</a></li>
+  <li class="active"><a href="/{{c.package_type}}">{{h.dadosgovbr_get_schema_title(plural=True).title()}}</a></li>
 {% endblock %}
 
 {% block primary_content %}
@@ -16,8 +16,8 @@
         {% if h.check_access('package_create') %}
           <div class="page_primary_action">
             <div class="btn-group">
-              <a class="btn btn-primary" href="/concurso/new">
-                <i class="icon-plus-sign-alt"></i>Adicionar Concurso
+              <a class="btn btn-primary" href="/{{h.dadosgovbr_get_schema_name()}}/new">
+                <i class="icon-plus-sign-alt"></i>Adicionar {{h.dadosgovbr_get_schema_title()}}
               </a>
             </div>
           </div>

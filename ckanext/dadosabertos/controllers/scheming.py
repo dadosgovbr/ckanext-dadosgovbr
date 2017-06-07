@@ -370,7 +370,7 @@ class SchemingPagesController(base.BaseController):
         self._setup_template_variables(context, {},
                                        package_type=package_type)
 
-        return render('scheming/'+package_type+'_search.html',
+        return render('scheming/'+package_type+'/search.html',
                       extra_vars={'dataset_type': package_type})
 
 
