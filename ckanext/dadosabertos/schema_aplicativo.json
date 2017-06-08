@@ -16,7 +16,7 @@
       "form_placeholder": "ex. sistema-de-obitos"
     },
     {
-      "field_name": "description",
+      "field_name": "notes",
       "label": "Descrição",
       "form_snippet": "markdown.html",
       "form_placeholder": "ex.: descrição sucinta sobre a solução",
