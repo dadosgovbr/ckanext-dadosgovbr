@@ -87,7 +87,7 @@ def get_schema_title(schema_name=None, plural=False):
             return schema_titles[schema_name+'_plural']
         else:
             return schema_titles[schema_name]
-    return u'?'
+    return u'resultado(s)'
 
 def resource_count():
     ''' Return total number of resources on current CKAN platform

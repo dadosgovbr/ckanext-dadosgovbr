@@ -16,7 +16,7 @@ Example:
   {% set pkg_name_plural=h.dadosgovbr_get_schema_title(plural=True) %}
   {% set text_query = ungettext('{number} pkg_name encontrado para "{query}"'.replace('pkg_name',pkg_name), '{number} pkg_name_plural encontrados para "{query}"'.replace('pkg_name_plural',pkg_name_plural), count) %}
   {% set text_query_none = _('Nenhum pkg_name encontrado para "{query}"'.replace('pkg_name',pkg_name)) %}
-  {% set text_no_query = ungettext('{number} pkg_name encontrado'.replace('pkg_name',pkg_name), '{number} pkg_name_plural encontrados', count).replace('pkg_name_plural',pkg_name_plural) %}
+  {% set text_no_query = ungettext('{number} pkg_name encontrado(s)'.replace('pkg_name',pkg_name), '{number} pkg_name_plural encontrado(s)', count).replace('pkg_name_plural',pkg_name_plural) %}
   {% set text_no_query_none = _('Nenhum pkg_name encontrado'.replace('pkg_name',pkg_name)) %}
 
 {% elif type == 'group' %}

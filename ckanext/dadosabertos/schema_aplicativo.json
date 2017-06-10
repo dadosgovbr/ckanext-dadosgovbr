@@ -39,7 +39,8 @@
       "label": "Imagem do app (546px largura)",
       "preset": "resource_url_upload",
       "form_placeholder": "http://exemplo.com.br/imagem-do-app.jpg",
-      "upload_label": "Imagem do app (546px largura)"
+      "upload_label": "Imagem do app (546px largura)",
+      "required": "False"
     },
     {
       "field_name": "category",

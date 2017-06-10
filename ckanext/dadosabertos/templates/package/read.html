@@ -2,6 +2,7 @@
 
 {# Scheming pages #}
 {% set pkg_type = h.dadosgovbr_get_schema_name() %}
+{% set pkg_type = '' %}
 {% if pkg_type == 'aplicativo' %}
   {% snippet "scheming/aplicativo/read.html", pkg=pkg %}
 {% elif pkg_type == 'concurso' %}
