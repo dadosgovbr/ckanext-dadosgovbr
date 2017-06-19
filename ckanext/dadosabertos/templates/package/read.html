@@ -48,10 +48,12 @@
       <br>
       {% snippet "package/snippets/tags.html", tags=pkg.tags %}
 
-      {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
-        <span id="package_id" class="hidden">{{pkg.id}}</span>
-        <span id="package_siorg" class="hidden">{{h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg').value}}</span>
-        {% snippet "package/snippets/eouv.html", pkg_id=pkg.id %}
+      {% if c.eouv.url %}
+        {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
+          <span id="package_id" class="hidden">{{pkg.id}}</span>
+          <span id="package_siorg" class="hidden">{{h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg').value}}</span>
+          {% snippet "package/snippets/eouv.html", pkg_id=pkg.id %}
+        {% endif %}
       {% endif %}
       <hr>
     {% endblock %}
