@@ -28,7 +28,7 @@
   <!-- Formulário / Ouvidoria -->
   <div class="dimmable form-problems" style="display:none;">
     <hr>
-    <h4 class="ui header msg-error" style="display:none;">Desculpe. Diga-nos o motivo para que possamos buscar uma solução.</h4>
+    <h4 class="ui header msg-error" style="display:none;">Verifique se a solução para o seu problema está na relação de <a href="/pagina/faq-dataset" style="color:#769F29;">perguntas frequentes</a>. Diga-nos o motivo para que possamos buscar uma solução.</h4>
 
     <div style="padding: 10px; position: relative;">
         <form class="ui reply form" id="form_eouv">
@@ -63,7 +63,7 @@
               <div class="field">
                 <div class="ui checkbox mostrar_campos_opcionais">
                   <input type="checkbox" name="ser_identificado" tabindex="6">
-                  <label style="z-index: 4;" for="ser_identificado">Quero ser notificado sobre o andamento desta solicitação.</label>
+                  <label style="z-index: 4;" for="ser_identificado" align="justify">Sua avaliação será enviada para o sistema de Ouvidoria e-Ouv como uma reclamação. Clique aqui caso queira acompanhar seu andamento.</label>
                 </div>
               </div>
             </div>
@@ -90,7 +90,7 @@
 
           <hr>
 
-          <button type="submit" class="ui button enviar" tabindex="9">Enviar relato para ouvidora</button>
+          <button type="submit" class="ui button enviar" tabindex="9">Enviar manifestação para ouvidoria</button>
           <button class="ui loading button carregando" style="display:none">Carregando</button>
         </form>
     </div>
@@ -174,7 +174,7 @@ $(document).ready(function(){
     eouv.find(".form-problems").show();
     eouv.find(".sim").removeClass("sim").addClass("disabled");
     eouv.addClass("red").removeClass("green");
-    eouv.find(".msg-title").html('Verifique se a solução para o seu problema está na relação de <a href="/pagina/faq-dataset" style="color:#769F29;">perguntas frequentes</a>.');
+    eouv.find(".msg-title").html('');
     eouv.find(".msg-error").show();
   });
 
@@ -190,7 +190,7 @@ $(document).ready(function(){
     function msg_sucesso () {
         eouv.find("i.checkmark").show(); // Exibe ícone
         eouv.removeClass("red"); // Remove top border
-        eouv.find(".msg").html("Sua mensagem foi enviada para a ouvidoria do Governo.<br>Protocolo: <span class='protocolo'></span>");
+        eouv.find(".msg").html("Sua manifestação foi enviada para o Sistema de Ouvidoria <br>e-Ouv.<br>Protocolo: <span class='protocolo'></span>");
         eouv.find('.dimmer').addClass('active');
     }
 
