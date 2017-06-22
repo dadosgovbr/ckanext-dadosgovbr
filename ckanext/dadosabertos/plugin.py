@@ -224,5 +224,9 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'dadosgovbr_get_package': tools.get_package,
             'dadosgovbr_cache_create': tools.cache_create,
             'dadosgovbr_cache_load': tools.cache_load,
+
+            # e-Ouv
+            'dadosgovbr_eouv_is_avaliable': tools.eouv_is_avaliable,
             'dadosgovbr_get_contador_eouv': tools.helper_get_contador_eouv
         }
+        

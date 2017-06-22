@@ -17,6 +17,12 @@ def trim_letter(s, tamanho):
     s = unicode(s)
     return s if (len(s) < tamanho) else s[:(tamanho)] + u"..."
 
+def eouv_is_avaliable ():
+    from ckan.common import config
+    if 'eouv.url' in config:
+        return True
+    return False
+
 def helper_get_contador_eouv (package_id):
     out = {}
     error=0

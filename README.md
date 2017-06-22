@@ -4,7 +4,7 @@ Plugin / Tema do Portal de Dados Abertos do Governo Federal - Brasil
 ## Requisitos
 
 - CKAN 2.5.x / 2.6.x
-- Um grupo criado com o "name" igual "dados-em-destaque"
+- Um grupo criado com o "name" igual a "dados-em-destaque"
 - Plugin: ckanext-scheming
 
 
@@ -24,8 +24,8 @@ cd /usr/lib/ckan/default/src
 
 Instale o ckanext-dadosgovbr e as dependências:
 ```
-# Instale o ckanext-dadosgovbr
-pip install -e git+https://github.com/dadosgovbr/ckanext-dadosabertos.git#egg=ckanext-dadosabertos
+# Instale o ckanext-dadosgovbr (última versão Beta)
+pip install -e git+https://github.com/dadosgovbr/ckanext-dadosabertos.git@beta#egg=ckanext-dadosabertos
 
 # Instale as dependências
 pip install -r /usr/lib/ckan/default/src/ckanext-dadosabertos/pip-requirements.txt
