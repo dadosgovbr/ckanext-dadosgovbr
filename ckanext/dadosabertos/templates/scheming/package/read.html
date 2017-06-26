@@ -1,6 +1,3 @@
-{% set pkg = c.pkg_dict %}
-{% set pkg_type = h.dadosgovbr_get_schema_name() %}
-
 {% extends "package/read_base.html" %}
 {% block primary_content_inner %}
   {{ super() }}
@@ -53,7 +50,7 @@
   {% endblock %}
 
   {% block package_additional_info %}
-    {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
+    {% snippet "scheming/snippets/additional_info.html", pkg_dict=pkg %}
   {% endblock %}
-
+ 
 {% endblock %}

@@ -27,6 +27,7 @@ import ckan.lib.render
 from ckan.common import OrderedDict, _, json, request, c, response
 #from home import CACHE_PARAMETERS
 
+from ckan.controllers.package import PackageController
 
 log = logging.getLogger(__name__)
 
@@ -62,80 +63,12 @@ def search_url(params, package_type=None):
     return url_with_params(url, params)
 
 
-
-
-class SchemingPagesController(base.BaseController):
-
-    def _package_form(self, package_type=None):
-        print("oioi") 
-        return lookup_package_plugin(package_type).package_form()
-
-    def _setup_template_variables(self, context, data_dict, package_type=None):
-        return lookup_package_plugin(package_type).\
-            setup_template_variables(context, data_dict)
-
-    def _new_template(self, package_type):
-        return lookup_package_plugin(package_type).new_template()
-
-    def _edit_template(self, package_type):
-        return lookup_package_plugin(package_type).edit_template()
-
-    def _search_template(self, package_type):
-        return lookup_package_plugin(package_type).search_template()
-
-    def _read_template(self, package_type):
-        return lookup_package_plugin(package_type).read_template()
-
-    def _history_template(self, package_type):
-        return lookup_package_plugin(package_type).history_template()
-
-    def _resource_form(self, package_type):
-        # backwards compatibility with plugins not inheriting from
-        # DefaultDatasetPlugin and not implmenting resource_form
-        plugin = lookup_package_plugin(package_type)
-        if hasattr(plugin, 'resource_form'):
-            result = plugin.resource_form()
-            if result is not None:
-                return result
-        return lookup_package_plugin().resource_form()
-
-    def _resource_template(self, package_type):
-        # backwards compatibility with plugins not inheriting from
-        # DefaultDatasetPlugin and not implmenting resource_template
-        plugin = lookup_package_plugin(package_type)
-        if hasattr(plugin, 'resource_template'):
-            result = plugin.resource_template()
-            if result is not None:
-                return result
-        return lookup_package_plugin().resource_template()
-
-    def _guess_package_type(self, expecting_name=False):
-        """
-            Guess the type of package from the URL handling the case
-            where there is a prefix on the URL (such as /data/package)
-        """
-
-        # Special case: if the rot URL '/' has been redirected to the package
-        # controller (e.g. by an IRoutes extension) then there's nothing to do
-        # here.
-        if request.path == '/':
-            return 'dataset'
-
-        parts = [x for x in request.path.split('/') if x]
-
-        idx = -1
-        if expecting_name:
-            idx = -2
-
-        pt = parts[idx]
-        if pt == 'package':
-            pt = 'dataset'
-
-        return pt
-
+class SchemingPagesController(PackageController):
     
     def search(self):
         from ckan.lib.search import SearchError, SearchQueryError
+
+        print "ooooi"
 
         # Get package type name
         package_type = self._guess_package_type()[:-1]
@@ -400,38 +333,6 @@ class SchemingPagesController(base.BaseController):
         return render('package/resources.html',
                       extra_vars={'dataset_type': package_type})
 
-    def read(self, id):
-        
-        '''
-        Embedded page for a resource data-preview.
-        Depending on the type, different previews are loaded.  This could be an
-        img tag where the image is loaded directly or an iframe that embeds a
-        webpage, or a recline preview.
-        '''
-        context = {
-            'model': model,
-            'session': model.Session,
-            'user': c.user,
-            'auth_user_obj': c.userobj
-        }
 
-        try:
-            c.resource = get_action('resource_show')(context,
-                                                     {'id': resource_id})
-            c.package = get_action('package_show')(context, {'id': id})
-
-            data_dict = {'resource': c.resource, 'package': c.package}
-
-            preview_plugin = datapreview.get_preview_plugin(data_dict)
-
-            if preview_plugin is None:
-                abort(409, _('No preview has been defined.'))
-
-            preview_plugin.setup_template_variables(context, data_dict)
-            c.resource_json = json.dumps(c.resource)
-            dataset_type = c.package['type'] or 'dataset'
-        except (NotFound, NotAuthorized):
-            abort(404, _('Resource not found'))
-        else:
-            return render(preview_plugin.preview_template(context, data_dict),
-                          extra_vars={'dataset_type': dataset_type})
+    def _read_template(self, package_type):
+        return 'scheming/'+package_type+'/read.html'        
