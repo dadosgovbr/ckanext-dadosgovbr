@@ -128,6 +128,26 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_public_directory(config_, 'public')
         #toolkit.add_resource('fanstatic', 'dadosabertos')
 
+    
+    
+    # Mapeamento das URLs
+    # =======================================================
+    def before_map(self, map):
+        map.connect('/organization/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    action='read_dataset',
+                    id=0)
+        map.connect('/organization/aplicativos/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    action='read_aplicativo',
+                    id=0)
+        map.connect('/organization/concursos/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    action='read_concurso',
+                    id=0)
+        return map
+
+
 
     # Mapeamento das URLs
     # =======================================================
@@ -136,6 +156,11 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('/test',
                     controller='ckanext.dadosabertos.controllers.test:TestController',
                     action='index')
+
+        map.connect('/test/{id}',
+                    controller='ckanext.dadosabertos.controllers.test:TestController',
+                    action='read',
+                    id=0)
 
         # ckanext-scheming
         map.connect('/aplicativos',

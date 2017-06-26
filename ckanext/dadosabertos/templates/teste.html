@@ -1,0 +1,18 @@
+{% extends "organization/read.html" %}
+
+{% block breadcrumb_content %}
+  <li><a href="../organization">Organizações</a></li>
+  <li><a class="active" href="../organization/nome_dataset">Parte 2 ativa</a></li>
+{% endblock %}
+
+{% block content_primary_nav %}
+  {{ h.build_nav_icon('organization_read', _('Datasets'), id=c.group_dict.name) }}
+  <li {{ 'class=active' if c.aplicativo }} >
+      <a href="/organization/aplicativos/{{c.group.name}}">Aplicativos</a>
+  </li>
+  <li {{ 'class=active' if c.concurso }}>
+      <a href="/organization/concursos/{{c.group.name}}">Concursos</a>
+  </li>
+  {{ h.build_nav_icon('organization_activity', _('Activity Stream'), id=c.group_dict.name, offset=0) }}
+  {{ h.build_nav_icon('organization_about', _('About'), id=c.group_dict.name) }}
+{% endblock %}
