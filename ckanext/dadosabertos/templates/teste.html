@@ -1,12 +1,14 @@
 {% extends "organization/read.html" %}
 
-{% block breadcrumb_content %}
+{# {% block breadcrumb_content %}
   <li><a href="../organization">Organizações</a></li>
   <li><a class="active" href="../organization/nome_dataset">Parte 2 ativa</a></li>
-{% endblock %}
+{% endblock %} #}
 
 {% block content_primary_nav %}
-  {{ h.build_nav_icon('organization_read', _('Datasets'), id=c.group_dict.name) }}
+  <li {{ 'class=active' if c.dataset }} >
+      <a href="/organization/{{c.group.name}}"><i class="icon-sitemap"></i>Conjuntos de dados</a>
+  </li>
   <li {{ 'class=active' if c.aplicativo }} >
       <a href="/organization/aplicativos/{{c.group.name}}">Aplicativos</a>
   </li>
