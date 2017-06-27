@@ -69,7 +69,7 @@ class TestController(OrganizationController):
 
         self._read_dataset(id, limit, group_type)
         
-        return render('teste.html')
+        return render('organization/view_scheming_organization.html')
 
         #return render(self._read_template(c.group_dict['type']),
         #              extra_vars={'group_type': group_type})
@@ -240,7 +240,7 @@ class TestController(OrganizationController):
 
         self._read_aplicativo(id, limit, group_type)
         
-        return render('teste.html')
+        return render('organization/view_scheming_organization.html')
 
         #return render(self._read_template(c.group_dict['type']),
         #              extra_vars={'group_type': group_type})
@@ -411,7 +411,7 @@ class TestController(OrganizationController):
 
         self._read_concurso(id, limit, group_type)
         
-        return render('teste.html')
+        return render('organization/view_scheming_organization.html')
 
         #return render(self._read_template(c.group_dict['type']),
         #              extra_vars={'group_type': group_type})
