@@ -48,7 +48,9 @@
     {% if not error %}
       <h2>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
         {% if count == 0 %}
-          . Por favor tente uma nova pesquisa ou acesse o <a href="https://esic.cgu.gov.br/sistema/site/index.html"><font color="green">e-SIC</font></a> para encaminhar um pedido de acesso à informação.
+            {% if query %}
+              . Por favor tente uma nova pesquisa ou acesse o <a href="https://esic.cgu.gov.br/sistema/site/index.html"><font color="green">e-SIC</font></a> para encaminhar um pedido de acesso à informação.
+            {% endif %}
         {% endif %}
       </h2>
     {% else %}
