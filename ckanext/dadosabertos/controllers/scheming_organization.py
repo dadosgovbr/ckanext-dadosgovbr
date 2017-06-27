@@ -41,7 +41,9 @@ class TestController(OrganizationController):
         return render("test.html")
 
     def read_dataset(self, id, limit=20):
-
+        
+        # Variáveis para a view identificar qual guia deve ser ativada e definir o tipo de resultado
+        # nos resultados. 
         c.dataset = True
         c.aplicativo = False
         c.concurso = False
@@ -213,6 +215,8 @@ class TestController(OrganizationController):
 
     def read_aplicativo(self, id, limit=20):
 
+        # Variáveis para a view identificar qual guia deve ser ativada e definir o tipo de resultado
+        # nos resultados. 
         c.dataset = False
         c.aplicativo = True
         c.concurso = False
@@ -384,6 +388,8 @@ class TestController(OrganizationController):
 
     def read_concurso(self, id, limit=20):
         
+        # Variáveis para a view identificar qual guia deve ser ativada e definir o tipo de resultado
+        # nos resultados. 
         c.dataset = False
         c.aplicativo = False
         c.concurso = True
