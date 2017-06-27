@@ -16,6 +16,8 @@ import ckanext.dadosabertos.helpers.wordpress as wp
 import ckanext.dadosabertos.helpers.tools as tools
 
 
+
+
 class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     ''' Plugin Dados Abertos
 
@@ -35,6 +37,9 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     # Recriação do schema (Solr)
     # =======================================================
+    def scheming_get_types(self):
+        return ['concurso', 'aplicativo', 'inventario']
+
     def read(self, entity):
         pass
 
@@ -55,7 +60,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def before_search(self, search_params):
         # Redirect for search page
-        schemas = ['concurso', 'aplicativo', 'inventario']
+        schemas = self.scheming_get_types()
         url_current = h.full_current_url()
         if(url_current.replace(g.site_url+'/','') in schemas):
             from pylons.controllers.util import redirect
@@ -128,31 +133,51 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_public_directory(config_, 'public')
         #toolkit.add_resource('fanstatic', 'dadosabertos')
 
-
+    
+    
     # Mapeamento das URLs
     # =======================================================
+    def before_map(self, map):
+
+        map.connect('/organization/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    action='read_dataset',
+                    id=0)
+
+        map.connect('/organization/aplicativos/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    action='read_aplicativo',
+                    id=0)
+
+        map.connect('/organization/concursos/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    action='read_concurso',
+                    id=0)
+
+        # ckanext-scheming
+        for package_type in self.scheming_get_types():
+            map.connect('%s_new' % package_type, '/%s/new' % package_type,
+                            controller='package', action='new')
+            map.connect('/%s/{id}' % package_type,
+                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                        action='read',
+                        id='id')
+            map.connect('/%ss' % package_type,
+                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                        action='search')
+
+        return map
+
+                    
     def after_map(self, map):
         # Testing
         map.connect('/test',
                     controller='ckanext.dadosabertos.controllers.test:TestController',
                     action='index')
-
-        # ckanext-scheming
-        map.connect('/aplicativos',
-                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                    action='search')
-        # map.connect('/aplicativos',
-        #             controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
-        #             action='index')
-        map.connect('/aplicativos_busca/{title}',
-                    controller='ckanext.dadosabertos.controllers.aplicativos:AplicativosController',
-                    action='single')
-        map.connect('/inventarios',
-                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                    action='search')
-        map.connect('/concursos',
-                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                    action='search')
+        map.connect('/test/{id}',
+                    controller='ckanext.dadosabertos.controllers.test:TestController',
+                    action='read',
+                    id=0)
                     
         # e-Ouv
         map.connect('/eouv/new_positive',

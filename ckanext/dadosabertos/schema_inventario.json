@@ -127,7 +127,7 @@
     {
       "field_name": "informacoes_publicas_base",
       "label": "Base possui informações públicas?",
-      "preset": "multiple_checkbox",
+      "preset": "select",
       "choices": [
         {
           "value": "publico",
@@ -146,7 +146,7 @@
     {
       "field_name": "atualizacoes_base",
       "label": "Período de atualização dos dados",
-      "preset": "multiple_checkbox",
+      "preset": "select",
       "choices": [
         {
           "value": "anual",
