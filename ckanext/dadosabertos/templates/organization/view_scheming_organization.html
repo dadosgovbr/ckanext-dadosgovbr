@@ -18,3 +18,8 @@
   {{ h.build_nav_icon('organization_activity', _('Activity Stream'), id=c.group_dict.name, offset=0) }}
   {{ h.build_nav_icon('organization_about', _('About'), id=c.group_dict.name) }}
 {% endblock %}
+
+{% block page_primary_action %}
+        {% if h.check_access('package_create') %}
+        {% endif %}
+{% endblock %}
