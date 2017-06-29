@@ -46,13 +46,45 @@
 
   {% block search_title %}
     {% if not error %}
-      <h2>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
-        {% if count == 0 %}
-            {% if query %}
-              . Por favor tente uma nova pesquisa ou acesse o <a href="https://esic.cgu.gov.br/sistema/site/index.html"><font color="green">e-SIC</font></a> para encaminhar um pedido de acesso à informação.
-            {% endif %}
-        {% endif %}
-      </h2>
+
+      {#
+      
+      Área responsavel por verificar e printar a quantidade de resultados encontrados, 
+      caso ele seja chamado pela scheming_organization.py (ou seja, possui as variaveis c.concurso, c.aplicativo e c.dataset)
+      e não possua nenhum resultado encontrado ele printa uma mensagem que não encontrou aquele tipo de package.
+      
+      #}
+
+      <h3>{% if not c.dataset and not c.concurso and not c.aplicativo %}
+              {% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
+              {% if c.controller == 'package' %}
+                  {% if count == 0 %}
+                      {% if query %}
+                        . Por favor tente uma nova pesquisa ou acesse o <a href="https://esic.cgu.gov.br/sistema/site/index.html"><font color="green">e-SIC</font></a> para encaminhar um pedido de acesso à informação.
+                      {% endif %}
+                  {% endif %}
+              {% endif %}
+          {% else %}
+              {% if not query and count == 0 %}
+                  {% if c.dataset%}
+                    Nenhum dataset encontrado
+                  {% elif c.aplicativo%}
+                    Nenhum aplicativo encontrado
+                  {% elif c.concurso%}
+                    Nenhum concurso encontrado
+                  {% endif %}
+              {% else %}
+                  {% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
+                  {% if c.dataset %}
+                      {% if count == 0 %}
+                          {% if query %}
+                            . Por favor tente uma nova pesquisa ou acesse o <a href="https://esic.cgu.gov.br/sistema/site/index.html"><font color="green">e-SIC</font></a> para encaminhar um pedido de acesso à informação.
+                          {% endif %}
+                      {% endif %}
+                  {% endif %}
+              {% endif %} 
+          {% endif %} 
+      </h3>
     {% else %}
       <h2>Error</h2>
     {% endif %}
