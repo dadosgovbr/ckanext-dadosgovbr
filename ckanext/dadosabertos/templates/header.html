@@ -13,6 +13,11 @@
               {% block header_account_logged %}
               {% if c.userobj.sysadmin %}
                 <li>
+                  <a href="{{h.url_for('home','index')}}report" title="{{ _('Organizations') }}">
+                    <i class="fa fa-chain-broken" aria-hidden="true"></i> {{ _('Links quebrados') }}
+                  </a>
+                </li>
+                <li>
                   <a href="{{h.url_for('home','index')}}harvest" title="{{ _('Organizations') }}">
                     <i class="icon-leaf"></i> {{ _('Harvest') }}
                   </a>

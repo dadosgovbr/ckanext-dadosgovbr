@@ -4,8 +4,11 @@
     {% set input_value = '' %}
 {% elif c.action == 'resource_edit' %}
     {% set input_value = data['url'] %}
+{% elif data.image %}
+    {% set input_value = data.image %}
 {% else %}
-    {% set input_value = 'domain/img/no-image.png'.replace('domain', g.site_url) %}
+    {# {% set input_value = 'domain/img/no-image.png'.replace('domain', g.site_url) %} #}
+    {% set input_value = '' %}
 {% endif %}
 
 {% call form.input(
