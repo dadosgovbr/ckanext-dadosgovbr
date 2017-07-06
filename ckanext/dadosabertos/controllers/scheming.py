@@ -260,7 +260,7 @@ class SchemingPagesController(PackageController):
                     'ckan.search.default_include_private', True)),
             }
 
-            query = get_action('package_search')(context, data_dict)(context, data_dict)
+            query = get_action('package_search')(context, data_dict)
             c.sort_by_selected = query['sort']
 
             c.page = h.Page(
