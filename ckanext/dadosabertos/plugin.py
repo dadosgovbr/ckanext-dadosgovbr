@@ -138,7 +138,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # Mapeamento das URLs
     # =======================================================
     def before_map(self, map):
-
         map.connect('/organization/{id}',
                     controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
                     action='read_dataset',
@@ -154,8 +153,25 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     action='read_concurso',
                     id=0)
 
+
+
         # ckanext-scheming
+        # HACK
+        map.connect('/dataset/edit/{id}',
+                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                    action='edit',
+                    id='id')
+        map.connect('/dataset/{id}/resource_edit/{resource_id}',
+                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                    action='resource_edit',
+                    id='id',
+                    resource_id='resource_id')
         for package_type in self.scheming_get_types():
+            # HACK
+            map.connect('/%s/edit/{id}' % package_type,
+                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                        action='edit',
+                        id='id')
             map.connect('%s_new' % package_type, '/%s/new' % package_type,
                             controller='package', action='new')
             map.connect('/%s/{id}' % package_type,

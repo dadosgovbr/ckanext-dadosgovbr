@@ -68,8 +68,6 @@ class SchemingPagesController(PackageController):
     def search(self):
         from ckan.lib.search import SearchError, SearchQueryError
 
-        print "ooooi"
-
         # Get package type name
         package_type = self._guess_package_type()[:-1]
         c.package_type = package_type
@@ -262,7 +260,7 @@ class SchemingPagesController(PackageController):
                     'ckan.search.default_include_private', True)),
             }
 
-            query = get_action('package_search')(context, data_dict)
+            query = get_action('package_search')(context, data_dict)(context, data_dict)
             c.sort_by_selected = query['sort']
 
             c.page = h.Page(
@@ -307,6 +305,73 @@ class SchemingPagesController(PackageController):
                       extra_vars={'dataset_type': package_type})
 
 
+    # HACK
+    def edit(self, id, data=None, errors=None, error_summary=None):
+        package_type = self._get_package_type(id)
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user, 'auth_user_obj': c.userobj,
+                   'save': 'save' in request.params}
+
+        # HACK
+        if not c.user:
+            abort(403, _('Forbidden')) 
+
+        if context['save'] and not data:
+            return self._save_edit(id, context, package_type=package_type)
+        try:
+            c.pkg_dict = get_action('package_show')(dict(context,
+                                                         for_view=True),
+                                                    {'id': id})
+            context['for_edit'] = True
+            old_data = get_action('package_show')(context, {'id': id})
+            # old data is from the database and data is passed from the
+            # user if there is a validation error. Use users data if there.
+            if data:
+                old_data.update(data)
+            data = old_data
+        except (NotFound, NotAuthorized):
+            abort(404, _('Dataset not found')) 
+        # are we doing a multiphase add?
+        if data.get('state', '').startswith('draft'):
+            c.form_action = h.url_for(controller='package', action='new')
+            c.form_style = 'new'
+            return self.new(data=data, errors=errors,
+                            error_summary=error_summary)
+
+        c.pkg = context.get("package")
+        c.resources_json = h.json.dumps(data.get('resources', []))
+
+        try:
+            check_access('package_update', context)
+        except NotAuthorized:
+            abort(403, _('User %r not authorized to edit %s') % (c.user, id))
+        # convert tags if not supplied in data
+        if data and not data.get('tag_string'):
+            data['tag_string'] = ', '.join(h.dict_list_reduce(
+                c.pkg_dict.get('tags', {}), 'name'))
+        errors = errors or {}
+        form_snippet = self._package_form(package_type=package_type)
+        form_vars = {'data': data, 'errors': errors,
+                     'error_summary': error_summary, 'action': 'edit',
+                     'dataset_type': package_type,
+                     }
+        c.errors_json = h.json.dumps(errors)
+
+        self._setup_template_variables(context, {'id': id},
+                                       package_type=package_type)
+
+        # we have already completed stage 1
+        form_vars['stage'] = ['active']
+        if data.get('state', '').startswith('draft'):
+            form_vars['stage'] = ['active', 'complete']
+
+        edit_template = self._edit_template(package_type)
+        return render(edit_template,
+                      extra_vars={'form_vars': form_vars,
+                                  'form_snippet': form_snippet,
+                                  'dataset_type': package_type})
+
+
     def resources(self, id):
         context = {'model': model, 'session': model.Session,
                    'user': c.user, 'for_view': True,
@@ -333,6 +398,77 @@ class SchemingPagesController(PackageController):
         return render('package/resources.html',
                       extra_vars={'dataset_type': package_type})
 
+
+    # HACK                  
+    def resource_edit(self, id, resource_id, data=None, errors=None,
+                      error_summary=None):
+
+        # HACK
+        if not c.user:
+            abort(403, _('Forbidden'))
+
+        if request.method == 'POST' and not data:
+            data = data or \
+                clean_dict(dict_fns.unflatten(tuplize_dict(parse_params(
+                                                           request.POST))))
+            # we don't want to include save as it is part of the form
+            del data['save']
+
+            context = {'model': model, 'session': model.Session,
+                       'api_version': 3, 'for_edit': True,
+                       'user': c.user, 'auth_user_obj': c.userobj}
+
+            data['package_id'] = id
+            try:
+                if resource_id:
+                    data['id'] = resource_id
+                    get_action('resource_update')(context, data)
+                else:
+                    get_action('resource_create')(context, data)
+            except ValidationError, e:
+                errors = e.error_dict
+                error_summary = e.error_summary
+                return self.resource_edit(id, resource_id, data,
+                                          errors, error_summary)
+            except NotAuthorized:
+                abort(403, _('Unauthorized to edit this resource'))
+            redirect(h.url_for(controller='package', action='resource_read',
+                               id=id, resource_id=resource_id))
+
+        context = {'model': model, 'session': model.Session,
+                   'api_version': 3, 'for_edit': True,
+                   'user': c.user, 'auth_user_obj': c.userobj}
+        pkg_dict = get_action('package_show')(context, {'id': id})
+        if pkg_dict['state'].startswith('draft'):
+            # dataset has not yet been fully created
+            resource_dict = get_action('resource_show')(context,
+                                                        {'id': resource_id})
+            return self.new_resource(id, data=resource_dict)
+        # resource is fully created
+        try:
+            resource_dict = get_action('resource_show')(context,
+                                                        {'id': resource_id})
+        except NotFound:
+            abort(404, _('Resource not found'))
+        c.pkg_dict = pkg_dict
+        c.resource = resource_dict
+        # set the form action
+        c.form_action = h.url_for(controller='package',
+                                  action='resource_edit',
+                                  resource_id=resource_id,
+                                  id=id)
+        if not data:
+            data = resource_dict
+
+        package_type = pkg_dict['type'] or 'dataset'
+
+        errors = errors or {}
+        error_summary = error_summary or {}
+        vars = {'data': data, 'errors': errors,
+                'error_summary': error_summary, 'action': 'edit',
+                'resource_form_snippet': self._resource_form(package_type),
+                'dataset_type': package_type}
+        return render('package/resource_edit.html', extra_vars=vars)
 
     def _read_template(self, package_type):
         return 'scheming/'+package_type+'/read.html'        
