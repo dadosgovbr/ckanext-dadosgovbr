@@ -2,7 +2,7 @@
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.lib.base import c, g, h, model
+from ckan.lib.base import c, g, h, model, abort
 from ckan.common import OrderedDict
 
 from ckan.plugins import implements, SingletonPlugin
@@ -41,6 +41,16 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return ['concurso', 'aplicativo', 'inventario']
 
     def read(self, entity):
+        # HACK: Show private package or resource (block for not logged in users)
+        if c.action == 'read':
+            if entity.private and not c.user:
+                abort(403, 'Acesso negado!')
+
+        # HACK: Edit package or resource (block for not logged in users)
+        if c.action == 'edit' or c.action == 'resource_edit':
+            if not c.user:
+                abort(403, 'Acesso negado!') 
+        
         pass
 
     def create(self, entity):
@@ -152,35 +162,6 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
                     action='read_concurso',
                     id=0)
-
-
-
-        # ckanext-scheming
-        # HACK
-        map.connect('/dataset/edit/{id}',
-                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                    action='edit',
-                    id='id')
-        map.connect('/dataset/{id}/resource_edit/{resource_id}',
-                    controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                    action='resource_edit',
-                    id='id',
-                    resource_id='resource_id')
-        for package_type in self.scheming_get_types():
-            # HACK
-            map.connect('/%s/edit/{id}' % package_type,
-                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                        action='edit',
-                        id='id')
-            map.connect('%s_new' % package_type, '/%s/new' % package_type,
-                            controller='package', action='new')
-            map.connect('/%s/{id}' % package_type,
-                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                        action='read',
-                        id='id')
-            map.connect('/%ss' % package_type,
-                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
-                        action='search')
 
         return map
 
