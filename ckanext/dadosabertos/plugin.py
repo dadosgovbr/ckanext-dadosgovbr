@@ -150,6 +150,11 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # =======================================================
     def before_map(self, map):
 
+        map.connect('/organization/new',
+            controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+            action='new',
+            id=0)
+        
         map.connect('/organization/{id}',
                     controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
                     action='read_dataset',
