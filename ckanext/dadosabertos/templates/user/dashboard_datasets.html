@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block page_primary_action %}
+    {% if h.check_access('package_create') %}
+        <a class="btn btn-primary" href="/dataset/new">
+            <i class="icon-plus-sign-alt"></i> Adicionar conjunto de dados
+        </a>
+    {% endif %}
+{% endblock %}
