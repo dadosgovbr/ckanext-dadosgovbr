@@ -259,6 +259,39 @@ $(document).ready(function(){
       receber_email: +$('input[name^=eouv-receber-email]').is(":checked")
     }
 
+    // Função que converte xml em JSON para tratar o resultado da manifestação
+    xmlToJson = function(xml) {
+      var obj = {};
+      if (xml.nodeType == 1) {                
+          if (xml.attributes.length > 0) {
+              obj["@attributes"] = {};
+              for (var j = 0; j < xml.attributes.length; j++) {
+                  var attribute = xml.attributes.item(j);
+                  obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+              }
+          }
+      } else if (xml.nodeType == 3) { 
+          obj = xml.nodeValue;
+      }            
+      if (xml.hasChildNodes()) {
+          for (var i = 0; i < xml.childNodes.length; i++) {
+              var item = xml.childNodes.item(i);
+              var nodeName = item.nodeName;
+              if (typeof (obj[nodeName]) == "undefined") {
+                  obj[nodeName] = xmlToJson(item);
+              } else {
+                  if (typeof (obj[nodeName].push) == "undefined") {
+                      var old = obj[nodeName];
+                      obj[nodeName] = [];
+                      obj[nodeName].push(old);
+                  }
+                  obj[nodeName].push(xmlToJson(item));
+              }
+          }
+      }
+      return obj;
+    }
+
     // DEBUG
     console.log(data_eouv);
     
@@ -266,14 +299,21 @@ $(document).ready(function(){
     $.ajax({ url      : "/eouv/new_negative", 
              type     : 'POST',
              data     : data_eouv,
-             dataType : 'xml' 
+             dataType : 'text' 
           })
 
       // Sucesso na requisição
       .done(function( data ) {
-        console.log(data);
+        console.log(data);  
+        var xmlDoc = $.parseXML(data);
 
-        CodigoErro = $(data).find("CodigoErro").html();
+        dataJson = JSON.stringify(xmlToJson(xmlDoc));
+
+        var teste = JSON.parse(dataJson);
+          
+        Protocolo = teste["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:Protocolo"]["#text"];
+
+        CodigoErro = teste["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:CodigoErro"]["#text"]
 
         // Exibe botão de submit de novo
         eouv.find('.enviar').show();
@@ -282,7 +322,7 @@ $(document).ready(function(){
         // Servidor retornou com sucesso
         if (CodigoErro == 0) {
           msg_sucesso();
-          eouv.find(".protocolo").html(data.getElementsByTagName('Protocolo')[0].innerHTML)
+          eouv.find(".protocolo").html(Protocolo)
         }
 
         // Servidor retornou com erro
