@@ -309,11 +309,11 @@ $(document).ready(function(){
 
         dataJson = JSON.stringify(xmlToJson(xmlDoc));
 
-        var teste = JSON.parse(dataJson);
+        var objJSON = JSON.parse(dataJson);
           
-        Protocolo = teste["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:Protocolo"]["#text"];
+        Protocolo = objJSON["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:Protocolo"]["#text"];
 
-        CodigoErro = teste["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:CodigoErro"]["#text"]
+        CodigoErro = objJSON["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:CodigoErro"]["#text"]
 
         // Exibe botão de submit de novo
         eouv.find('.enviar').show();
