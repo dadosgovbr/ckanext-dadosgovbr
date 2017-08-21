@@ -32,29 +32,31 @@
 
     <div style="padding: 10px; position: relative;">
         <form class="ui reply form" id="form_eouv">
-          <div class="ui inline checkbox">
-            <input type="checkbox" name="eouv-motivo-1" tabindex="1">
-            <label style="z-index: 4;" name="eouv-motivo-1">Os dados estão desatualizados.</label>
-          </div>
+          <div class="checkbox-group required">
+            <div class="ui inline checkbox">
+              <input type="checkbox" name="eouv-motivo-1" tabindex="1">
+              <label style="z-index: 4;" name="eouv-motivo-1">Os dados estão desatualizados.</label>
+            </div>
+          
+            <div class="ui inline checkbox">
+              <input type="checkbox" name="eouv-motivo-2" tabindex="2">
+              <label style="z-index: 4;" name="eouv-motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
+            </div>
+          
+            <div class="ui inline checkbox">
+              <input type="checkbox" name="eouv-motivo-3" tabindex="3">
+              <label style="z-index: 4;" name="eouv-motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
+            </div>
+          
+            <div class="ui inline checkbox">
+              <input type="checkbox" name="eouv-motivo-4" tabindex="4">
+              <label style="z-index: 4;" name="eouv-motivo-4">Os dados contém erro ou inconsistência.</label>
+            </div>
         
-          <div class="ui inline checkbox">
-            <input type="checkbox" name="eouv-motivo-2" tabindex="2">
-            <label style="z-index: 4;" name="eouv-motivo-2">Não consegui acessar o conjunto de dados(especifique o recurso).</label>
-          </div>
-        
-          <div class="ui inline checkbox">
-            <input type="checkbox" name="eouv-motivo-3" tabindex="3">
-            <label style="z-index: 4;" name="eouv-motivo-3">Documentação insuficiente para compreender o conjunto de dados.</label>
-          </div>
-        
-          <div class="ui inline checkbox">
-            <input type="checkbox" name="eouv-motivo-4" tabindex="4">
-            <label style="z-index: 4;" name="eouv-motivo-4">Os dados contém erro ou inconsistência.</label>
-          </div>
-      
-          <div class="ui attached field" style="padding-top: 12px;">
-            <label for="eouv-text">Descreva a situação encontrada</label>
-            <textarea name="eouv-text" tabindex="5"></textarea>
+            <div class="ui attached field" style="padding-top: 12px;">
+              <label for="eouv-text">Descreva a situação encontrada</label>
+              <textarea name="eouv-text" id="situacao_encontrada" tabindex="5" style="margin-bottom: 16px;"></textarea>
+            </div>
           </div>
 
           <!-- Campos opcionais -->
@@ -89,9 +91,13 @@
           </div>
 
           <hr>
-
+          <div id="submit">
           <button type="submit" class="ui button enviar" tabindex="9">Enviar manifestação para ouvidoria</button>
           <button class="ui loading button carregando" style="display:none">Carregando</button>
+          </div>
+          <div id="submit_block" data-tooltip="Por favor, selecione pelo menos um dos motivos e/ou descreva a situação encontrada" data-position="bottom left">
+            <button class="ui disabled button">Enviar manifestação para ouvidoria</button>
+          </div>
         </form>
     </div>
   </div>
@@ -126,6 +132,25 @@ $(document).ready(function(){
         }
     });
   }
+
+  // function verifica se pelo menos um checkbox foi selecionado e/ou situacao encontrada foi preenchida
+  // caso esteja prenchida, o botão enviar manifestação é ativado. Caso contrario é exibido o botão desativado.
+  // ==============================================
+  function verifica_campos_nulos () {
+    var info_adicionais = form_eouv.situacao_encontrada.value;
+    if(($('div.checkbox-group.required :checkbox:checked').length > 0)||(info_adicionais != "")){
+      $("#submit_block").hide();
+      $("#submit").show();
+    }else{
+      $("#submit").hide();
+      $("#submit_block").show();
+    }
+  }
+  $('div.checkbox-group.required').get()[0].addEventListener('change', verifica_campos_nulos);
+  document.getElementById('situacao_encontrada').addEventListener("keyup", verifica_campos_nulos);
+  $('div.checkbox-group.required').click(function() {
+    setTimeout(verifica_campos_nulos, 80);
+  });
 
   // function Mostrar campos opcionais
   // ==============================================
@@ -176,6 +201,7 @@ $(document).ready(function(){
     eouv.addClass("red").removeClass("green");
     eouv.find(".msg-title").html('');
     eouv.find(".msg-error").show();
+    $("#submit").hide();
   });
 
   // Enviar problema para ouvidoria
@@ -233,6 +259,39 @@ $(document).ready(function(){
       receber_email: +$('input[name^=eouv-receber-email]').is(":checked")
     }
 
+    // Função que converte xml em JSON para tratar o resultado da manifestação
+    xmlToJson = function(xml) {
+      var obj = {};
+      if (xml.nodeType == 1) {                
+          if (xml.attributes.length > 0) {
+              obj["@attributes"] = {};
+              for (var j = 0; j < xml.attributes.length; j++) {
+                  var attribute = xml.attributes.item(j);
+                  obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+              }
+          }
+      } else if (xml.nodeType == 3) { 
+          obj = xml.nodeValue;
+      }            
+      if (xml.hasChildNodes()) {
+          for (var i = 0; i < xml.childNodes.length; i++) {
+              var item = xml.childNodes.item(i);
+              var nodeName = item.nodeName;
+              if (typeof (obj[nodeName]) == "undefined") {
+                  obj[nodeName] = xmlToJson(item);
+              } else {
+                  if (typeof (obj[nodeName].push) == "undefined") {
+                      var old = obj[nodeName];
+                      obj[nodeName] = [];
+                      obj[nodeName].push(old);
+                  }
+                  obj[nodeName].push(xmlToJson(item));
+              }
+          }
+      }
+      return obj;
+    }
+
     // DEBUG
     console.log(data_eouv);
     
@@ -240,14 +299,21 @@ $(document).ready(function(){
     $.ajax({ url      : "/eouv/new_negative", 
              type     : 'POST',
              data     : data_eouv,
-             dataType : 'xml' 
+             dataType : 'text' 
           })
 
       // Sucesso na requisição
       .done(function( data ) {
-        console.log(data);
+        console.log(data);  
+        var xmlDoc = $.parseXML(data);
 
-        CodigoErro = $(data).find("CodigoErro").html();
+        dataJson = JSON.stringify(xmlToJson(xmlDoc));
+
+        var objJSON = JSON.parse(dataJson);
+          
+        Protocolo = objJSON["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:Protocolo"]["#text"];
+
+        CodigoErro = objJSON["s:Envelope"]["s:Body"].RegistrarManifestacaoTerceiroResponse.RegistrarManifestacaoTerceiroResult["a:CodigoErro"]["#text"]
 
         // Exibe botão de submit de novo
         eouv.find('.enviar').show();
@@ -256,7 +322,7 @@ $(document).ready(function(){
         // Servidor retornou com sucesso
         if (CodigoErro == 0) {
           msg_sucesso();
-          eouv.find(".protocolo").html(data.getElementsByTagName('Protocolo')[0].innerHTML)
+          eouv.find(".protocolo").html(Protocolo)
         }
 
         // Servidor retornou com erro
