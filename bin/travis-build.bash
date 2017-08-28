@@ -5,7 +5,7 @@ echo "This is travis-build.bash..."
 
 echo "Installing the packages that CKAN requires..."
 sudo apt-get update -qq
-sudo apt-get install postgresql-9.1 solr-jetty
+sudo apt-get install solr-jetty
 wget http://ftp.us.debian.org/debian/pool/main/libc/libcommons-fileupload-java/libcommons-fileupload-java_1.3.1-1+deb8u1_all.deb
 sudo dpkg -i libcommons-fileupload-java_1.3.1-1+deb8u1_all.deb
 
