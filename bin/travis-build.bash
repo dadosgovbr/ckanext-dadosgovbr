@@ -10,6 +10,7 @@ wget http://ftp.us.debian.org/debian/pool/main/libc/libcommons-fileupload-java/l
 sudo dpkg -i libcommons-fileupload-java_1.3.1-1+deb8u1_all.deb
 
 echo "Installing CKAN and its Python dependencies..."
+chmod -R 777 .
 git clone https://github.com/ckan/ckan
 cd ckan
 if [ $CKANVERSION != 'master' ]
@@ -42,8 +43,8 @@ paster db init -c test-core.ini
 cd -
 
 echo "Installing ckanext-dadosgovbr and its requirements..."
-pip install -r pip-requirements.txt --allow-all-external
-pip install -r dev-requirements.txt --allow-all-external
+pip install -r pip-requirements.txt
+pip install -r dev-requirements.txt
 
 python setup.py develop
 
