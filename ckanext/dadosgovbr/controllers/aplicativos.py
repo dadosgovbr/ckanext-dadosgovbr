@@ -7,7 +7,7 @@ from pylons.controllers.util import redirect
 import requests
 
 # Wordpress integration
-import ckanext.dadosabertos.helpers.wordpress as wp
+import ckanext.dadosgovbr.helpers.wordpress as wp
 
 # ============================================================
 # Aplicativos

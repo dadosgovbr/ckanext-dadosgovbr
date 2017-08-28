@@ -2,7 +2,7 @@
   "scheming_version": 1,
   "dataset_type": "dataset",
   "about": "Esquema do padrão de metadados da INDA.",
-  "about_url": "https://github.com/dadosgovbr/ckanext-dadosabertos",
+  "about_url": "https://github.com/dadosgovbr/ckanext-dadosgovbr",
   "dataset_fields": [
     {
       "field_name": "title",

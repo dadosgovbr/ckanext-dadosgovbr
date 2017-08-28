@@ -1,5 +1,5 @@
 // Install requirements (nodejs, gulp) for Ubuntu 16.04
-//      cd /usr/lib/ckan/default/src/ckanext-dadosabertos
+//      cd /usr/lib/ckan/default/src/ckanext-dadosgovbr
 //      curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 //      sudo apt-get install -y build-essential nodejs
 //      sudo npm install gulp-cli -g
@@ -15,7 +15,7 @@ var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('sass', function() {
-    gulp.src('ckanext/dadosabertos/public/sass/*.scss')
+    gulp.src('ckanext/dadosgovbr/public/sass/*.scss')
         .pipe(sourcemaps.init())
         .pipe(sass({ style: 'compressed' }))
         .pipe(rename({ extname: '.min.css' }))
@@ -27,5 +27,5 @@ gulp.task('sass', function() {
 });
 
 gulp.task('compile-scss', ['sass'], function() {
-    gulp.watch('ckanext/dadosabertos/public/sass/*.scss', ['sass']);
+    gulp.watch('ckanext/dadosgovbr/public/sass/*.scss', ['sass']);
 })

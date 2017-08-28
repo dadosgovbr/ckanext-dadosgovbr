@@ -11,15 +11,15 @@ from ckan.plugins import IConfigurer
 from ckan.plugins import IRoutes
 
 # Wordpress integration
-import ckanext.dadosabertos.helpers.wordpress as wp
+import ckanext.dadosgovbr.helpers.wordpress as wp
 
 # Custom helper tools
-import ckanext.dadosabertos.helpers.tools as tools
+import ckanext.dadosgovbr.helpers.tools as tools
 
 
 
 
-class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
+class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     ''' Plugin Dados Abertos
 
         Classe principal.
@@ -142,7 +142,7 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def update_config(self, config_):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
-        #toolkit.add_resource('fanstatic', 'dadosabertos')
+        #toolkit.add_resource('fanstatic', 'dadosgovbr')
 
     
     
@@ -151,22 +151,22 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def before_map(self, map):
 
         map.connect('/organization/new',
-            controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+            controller='ckanext.dadosgovbr.controllers.scheming_organization:TestController',
             action='new',
             id=0)
         
         map.connect('/organization/{id}',
-                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    controller='ckanext.dadosgovbr.controllers.scheming_organization:TestController',
                     action='read_dataset',
                     id=0)
 
         map.connect('/organization/aplicativos/{id}',
-                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    controller='ckanext.dadosgovbr.controllers.scheming_organization:TestController',
                     action='read_aplicativo',
                     id=0)
 
         map.connect('/organization/concursos/{id}',
-                    controller='ckanext.dadosabertos.controllers.scheming_organization:TestController',
+                    controller='ckanext.dadosgovbr.controllers.scheming_organization:TestController',
                     action='read_concurso',
                     id=0)
 
@@ -175,11 +175,11 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             map.connect('%s_new' % package_type, '/%s/new' % package_type,
                             controller='package', action='new')
             map.connect('/%s/{id}' % package_type,
-                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                        controller='ckanext.dadosgovbr.controllers.scheming:SchemingPagesController',
                         action='read',
                         id='id')
             map.connect('/%ss' % package_type,
-                        controller='ckanext.dadosabertos.controllers.scheming:SchemingPagesController',
+                        controller='ckanext.dadosgovbr.controllers.scheming:SchemingPagesController',
                         action='search')
 
         return map
@@ -188,47 +188,47 @@ class DadosabertosPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def after_map(self, map):
         # Testing
         map.connect('/test',
-                    controller='ckanext.dadosabertos.controllers.test:TestController',
+                    controller='ckanext.dadosgovbr.controllers.test:TestController',
                     action='index')
         map.connect('/test/{id}',
-                    controller='ckanext.dadosabertos.controllers.test:TestController',
+                    controller='ckanext.dadosgovbr.controllers.test:TestController',
                     action='read',
                     id=0)
                     
         # e-Ouv
         map.connect('/eouv/new_positive',
-                    controller='ckanext.dadosabertos.controllers.eouv:EouvController',
+                    controller='ckanext.dadosgovbr.controllers.eouv:EouvController',
                     action='new_positive')
         map.connect('/eouv/new_negative',
-                    controller='ckanext.dadosabertos.controllers.eouv:EouvController',
+                    controller='ckanext.dadosgovbr.controllers.eouv:EouvController',
                     action='new_negative')
                     
         # Wordpress feed redirect (if load balancer fail)
         map.connect('/feed',
-                    controller='ckanext.dadosabertos.controllers.noticias:NoticiasController',
+                    controller='ckanext.dadosgovbr.controllers.noticias:NoticiasController',
                     action='feed')
 
         # Wordpress
         map.connect('/noticias',
-                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
+                    controller='ckanext.dadosgovbr.controllers.wordpress:NoticiasController',
                     action='list')
         map.connect('/noticias/{slug}', # Legacy from dados.gov.br 2017 version
-                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
+                    controller='ckanext.dadosgovbr.controllers.wordpress:NoticiasController',
                     action='redirect',
                     slug=0)
         map.connect('/noticia/{slug}',
-                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
+                    controller='ckanext.dadosgovbr.controllers.wordpress:NoticiasController',
                     action='show',
                     slug=0)
         map.connect('/noticias/{id}/{slug}', # Legacy from dados.gov.br 2016 version
-                    controller='ckanext.dadosabertos.controllers.wordpress:NoticiasController',
+                    controller='ckanext.dadosgovbr.controllers.wordpress:NoticiasController',
                     action='redirect',
                     slug=0)
         map.connect('/pagina/{slug}', 
-                    controller='ckanext.dadosabertos.controllers.wordpress:PaginasController',
+                    controller='ckanext.dadosgovbr.controllers.wordpress:PaginasController',
                     action='index')
         map.connect('/paginas/{slug}', # Legacy from dados.gov.br 2016 version
-                    controller='ckanext.dadosabertos.controllers.wordpress:PaginasController',
+                    controller='ckanext.dadosgovbr.controllers.wordpress:PaginasController',
                     action='redirect')
         return map
 

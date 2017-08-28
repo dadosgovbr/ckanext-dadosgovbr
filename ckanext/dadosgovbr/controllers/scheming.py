@@ -75,7 +75,7 @@ class SchemingPagesController(PackageController):
 
         # Get page content from Wordpress
         # =========================================
-        import ckanext.dadosabertos.helpers.wordpress as wp
+        import ckanext.dadosgovbr.helpers.wordpress as wp
         wp_page_slug = 'scheming_'+package_type+'s'
         c.wp_page = type('Nothing', (object,), {})  
         c.wp_page.content = type('Nothing', (object,), {})  
