@@ -10,7 +10,6 @@ wget http://ftp.us.debian.org/debian/pool/main/libc/libcommons-fileupload-java/l
 sudo dpkg -i libcommons-fileupload-java_1.3.1-1+deb8u1_all.deb
 
 echo "Installing CKAN and its Python dependencies..."
-chmod -R 777 .
 git clone https://github.com/ckan/ckan
 cd ckan
 if [ $CKANVERSION != 'master' ]
@@ -18,9 +17,9 @@ then
     git checkout release-v$CKANVERSION-latest
 fi
 python setup.py develop
-pip install -r requirements.txt --allow-all-external
-pip install -r dev-requirements.txt --allow-all-external
-cd -
+pip install -r requirements.txt
+pip install -r dev-requirements.txt
+cd ..
 
 echo "Setting up Solr..."
 # solr is multicore for tests on ckan master now, but it's easier to run tests
@@ -32,6 +31,7 @@ sudo cp ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
 sudo service jetty restart
 
 echo "Creating the PostgreSQL user and database..."
+sudo chmod -R 777 .
 sudo -u postgres psql -c "CREATE USER ckan_default WITH PASSWORD 'pass';"
 sudo -u postgres psql -c "CREATE USER datastore_default WITH PASSWORD 'pass';"
 sudo -u postgres psql -c 'CREATE DATABASE ckan_test WITH OWNER ckan_default;'
