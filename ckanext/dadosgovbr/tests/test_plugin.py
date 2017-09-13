@@ -1,5 +1,5 @@
 """Tests for plugin.py."""
-import ckanext.dadosabertos.plugin as plugin
+import ckanext.dadosgovbr.plugin as plugin
 
 def test_plugin():
     pass

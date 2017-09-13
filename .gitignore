@@ -43,14 +43,11 @@ coverage.xml
 docs/_build/
 
 # Replicated files
-ckanext-dadosabertos/
+ckanext-dadosgovbr/
 
 # ATOM IDE
 .ftpconfig
 .remote-sync.json
 
-
 # Pylons / Python
-ckanext_dadosabertos.egg-info/*
-
-
+ckanext_dadosgovbr.egg-info/*

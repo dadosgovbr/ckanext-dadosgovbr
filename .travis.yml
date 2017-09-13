@@ -1,12 +1,13 @@
+
 language: python
-sudo: required
 python:
-    - "2.6"
     - "2.7"
-env: PGVERSION=9.1
+env:
+    - CKANVERSION=2.5
+    - CKANVERSION=2.6
+    - CKANVERSION=2.7
+services:
+    - redis-server
 install:
     - bash bin/travis-build.bash
-    - pip install coveralls
 script: sh bin/travis-run.sh
-after_success:
-    - coveralls

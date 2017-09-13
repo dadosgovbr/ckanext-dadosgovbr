@@ -1,4 +1,4 @@
-# CKANext DadosAbertos
+# ckanext-dadosgovbr
 Plugin / Tema do Portal de Dados Abertos do Governo Federal - Brasil
 
 ## Requisitos
@@ -25,13 +25,13 @@ cd /usr/lib/ckan/default/src
 Instale o ckanext-dadosgovbr e as dependências:
 ```
 # Instale o ckanext-dadosgovbr (última versão Beta)
-pip install -e git+https://github.com/dadosgovbr/ckanext-dadosabertos.git@beta#egg=ckanext-dadosabertos
+pip install -e git+https://github.com/dadosgovbr/ckanext-dadosgovbr.git@beta#egg=ckanext-dadosgovbr
 
 # Instale as dependências
-pip install -r /usr/lib/ckan/default/src/ckanext-dadosabertos/pip-requirements.txt
+pip install -r /usr/lib/ckan/default/src/ckanext-dadosgovbr/pip-requirements.txt
 
 # Configure o plugin
-cd /usr/lib/ckan/default/src/ckanext-dadosabertos && python setup.py develop
+cd /usr/lib/ckan/default/src/ckanext-dadosgovbr && python setup.py develop
 ```
 
 
@@ -40,12 +40,12 @@ cd /usr/lib/ckan/default/src/ckanext-dadosabertos && python setup.py develop
 ### Wordpress
 - O Wordpress precisa estar na versão 4.7 ou superior.
 - O plugin [WP-API/rest-filter](https://github.com/WP-API/rest-filter) precisa estar instalado e ativado no Wordpress.
-- Adicione a URL do seu Wordpress em "get_domain()" no arquivo `/usr/lib/ckan/default/src/ckanext-dadosabertos/ckanext/dadosabertos/helpers/wordpress.py`
+- Adicione a URL do seu Wordpress em "get_domain()" no arquivo `/usr/lib/ckan/default/src/ckanext-dadosgovbr/ckanext/dadosgovbr/helpers/wordpress.py`
 
 ### Scheming
 Adicione no arquivo `/etc/ckan/default/development.ini` as seguintes linhas, abaixo da definição dos plugins:
 ```
-scheming.dataset_schemas = ckanext.dadosabertos:schema_aplicativo.json
-			   ckanext.dadosabertos:schema_inventario.json
-			   ckanext.dadosabertos:schema_concurso.json
+scheming.dataset_schemas = ckanext.dadosgovbr:schema_aplicativo.json
+			   ckanext.dadosgovbr:schema_inventario.json
+			   ckanext.dadosgovbr:schema_concurso.json
 ```

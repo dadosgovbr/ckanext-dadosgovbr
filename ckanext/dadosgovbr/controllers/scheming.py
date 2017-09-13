@@ -68,8 +68,6 @@ class SchemingPagesController(PackageController):
     def search(self):
         from ckan.lib.search import SearchError, SearchQueryError
 
-        print "ooooi"
-
         # Get package type name
         package_type = self._guess_package_type()[:-1]
         c.package_type = package_type
@@ -77,7 +75,7 @@ class SchemingPagesController(PackageController):
 
         # Get page content from Wordpress
         # =========================================
-        import ckanext.dadosabertos.helpers.wordpress as wp
+        import ckanext.dadosgovbr.helpers.wordpress as wp
         wp_page_slug = 'scheming_'+package_type+'s'
         c.wp_page = type('Nothing', (object,), {})  
         c.wp_page.content = type('Nothing', (object,), {})  
@@ -306,7 +304,8 @@ class SchemingPagesController(PackageController):
         return render('scheming/'+package_type+'/search.html',
                       extra_vars={'dataset_type': package_type})
 
-
+    
+    
     def resources(self, id):
         context = {'model': model, 'session': model.Session,
                    'user': c.user, 'for_view': True,
@@ -332,7 +331,6 @@ class SchemingPagesController(PackageController):
 
         return render('package/resources.html',
                       extra_vars={'dataset_type': package_type})
-
 
     def _read_template(self, package_type):
         return 'scheming/'+package_type+'/read.html'        
