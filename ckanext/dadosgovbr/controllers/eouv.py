@@ -58,7 +58,7 @@ class EouvController(base.BaseController):
         
         #Verifica se existe a tupla, se não houver, ele cria
         if not(exist_tuple):
-            sql = "insert into package_eouv values ('"+str(package_name)+"', '0', '0')"
+            sql = "insert into package_eouv(package_name, nro_like, nro_dislike) values ('"+str(package_name)+"', '0', '0')"
             model.Session.execute(sql)
             model.Session.commit()
 
