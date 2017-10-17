@@ -23,14 +23,14 @@ def eouv_is_avaliable ():
         return True
     return False
 
-def helper_get_contador_eouv (package_id):
+def helper_get_contador_eouv (package_name):
     out = {}
     error=0
     exist_tuple=None
     exist_table_eouv=None
 
     # Verificar se a tabela exist
-    query_revision = "select exists (select * from pg_tables where tablename = 'eouv') as exist"
+    query_revision = "select exists (select * from pg_tables where tablename = 'package_eouv') as exist"
     result_exist_table_eouv = model.Session.execute(query_revision)
     for row in result_exist_table_eouv:
         exist_table_eouv = row['exist']
@@ -39,7 +39,7 @@ def helper_get_contador_eouv (package_id):
 
     # Verifica se possui a tupla com like/dislike
     if exist_table_eouv:
-        query_posit = "SELECT EXISTS (SELECT 1 FROM eouv WHERE package_id = '"+str(package_id)+"') as positivo"
+        query_posit = "SELECT EXISTS (SELECT 1 FROM package_eouv WHERE package_name = '"+str(package_name)+"') as positivo"
         exist_tupla_positiva = model.Session.execute(query_posit)
         for row in exist_tupla_positiva:
             exist_tuple = row['positivo']
@@ -48,7 +48,7 @@ def helper_get_contador_eouv (package_id):
 
     # Obtém valor do like/dislike se a tupla existir
     if exist_tuple:
-        query_nro_dislike = "SELECT nro_like, nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"    
+        query_nro_dislike = "SELECT nro_like, nro_dislike FROM package_eouv WHERE package_name = '"+str(package_name)+"'"    
         num_dislike_array = model.Session.execute(query_nro_dislike)
         count=0
         for row in num_dislike_array:

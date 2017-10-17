@@ -51,8 +51,9 @@
       {% if h.dadosgovbr_eouv_is_avaliable() %}
         {% if h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg') %}
           <span id="package_id" class="hidden">{{pkg.id}}</span>
+          <span id="package_name" class="hidden">{{pkg.name}}</span>
           <span id="package_siorg" class="hidden">{{h.dadosgovbr_get_organization_extra(pkg.organization.name, 'siorg').value}}</span>
-          {% snippet "package/snippets/eouv.html", pkg_id=pkg.id %}
+          {% snippet "package/snippets/eouv.html", pkg_name=pkg.name %}
         {% endif %}
       {% endif %}
       <hr>

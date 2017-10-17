@@ -28,28 +28,28 @@ class EouvController(base.BaseController):
     def simple(self):
         return 'mensagem de teste'
     
-    def check_package_eouv(self, package_id):
+    def check_package_eouv(self, package_name):
         ''' Cria tupla do eouv no package_extra se não existir.
             
-            @params package_id
+            @params package_name
         '''
 
-        # Para adcionar as tuplas com os contadores de like de dislike é necessário ter o banco eouv
+        # Para adcionar as tuplas com os contadores de like de dislike é necessário ter o banco package_eouv
         # nesta etapa verificamos se esta tabela existe e se não existir criamos ela
 
-        query_revision = "select exists (select * from pg_tables where tablename = 'eouv') as exist"
+        query_revision = "select exists (select * from pg_tables where tablename = 'package_eouv') as exist"
         result_exist_table_eouv = model.Session.execute(query_revision)
 
         for row in result_exist_table_eouv:
             exist_table_eouv = row['exist']
 
         if not(exist_table_eouv):
-            sql = "create table eouv (package_id text primary key, nro_like text, nro_dislike text, FOREIGN KEY (package_id) REFERENCES public.package (id))"
+            sql = "create table package_eouv (package_name text, nro_like text NOT NULL, nro_dislike text NOT NULL)"
             model.Session.execute(sql)
             model.Session.commit()
 
         #Consulta no banco se existe a tupla com os contador de like e dislike em package_extra
-        query_posit = "SELECT EXISTS (SELECT 1 FROM eouv WHERE package_id = '"+str(package_id)+"') as positivo"
+        query_posit = "SELECT EXISTS (SELECT 1 FROM package_eouv WHERE package_name = '"+str(package_name)+"') as positivo"
 
         exist_tupla_positiva = model.Session.execute(query_posit)
 
@@ -58,23 +58,23 @@ class EouvController(base.BaseController):
         
         #Verifica se existe a tupla, se não houver, ele cria
         if not(exist_tuple):
-            sql = "insert into eouv values ('"+str(package_id)+"', '0', '0')"
+            sql = "insert into package_eouv(package_name, nro_like, nro_dislike) values ('"+str(package_name)+"', '0', '0')"
             model.Session.execute(sql)
             model.Session.commit()
 
         pass
 
 
-    def vote(self, acao, package_id):
+    def vote(self, acao, package_name):
         '''
          Acao devera ser 1 para incrementar 1 no contador de likes
          Acao devera ser -1 para incrementar 1 no contador de dislike
         ''' 
-        self.check_package_eouv(package_id)
+        self.check_package_eouv(package_name)
 
-        #Incrementa um nos likes em eouv
+        #Incrementa um nos likes em package_eouv
         if (acao == 1):
-            query_nro_like = "SELECT nro_like FROM eouv WHERE package_id = '"+str(package_id)+"'"
+            query_nro_like = "SELECT nro_like FROM package_eouv WHERE package_name = '"+str(package_name)+"'"
             num_like_array = model.Session.execute(query_nro_like)
 
             for row in num_like_array:
@@ -82,13 +82,13 @@ class EouvController(base.BaseController):
             
             nro_likes = int(nro_likes) + 1
 
-            query_update_like = "UPDATE eouv SET nro_like = "+str(nro_likes)+" WHERE package_id = '"+str(package_id)+"'"
+            query_update_like = "UPDATE package_eouv SET nro_like = "+str(nro_likes)+" WHERE package_name = '"+str(package_name)+"'"
             model.Session.execute(query_update_like)
             model.Session.commit()
         
         #Incrementa um nos dislikes em eouv
         if (acao == -1):
-            query_nro_dislike = "SELECT nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"
+            query_nro_dislike = "SELECT nro_dislike FROM package_eouv WHERE package_name = '"+str(package_name)+"'"
             num_dislike_array = model.Session.execute(query_nro_dislike)
 
             for row in num_dislike_array:
@@ -96,14 +96,14 @@ class EouvController(base.BaseController):
             
             nro_dislikes = int(nro_dislikes) + 1
 
-            query_update_like = "UPDATE eouv SET nro_dislike = "+str(nro_dislikes)+" WHERE package_id = '"+str(package_id)+"'"
+            query_update_like = "UPDATE package_eouv SET nro_dislike = "+str(nro_dislikes)+" WHERE package_name = '"+str(package_name)+"'"
             model.Session.execute(query_update_like)
             model.Session.commit()
         return
 
-    def helper_get_contador_eouv (self, package_id):
+    def helper_get_contador_eouv (self, package_name):
 
-        query_nro_dislike = "SELECT nro_like, nro_dislike FROM eouv WHERE package_id = '"+str(package_id)+"'"    
+        query_nro_dislike = "SELECT nro_like, nro_dislike FROM eouv WHERE package_name = '"+str(package_name)+"'"    
         num_dislike_array = model.Session.execute(query_nro_dislike)
 
         out = {}
@@ -115,8 +115,8 @@ class EouvController(base.BaseController):
         return out
 
     def new_positive (self):
-        package_id = request.POST['package_id'].encode('utf-8')
-        self.vote(1, package_id)
+        package_name = request.POST['package_name'].encode('utf-8')
+        self.vote(1, package_name)
         return '{"success": true}'
 
 
@@ -129,6 +129,7 @@ class EouvController(base.BaseController):
 
         # Obtém parâmetros do POST
         package_id          = request.POST['package_id'].encode('utf-8')
+        package_name        = request.POST['package_name'].encode('utf-8')
         siorg               = request.POST['siorg'].encode('utf-8')
         text                = request.POST['text'].encode('utf-8')
         name                = request.POST['name'].encode('utf-8')
@@ -160,7 +161,7 @@ class EouvController(base.BaseController):
         # return ""
 
         # Contabiliza voto negativo
-        self.vote(-1, package_id)
+        self.vote(-1, package_name)
 
         # Set header for XML content
         response.headers['Content-Type'] = (b'text/xml; charset=utf-8')

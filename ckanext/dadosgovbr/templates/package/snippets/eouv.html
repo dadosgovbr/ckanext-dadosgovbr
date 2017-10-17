@@ -1,4 +1,4 @@
-{% set eouv_contador = h.dadosgovbr_get_contador_eouv(pkg_id) %}
+{% set eouv_contador = h.dadosgovbr_get_contador_eouv(pkg_name) %}
 <div id="feedback-eouv" class="ui blurring segment">
   <!-- Botões principais -->
   <div class="ui basic center" style="text-align:center;">
@@ -175,7 +175,8 @@ $(document).ready(function(){
 
 
     var data_eouv = { 
-      package_id: $('#package_id').html()
+      package_id: $('#package_id').html(),
+      package_name: $('#package_name').html()
     }
       
     // Envia requisição
@@ -252,6 +253,7 @@ $(document).ready(function(){
 
     var data_eouv = { 
       package_id: $('#package_id').html(),
+      package_name: $('#package_name').html(),
       siorg: $('#package_siorg').html(),
       text: data_eouv_text,
       name: $('input[name^=eouv-name]').val(),
