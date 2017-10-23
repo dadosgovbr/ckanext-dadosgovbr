@@ -1,22 +1,29 @@
 {# Show featured datasets from group "dados-em-destaque" #}
-{% set group = h.dadosgovbr_get_featured_group('dados-em-destaque') %}
-<div class="box">
-  <section id="featureddata" class="group-list module module-narrow module-shadow">
-    <header class="module-heading">
-      <h3> <span>{{h.link_to(group['display_name'], h.url_for(controller='group', action='read', id=group['name']), class_="mais")}}</span> </h3>
-      {% if group['description'] %}
-        <p>{{group['description']}}</p>
-      {% endif %}
-    </header>
-    <ul class="dataset-list unstyled">
-    {% for package in group['packages'] %}
-      <li class="dataset-item module-content">
-        <div class="dataset-content">
-          <h3 class="dataset-heading"><a href="{{h.url_for('home','index')}}dataset/{{package['name']}}">{{h.dadosgovbr_trim_string(package.title, 70)}}</a></h3>
-          <p style="margin: 18px 0 18px;">{{h.dadosgovbr_trim_string(package.notes, 145)|safe}}</p>
-        </div>
-      </li>
-    {% endfor %}
-    </ul>
-  </section>
-</div>
+
+{% if h.dadosgovbr_group_id_or_name_exists('dados-em-destaque') %}
+
+  {% set group = h.dadosgovbr_get_featured_group('dados-em-destaque') %}
+  <div class="box">
+    <section id="featureddata" class="group-list module module-narrow module-shadow">
+      <header class="module-heading">
+        <h3> <span>{{h.link_to(group['display_name'], h.url_for(controller='group', action='read', id=group['name']), class_="mais")}}</span> </h3>
+        {% if group['description'] %}
+          <p>{{group['description']}}</p>
+        {% endif %}
+      </header>
+      <ul class="dataset-list unstyled">
+      {% for package in group['packages'] %}
+        <li class="dataset-item module-content">
+          <div class="dataset-content">
+            <h3 class="dataset-heading"><a href="{{h.url_for('home','index')}}dataset/{{package['name']}}">{{h.dadosgovbr_trim_string(package.title, 70)}}</a></h3>
+            <p style="margin: 18px 0 18px;">{{h.dadosgovbr_trim_string(package.notes, 145)|safe}}</p>
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+{% else %}
+  O grupo Dados em Destaque não existe!<br>Crie um grupo com o "name"="dados-em-destaque".
+{% endif %}

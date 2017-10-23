@@ -265,6 +265,7 @@ class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'dadosgovbr_get_package': tools.get_package,
             'dadosgovbr_cache_create': tools.cache_create,
             'dadosgovbr_cache_load': tools.cache_load,
+            'dadosgovbr_group_id_or_name_exists': tools.group_id_or_name_exists,
 
             # e-Ouv
             'dadosgovbr_eouv_is_avaliable': tools.eouv_is_avaliable,

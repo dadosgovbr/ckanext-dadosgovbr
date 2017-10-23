@@ -65,6 +65,15 @@ def helper_get_contador_eouv (package_name):
     return out
 
 
+def group_id_or_name_exists(name):
+    context = {'model': model, 'session': model.Session,
+                'user': c.user or c.author}
+    try:
+        group_name = ckan.logic.validators.group_id_or_name_exists(name,context)
+    except:
+        group_name = None
+    return group_name
+
 def get_schema_name(dataset_name=None):
     ''' Return schema name '''
     if(dataset_name == None):
