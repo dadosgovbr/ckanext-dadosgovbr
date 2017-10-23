@@ -39,11 +39,15 @@ cd /usr/lib/ckan/default/src/ckanext-dadosgovbr && python setup.py develop
 
 ### Wordpress
 - O Wordpress precisa estar na versão 4.7 ou superior.
-- O plugin [WP-API/rest-filter](https://github.com/WP-API/rest-filter) precisa estar instalado e ativado no Wordpress.
-- Adicione a URL do seu Wordpress em "get_domain()" no arquivo `/usr/lib/ckan/default/src/ckanext-dadosgovbr/ckanext/dadosgovbr/helpers/wordpress.py`
+- O plugin [WP-API/rest-filter](https://github.com/thenets/rest-filter) precisa estar instalado e ativado no Wordpress.
+- Adicione no arquivo `/etc/ckan/default/development.ini` as seguintes linhas, abaixo de `ckan.plugins = ...`:
+```
+# ckanext-dadosgovbr
+wordpress.domain = http://wordpress_url_aqui/
+```
 
 ### Scheming
-Adicione no arquivo `/etc/ckan/default/development.ini` as seguintes linhas, abaixo da definição dos plugins:
+Adicione no arquivo `/etc/ckan/default/development.ini` as seguintes linhas, abaixo de `ckan.plugins = ...`:
 ```
 scheming.dataset_schemas = ckanext.dadosgovbr:schema_aplicativo.json
 			   ckanext.dadosgovbr:schema_inventario.json
