@@ -55,6 +55,12 @@ body > header.masthead #site_logo {
   }
 }
 
+// Flash message
+.flash-messages .alert {
+  margin: 20px 0;
+}
+
+
 // Remove default CKAN background
 body {
   background: #034811;
@@ -138,7 +144,7 @@ header.masthead {
 
   // Corrige tamanho e espaçamento do menu do header
   #barra-menu {
-  	height: 34px;
+  	height: 28px;
   }
   #menu-horizontal .barra-apoio {
   	margin: 0px;
@@ -260,9 +266,6 @@ header.masthead {
 #feedback-eouv {
    margin: 20px 0;
 }
-
-
-
 
 
 
