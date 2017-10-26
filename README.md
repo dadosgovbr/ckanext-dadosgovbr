@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dadosgovbr/ckanext-dadosgovbr.svg?branch=master)](https://travis-ci.org/dadosgovbr/ckanext-dadosgovbr)
+    
 # ckanext-dadosgovbr
 Plugin / Tema do Portal de Dados Abertos do Governo Federal - Brasil
 
