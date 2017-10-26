@@ -51,6 +51,6 @@ python setup.py develop
 
 echo "Moving test.ini into a subdir..."
 mkdir subdir
-mv test-core.ini subdir
+mv test.ini subdir
 
 echo "travis-build.bash is done."
