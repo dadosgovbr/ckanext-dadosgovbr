@@ -12,6 +12,5 @@ install:
 script: sh bin/travis-run.sh
 notifications:
   email: false
-  notifications:
-    irc:
-      - "chat.freenode.net#dadosgovbr"
+  irc:
+    - "chat.freenode.net#dadosgovbr"
