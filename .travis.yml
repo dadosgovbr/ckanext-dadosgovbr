@@ -10,3 +10,8 @@ services:
 install:
     - bash bin/travis-build.bash
 script: sh bin/travis-run.sh
+notifications:
+  email: false
+  notifications:
+    irc:
+      - "chat.freenode.net#dadosgovbr"
