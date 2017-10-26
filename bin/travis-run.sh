@@ -1,2 +1,2 @@
 #!/bin/sh -e
-nosetests --ckan --nologcapture --with-pylons=subdir/test-core.ini ckanext/dadosgovbr
+nosetests --ckan --nologcapture --with-pylons=subdir/test.ini ckanext/dadosgovbr
