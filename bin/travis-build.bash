@@ -43,6 +43,9 @@ cd ckan
 paster db init -c test-core.ini
 cd -
 
+echo "Installing Mocha for front-end tests..."
+npm install -g mocha-phantomjs@3.5.0 phantomjs@~1.9.1
+
 echo "Installing ckanext-dadosgovbr and its requirements..."
 pip install -r pip-requirements.txt
 pip install -r dev-requirements.txt
