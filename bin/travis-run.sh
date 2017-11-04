@@ -8,7 +8,9 @@ nosetests --ckan --nologcapture --with-pylons=subdir/test.ini ckanext/dadosgovbr
 # ===========================================================
 
 # Start CKAN server
+cd ckan
 paster serve test-core.ini &
+cd -
 sleep 5 # Make sure the server has fully started
 
 # Run test
@@ -22,7 +24,7 @@ killall paster
 
 # Test: All nosetests
 # ===========================================================
-nosetests --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-coverage --cover-package=ckan --cover-package=ckanext ckan ckanext
+nosetests --ckan --reset-db --with-pylons=subdir/test.ini --nologcapture --with-coverage --cover-package=ckan --cover-package=ckanext ckanext/dadosgovbr
 
 # Did an error occur?
 NOSE_ERROR=$?
