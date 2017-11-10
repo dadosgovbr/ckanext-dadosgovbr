@@ -10,13 +10,8 @@ from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IConfigurer
 from ckan.plugins import IRoutes
 
-# Wordpress integration
-import ckanext.dadosgovbr.helpers.wordpress as wp
-
-# Custom helper tools
-import ckanext.dadosgovbr.helpers.tools as tools
-
-
+# Custom helper
+from ckanext.dadosgovbr import helpers
 
 
 class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
@@ -150,6 +145,9 @@ class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # =======================================================
     def before_map(self, map):
 
+
+        # ckanext-scheming
+        # New organization filters
         map.connect('/organization/new',
             controller='ckanext.dadosgovbr.controllers.scheming_organization:TestController',
             action='new',
@@ -171,6 +169,7 @@ class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     id=0)
 
         # ckanext-scheming
+        # New packages formats
         for package_type in self.scheming_get_types():
             map.connect('%s_new' % package_type, '/%s/new' % package_type,
                             controller='package', action='new')
@@ -241,34 +240,35 @@ class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         '''Register all functions
 
         '''
+        
         # Template helper function names should begin with the name of the
         # extension they belong to, to avoid clashing with functions from
         # other extensions.
         return {
             # Homepage
-            'dadosgovbr_most_recent_datasets': tools.most_recent_datasets,
+            'dadosgovbr_most_recent_datasets': helpers.tools.most_recent_datasets,
 
             # Wordpress
-            'dadosgovbr_wordpress_posts': wp.posts,
-            'dadosgovbr_format_timestamp': wp.format_timestamp,
+            'dadosgovbr_wordpress_posts': helpers.wordpress.posts,
+            'dadosgovbr_format_timestamp': helpers.wordpress.format_timestamp,
 
             # Scheming
-            'dadosgovbr_get_schema_name': tools.get_schema_name,
-            'dadosgovbr_get_schema_title': tools.get_schema_title,
+            'dadosgovbr_get_schema_name': helpers.scheming.get_schema_name,
+            'dadosgovbr_get_schema_title': helpers.scheming.get_schema_title,
 
             # Generict tools
-            'dadosgovbr_trim_string': tools.trim_string,
-            'dadosgovbr_trim_letter': tools.trim_letter,
-            'dadosgovbr_resource_count': tools.resource_count,
-            'dadosgovbr_get_featured_group': tools.get_featured_group,
-            'dadosgovbr_get_organization_extra': tools.get_organization_extra,
-            'dadosgovbr_get_package': tools.get_package,
-            'dadosgovbr_cache_create': tools.cache_create,
-            'dadosgovbr_cache_load': tools.cache_load,
-            'dadosgovbr_group_id_or_name_exists': tools.group_id_or_name_exists,
+            'dadosgovbr_trim_string': helpers.tools.trim_string,
+            'dadosgovbr_trim_letter': helpers.tools.trim_letter,
+            'dadosgovbr_resource_count': helpers.tools.resource_count,
+            'dadosgovbr_get_featured_group': helpers.tools.get_featured_group,
+            'dadosgovbr_get_organization_extra': helpers.tools.get_organization_extra,
+            'dadosgovbr_get_package': helpers.tools.get_package,
+            'dadosgovbr_cache_create': helpers.tools.cache_create,
+            'dadosgovbr_cache_load': helpers.tools.cache_load,
+            'dadosgovbr_group_id_or_name_exists': helpers.tools.group_id_or_name_exists,
 
             # e-Ouv
-            'dadosgovbr_eouv_is_avaliable': tools.eouv_is_avaliable,
-            'dadosgovbr_get_contador_eouv': tools.helper_get_contador_eouv
+            'dadosgovbr_eouv_is_avaliable': helpers.tools.eouv_is_avaliable,
+            'dadosgovbr_get_contador_eouv': helpers.tools.helper_get_contador_eouv
         }
         
