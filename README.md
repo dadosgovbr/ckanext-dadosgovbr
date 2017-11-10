@@ -49,9 +49,47 @@ wordpress.domain = http://wordpress_url_aqui/
 ```
 
 ### Scheming
-Adicione no arquivo `/etc/ckan/default/development.ini` as seguintes linhas, abaixo de `ckan.plugins = ...`:
+Para ativar o suporte ao [ckanext-scheming](https://github.com/ckan/ckanext-scheming) e permitir novos tipos de pacotes criados pelo dados.gov.br, como "Inventário", "Concurso" e "Aplicativo", você deve instalar o ckanext-scheming e o ckanext-dadosgovbrschema:
+
+Ative o virtualenv:
 ```
-scheming.dataset_schemas = ckanext.dadosgovbr:schema_aplicativo.json
-			   ckanext.dadosgovbr:schema_inventario.json
-			   ckanext.dadosgovbr:schema_concurso.json
+# Entre no usuário onde o CKAN foi instalado
+su ckan
+
+# Ative o virtualenv
+. /usr/lib/ckan/default/bin/activate 
+
+# Acesse o diretório de plugins
+cd /usr/lib/ckan/default/src
 ```
+
+Instale o ckanext-scheming:
+
+```
+# Instale o ckanext-scheming
+pip install -e git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming
+
+# Instale as dependências
+pip install -r /usr/lib/ckan/default/src/ckanext-scheming/requirements.txt
+```
+
+Instale o ckanext-dadosgovbrschema:
+
+```
+# Instale o ckanext-dadosgovbrschema (última versão)
+pip install -e git+https://github.com/dadosgovbr/ckanext-dadosgovbrschema.git@beta#egg=ckanext-dadosgovbrschema
+
+# Instale as dependências
+pip install -r /usr/lib/ckan/default/src/ckanext-dadosgovbrschema/pip-requirements.txt
+
+# Configure o plugin
+cd /usr/lib/ckan/default/src/ckanext-dadosgovbrschema && python setup.py develop
+```
+
+Adicione no arquivo `/etc/ckan/default/development.ini` as seguintes linhas, abaixo da definição dos plugins:
+```
+scheming.dataset_schemas = ckanext.dadosgovbrschema:schema_aplicativo.json
+                           ckanext.dadosgovbrschema:schema_inventario.json
+                           ckanext.dadosgovbrschema:schema_concurso.json
+```
+
