@@ -1,13 +1,16 @@
-
+dist: trusty
+sudo: required
 language: python
 python:
     - "2.7"
 env:
-    - CKANVERSION=2.5
     - CKANVERSION=2.6
-    - CKANVERSION=2.7
 services:
     - redis-server
 install:
     - bash bin/travis-build.bash
 script: sh bin/travis-run.sh
+notifications:
+  email: false
+  irc:
+    - "chat.freenode.net#dadosgovbr"

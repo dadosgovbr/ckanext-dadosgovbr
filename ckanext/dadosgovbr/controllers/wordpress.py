@@ -31,7 +31,7 @@ class NoticiasController(p.toolkit.BaseController):
 
     def feed (ctrl):
         # Get content from feed URL
-        url     = "http://dados.gov.br/wp/feed"
+        url     = "http://wp.dados.gov.br/wp/feed"
         feed    = requests.get(url)
         content = feed.content
 

@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
 # Dependence for Wordpress_Post
+from ckan.common import config
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IConfigurer
 from ckan.plugins import IRoutes
-import requests, hashlib, os, json, time, re
+import hashlib, os, json, time, re
 import datetime
 import dateutil.parser as dp
+
+# Secure SSL request requirements
+import urllib3, urllib3.contrib.pyopenssl, certifi
+urllib3.contrib.pyopenssl.inject_into_urllib3()
 
 # Logging
 import logging
@@ -20,8 +25,10 @@ def get_domain():
 
         @return string
     '''
-    #return "https://blog.thenets.org"
-    return 'http://dados.gov.br/wp'
+    if 'wordpress.domain' in config:
+        return config.get('wordpress.domain')
+    else:
+        return 'http://dados.gov.br/wp'
 
 
 
@@ -59,12 +66,18 @@ def cache_json(url):
     # If cache file not exist or has expired
     else:
         triesCount=0
-        while True and triesCount < 10:
+        while True and triesCount < 1:
             # Try to get JSON from URL
             try:
-                request = requests.get(url, timeout=3)  # Request of URL
-                posts   = request.json()
-                if(request.status_code > 400):
+                # Create urllib3 with certify instance
+                http = urllib3.PoolManager(
+                            cert_reqs='CERT_REQUIRED',
+                            ca_certs=certifi.where())
+                request = http.request('GET', url, retries=5) # Request of URL
+
+                # Parse to JSON
+                posts   = json.loads(request.data.decode('utf-8'))
+                if(request.status > 400):
                     raise
 
                 # Remove old cache file
@@ -73,13 +86,14 @@ def cache_json(url):
 
                 # Write cache file
                 f       = open(f_name, 'w')
-                f.write(request.text)
+                f.write(request.data.decode('utf-8'))
                 f.close()
 
             # Try again if got some error
             except Exception as e:
                 triesCount+=1
                 log.error('Wordpress API | Error getting url: %s', url)
+                log.error(e)
                 log.info ('Wordpress API | trying again')
                 continue
 
