@@ -23,6 +23,12 @@ def eouv_is_avaliable ():
         return True
     return False
 
+def eouv_check_tags (tags):
+    for x in tags:
+        if (x['name'].lower() == 'pgi'):
+            return False
+    return True
+
 def helper_get_contador_eouv (package_name):
     out = {}
     error=0

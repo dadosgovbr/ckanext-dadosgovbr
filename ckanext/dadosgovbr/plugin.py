@@ -268,6 +268,7 @@ class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
             # e-Ouv
             'dadosgovbr_eouv_is_avaliable': tools.eouv_is_avaliable,
+            'dadosgovbr_eouv_check_tags': tools.eouv_check_tags,
             'dadosgovbr_get_contador_eouv': tools.helper_get_contador_eouv
         }
         
