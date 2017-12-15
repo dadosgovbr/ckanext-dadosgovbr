@@ -7,7 +7,8 @@
       "field_name": "title",
       "label": "Nome da base",
       "preset": "title",
-      "form_placeholder": "ex. Sistema de Óbitos - SISOBI"
+      "form_placeholder": "ex. Sistema de Óbitos - SISOBI",
+      "required": "true"
     },
     {
       "field_name": "name",
@@ -16,136 +17,51 @@
       "form_placeholder": "ex. sistema-de-obitos"
     },
     {
+      "field_name": "notes",
+      "label": "Descrição",
+      "form_snippet": "markdown.html",
+      "form_placeholder": "ex.: Descrição sucinta da base. Inclua objetivos,  finalidades, etc.",
+      "required": "true"
+    },
+    {
       "field_name": "owner_org",
       "label": "Organização",
       "preset": "dataset_organization"
     },
     {
-      "field_name": "author",
-      "label": "Contato",
-      "form_placeholder": "João da Silva",
-      "display_property": "dc:creator"
+      "field_name": "nome_orgao",
+      "label": "Unidade responsável pela base",
+      "help_text": "Unidade responsável pela Base de Dados. Area que possui o Não é a área de TI.",
+      "form_placeholder": "ex. Secretaria de Orçamento e Finanças",
+      "required": "true"
     },
     {
       "field_name": "author_email",
-      "label": "Email do Contato",
-      "form_placeholder": "joaosilva@planejamento.gov.br",
+      "label": "E-mail para Contato",
+      "form_placeholder": "E-mail institucional para contato (público)",
       "display_property": "dc:creator",
       "display_snippet": "email.html",
-      "display_email_name_field": "author"
-    },
-    {
-      "field_name": "author_cargo",
-      "label": "Cargo do Contato",
-      "form_placeholder": "Analista de Finanças",
-      "display_property": "dc:creator"
+      "display_email_name_field": "author",
+      "required": "true"
     },
     {
       "field_name": "author_telefone",
-      "label": "Telefone do Contato",
-      "form_placeholder": "9999-9999",
+      "label": "Telefone para Contato",
+      "form_placeholder": "DDD + Número",
       "display_property": "dc:creator"
     },
     {
-      "field_name": "maintainer",
-      "label": "Mantenedor",
-      "form_placeholder": "Secretaria de Orçamento",
-      "display_property": "dc:contributor"
-    },
-    {
-      "field_name": "maintainer_email",
-      "label": "Email do Mantenedor",
-      "form_placeholder": "sof@planejamento.gov.br",
-      "display_property": "dc:contributor",
-      "display_snippet": "email.html",
-      "display_email_name_field": "maintainer"
-    },
-    {
       "field_name": "tag_string",
-      "label": "Categorias",
+      "label": "Etiquetas",
       "preset": "tag_string_autocomplete",
-      "form_placeholder": "ex. óbitos, pessoas, pensionistas"
-    },
-    {
-      "field_name": "nome_base",
-      "label": "Nome do Inventário",
-      "output_validators": "ignore_missing"
-    },
-    {
-      "field_name": "sigla_base",
-      "label": "Sigla do Inventário",
-      "output_validators": "ignore_missing"
-    },
-    {
-      "field_name": "situacao_base",
-      "label": "Situação do Inventário",
-      "preset": "select",
-      "choices": [
-        {
-          "value": "previsto",
-          "label": "Previsto"
-        },
-        {
-          "value": "desenvolvimentocompra",
-          "label": "Desenvolvimento/Compra"
-        },
-        {
-          "value": "implantacao",
-          "label": "Implantação"
-        },
-        {
-          "value": "producao",
-          "label": "Produção"
-        },
-        {
-          "value": "desativado",
-          "label": "Desativado"
-        }
-      ]
-    },
-    {
-      "field_name": "descricao_base",
-      "label": "Descrição do Inventário",
-      "form_snippet": "markdown.html",
-      "form_placeholder": "ex. Descreve a base. Recomenda-se incluir objetivos ou finalidades da base."
-    },
-    {
-      "field_name": "informacoes_sigilosas_base",
-      "label": "Base possui informações sigilosas?",
-      "preset": "select",
-      "choices": [
-        {
-          "value": "sim",
-          "label": "Sim"
-        },
-        {
-          "value": "nao",
-          "label": "Não"
-        }
-      ]
-    },
-    {
-      "field_name": "informacoes_publicas_base",
-      "label": "Base possui informações públicas?",
-      "preset": "select",
-      "choices": [
-        {
-          "value": "publico",
-          "label": "Público (não existem informações sigilosas)"
-        },
-        {
-          "value": "pessoal",
-          "label": "Pessoal (possui dados pessoais)"
-        },
-        {
-          "value": "sigiloso",
-          "label": "Sigiloso (possui qualquer outro tipo de dado sigiloso)"
-        }
-      ]
+      "help_text": "Adicione algumas palavras chaves sobre a base para facilitar a busca de informações",
+      "form_placeholder": "ex: óbitos, pesca, agricultura, licitações, passagens, carro, desempregados, etc"
     },
     {
       "field_name": "atualizacoes_base",
-      "label": "Período de atualização dos dados",
+      "label": "Frequencia de atualização",
+      "help_text": "Selecione com qual frequência esta base de dados sofre mudanças",
+      "required": "true",
       "preset": "select",
       "choices": [
         {
@@ -177,61 +93,6 @@
           "label": "Outro"
         }
       ]
-    },
-    {
-      "field_name": "observacao_base",
-      "label": "Observação sobre a base",
-      "form_snippet": "markdown.html",
-      "form_placeholder": "Observações sobre a base"
-    },
-    {
-      "field_name": "normas_sigilo",
-      "label": "Normas legais para sigilo da Base",
-      "form_snippet": "markdown.html",
-      "form_placeholder": "ex. Quais são as normas que determinam e regulam o sigilo dessa informação."
-    },
-    {
-      "field_name": "dados_abertos_base",
-      "label": "Exporta para dados abertos?",
-      "preset": "select",
-      "choices": [
-        {
-          "value": "sim",
-          "label": "Sim (possui exportação de dados em formato de dados abertos)"
-        },
-        {
-          "value": "nao",
-          "label": "Não (não possui exportação de dados em formato de dados abertos);"
-        },
-        {
-          "value": "desenvolvimento",
-          "label": "Em desenvolvimento (a solução está em desenvolvimento)"
-        },
-        {
-          "value": "prevista",
-          "label": "Prevista (a solução está prevista)"
-        }
-      ]
-    },
-    {
-      "field_name": "nome_orgao",
-      "label": "Unidade responsável pela base",
-      "help_text": "Unidade responsável pela Base de Dados. Não é a área de TI.",
-      "form_placeholder": "ex. Secretaria de Orçamento e Finanças"
-    },
-    {
-      "field_name": "sigla_orgao",
-      "label": "Sigla do Órgão",
-      "help_text": "Sigla da unidade responsável pela Base de Dados. Não é a área de TI.",
-      "form_placeholder": "ex. SOF"
-    },
-    {
-      "field_name": "codigo_orgao",
-      "label": "URL da unidade responsável no SIORG",
-      "help_text": "URL no SIORG da unidade responsável pela Base de Dados. Não é a área de TI.",
-      "form_placeholder": "ex. https://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/46",
-      "display_property": "http://schema.org/GovernmentOrganization",
-      "display_snippet": "link.html"
     }
   ],
   "resource_fields": [
@@ -243,7 +104,7 @@
     {
       "field_name": "name",
       "label": "Nome do recurso",
-      "form_placeholder": "ex. Formas de acessar o SISOBI"
+      "form_placeholder": "ex. Dicionário de Dados / Modelo Entidade Relacionamento / Outros recursos"
     },
     {
       "field_name": "description",
