@@ -182,6 +182,11 @@ class DadosgovbrPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                         controller='ckanext.dadosgovbr.controllers.scheming:SchemingPagesController',
                         action='search')
 
+        # Block route of user registration from web
+        map.connect('/user/register',
+                    controller='ckanext.dadosgovbr.controllers.common:CommonController',
+                    action='error')
+
         return map
 
                     
