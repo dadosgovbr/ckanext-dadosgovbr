@@ -41,7 +41,6 @@
       "form_placeholder": "E-mail institucional para contato (público)",
       "display_property": "dc:creator",
       "display_snippet": "email.html",
-      "display_email_name_field": "author",
       "required": "true"
     },
     {
