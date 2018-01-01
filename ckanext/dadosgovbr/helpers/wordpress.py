@@ -89,8 +89,6 @@ def cache_json(url):
     return posts # Convert JSON to Python object
 
 
-
-
 def post(post_slug):
     ''' Return post by slug
 
@@ -100,6 +98,20 @@ def post(post_slug):
     url = get_domain()+"/wp-json/wp/v2/posts?filter[name]="+str(post_slug)+"&_embed"
     return cache_json(url)[0]
 
+def getTotalPages():
+    ''' Return the total number of pages
+
+        @return int
+    '''
+    # URL
+    url = get_domain()+"/wp-json/wp/v2/posts"
+    try:
+        n_pages = requests.get(url, timeout=10).headers['X-WP-TotalPages']
+    except Exception as e:
+        log.error('Wordpress API | Error getting url: %s', url)
+        n_pages = 10
+
+    return int(n_pages)
 
 
 def posts(posts_per_page=10, page_number=1):

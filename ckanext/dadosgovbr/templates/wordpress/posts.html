@@ -11,18 +11,18 @@
   <ul class="pager">
     <!-- Mobile -->
     <div class="visible-xs">
-      {% if page_number > 1 %}
+      {% if page_number < c.total_of_posts %}
         <li class="next">
-          <a href="{{h.url_for('home','index')}}noticias?page={{page_number-1}}">Próxima página &rarr;</a>
+          <a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">Próxima página &rarr;</a>
         </li>
       {% endif %}
-      {% if page_number < 8 %}
+      {% if page_number > 1 %}
         <li class="previous">
-          <a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">&larr; Página anterior</a>
+          <a href="{{h.url_for('home','index')}}noticias?page={{page_number-1}}">&larr; Página anterior</a>
         </li>
       {% endif %}
     </div>
-
+    
     <!-- Desktop -->
     <div class="hidden-xs">
       <div class="pagination" style="margin-bottom: -16px;">
@@ -33,7 +33,7 @@
             <li class="disabled"><a href="#" onclick="event.preventDefault()">Página anterior</a></li>
           {% endif %}
 
-          {% for i in range(8) %}
+          {% for i in range(c.total_of_posts) %}
               <li {% if page_number == (i+1) %} class="active" {% endif %}>
                 <a {% if page_number == (i+1) %}
                         href="#" onclick="event.preventDefault()"
@@ -45,7 +45,7 @@
               </li>
           {% endfor %}
 
-          {% if page_number < 8 %}
+          {% if page_number < c.total_of_posts %}
             <li><a href="{{h.url_for('home','index')}}noticias?page={{page_number+1}}">Próxima página</a></li>
           {% else %}
             <li class="disabled"><a href="#" onclick="event.preventDefault()">Próxima página</a></li>

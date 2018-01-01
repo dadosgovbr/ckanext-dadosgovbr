@@ -27,6 +27,8 @@ class NoticiasController(p.toolkit.BaseController):
 
         c.title = "Notícias".decode('utf8')
         c.wp_posts = wp.posts(10, c.wp_page_number)
+        c.total_of_posts = wp.getTotalPages()
+
         return render('wordpress/posts.html')
 
     def feed (ctrl):
